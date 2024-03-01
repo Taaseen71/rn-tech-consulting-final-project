@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 
 export const emailAndPasswordCheck = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
+  email: Yup.string().email('Invalid email').required('Email Required'),
   password: Yup.string()
-    .required('Required')
+    .required('Password Required')
     .min(5, 'Password too short')
     .matches(
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/,

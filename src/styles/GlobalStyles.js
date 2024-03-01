@@ -55,9 +55,13 @@ const globalStyle = (arg1, arg2, arg3, arg4) =>
     button: {
       alignItems: 'center',
       backgroundColor: arg1 ? arg1 : '#DDDDDD',
+      // color: arg1 === 'black' ? 'white' : 'black',
       padding: 10,
       borderRadius: 4,
       margin: 12,
+      text: {
+        color: arg1 === 'black' ? 'white' : 'black',
+      },
     },
     Image: {
       width: arg1 ? arg1 : 200,
@@ -76,6 +80,12 @@ const globalStyle = (arg1, arg2, arg3, arg4) =>
     fontSize: {
       fontSize: arg1,
       color: arg2 ? arg2 : undefined,
+    },
+    errorText: {
+      fontWeight: 'bold',
+      color: 'red',
+      textAlign: 'right',
+      paddingRight: 15,
     },
   });
 

@@ -4,4 +4,17 @@ import SignUp from './Unauthorized/SignUp';
 import ChatApp from './Authorized/Employee/ChatApp';
 import ReactSagaScreen from './Authorized/Employee/ReactSagaScreen';
 import OrderScreen from './Authorized/User/OrderScreen';
-export {HomeScreen, LogIn, SignUp, ChatApp, ReactSagaScreen};
+import CartScreen from './Authorized/User/CartScreen';
+// import ChatScreen from './Authorized/User/ChatScreen';
+import OrderPlacedWithMaps from './Authorized/User/OrderPlacedScreenWithMaps';
+
+export {
+  HomeScreen,
+  LogIn,
+  SignUp,
+  ChatApp,
+  ReactSagaScreen,
+  OrderScreen,
+  CartScreen,
+  OrderPlacedWithMaps,
+};

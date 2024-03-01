@@ -6,29 +6,18 @@ import {
   TouchableOpacity,
   ImageBackground,
   Alert,
+  StyleSheet,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
 import {firebaseSignUp} from 'src/helpers/FirebaseHelper';
-import {Formik, withFormik} from 'formik';
-import * as Yup from 'yup';
-import background from 'src/assets/signup2_wallpaper.jpg';
+import {Formik} from 'formik';
+import background from 'src/assets/signup4_wallpaper.jpg';
 import {emailAndPasswordCheck} from 'src/helpers/Schemas';
 
 const SignUp = () => {
   const navigation = useNavigation();
-
-  // const SignUpSchema = Yup.object().shape({
-  //   email: Yup.string().email('Invalid email').required('Required'),
-  //   password: Yup.string()
-  //     .required('Required')
-  //     .min(5, 'Password too short')
-  //     .matches(
-  //       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/,
-  //       'Minimum eight characters, at least one letter and one number',
-  //     ),
-  // });
 
   return (
     <View flex={1}>
@@ -56,12 +45,14 @@ const SignUp = () => {
                   placeholder={'Enter Email'}
                   autoCapitalize={'none'}
                   value={values.email}
+                  //   {errors.email && touched.email ?
+                  //     {errors.email}
+                  //  : null}
                 />
                 {errors.email && touched.email ? (
-                  <Text style={{fontWeight: 'bold', color: 'red', padding: 15}}>
-                    {errors.email}
-                  </Text>
+                  <Text style={globalStyle().errorText}>{errors.email}</Text>
                 ) : null}
+
                 <TextInput
                   style={globalStyle().TextInputComponent}
                   onChangeText={handleChange('password')}
@@ -72,14 +63,12 @@ const SignUp = () => {
                   onSubmitEditing={handleSubmit}
                 />
                 {errors.password && touched.email ? (
-                  <Text style={{fontWeight: 'bold', color: 'red', padding: 15}}>
-                    {errors.password}
-                  </Text>
+                  <Text style={globalStyle().errorText}>{errors.password}</Text>
                 ) : null}
                 <TouchableOpacity
-                  style={globalStyle('skyblue').button}
+                  style={globalStyle('black').button}
                   onPress={handleSubmit}>
-                  <Text>Submit</Text>
+                  <Text style={globalStyle('black').button.text}>Submit</Text>
                 </TouchableOpacity>
               </View>
             )}
