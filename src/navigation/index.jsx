@@ -1,74 +1,77 @@
-import { View, Text, Button } from 'react-native'
+import {View, Text, Button} from 'react-native';
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen, LogIn, SignUp, Fetch, ReactContext, ReactSagaScreen } from '@screens';
-import React, {useState, useEffect} from 'react'
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  HomeScreen,
+  LogIn,
+  SignUp,
+  Fetch,
+  ReactContext,
+  ReactSagaScreen,
+} from '@screens';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-        
+import {useSelector} from 'react-redux';
 
-const Navigation = (props) => {
-    
-    const Stack = createNativeStackNavigator();
-    const navigation = useNavigation()
-    
-    const user = useSelector(state => state.user)
-    
-    const [isLoggedIn, setIsLoggedIn] = useState(user.data?.id ? true : false)
+import auth from '@react-native-firebase/auth';
 
+const Navigation = props => {
+  const Stack = createNativeStackNavigator();
+  const navigation = useNavigation();
 
+  const [user, setUser] = useState(null);
 
-    const naviButton = (optionName, pageName, pageTitle) => {
-        return { [optionName]: () => (<Button  title={pageName}  onPress={() => {navigation.navigate(pageTitle ? pageTitle : pageName)}} />)}
+  const naviButton = (optionName, pageName, pageTitle) => {
+    return {
+      [optionName]: () => (
+        <Button
+          title={pageName}
+          onPress={() => {
+            navigation.navigate(pageTitle ? pageTitle : pageName);
+          }}
+        />
+      ),
+    };
+  };
+
+  useEffect(() => {
+    function authStatechanged(user) {
+      setUser(user);
     }
-    // const navigateButton = (arg1, arg2) => (
-    //     <Button  title={arg1}  onPress={() => {navigation.navigate(arg2 ? arg2 : arg1)}} />
-    // )
-    
-    
-    
-    
-    useEffect(() => {
-      setIsLoggedIn(user.data?.id ? true : false)
-    }, [user])
-    
-    
-    const Authorized = () => (
-        <Stack.Navigator>
-            <Stack.Screen name="Home">
-                {() => <HomeScreen isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}
-            </Stack.Screen>
-            <Stack.Screen name="Fetch">
-                {() => <Fetch isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}
-            </Stack.Screen>
-        </Stack.Navigator>
-    )
+    const subscriber = auth().onAuthStateChanged(authStatechanged);
+    return subscriber;
+  }, [user]);
 
-    const UnAuthorized = () => (
-        <Stack.Navigator>
-            <Stack.Screen  name="React Saga Screen"  options = {naviButton("headerRight", "Log In")}>
-                {() => <ReactSagaScreen/>}
-            </Stack.Screen>
+  return user ? (
+    <Authorized Stack={Stack} naviButton={naviButton} />
+  ) : (
+    <UnAuthorized Stack={Stack} naviButton={naviButton} />
+  );
+};
 
-            <Stack.Screen  name="Log In"  options={naviButton("headerRight", "Sign Up")}>
-                {() => <LogIn isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/> }
-            </Stack.Screen>
+const Authorized = ({Stack, naviButton}) => (
+  <Stack.Navigator>
+    <Stack.Screen name="Home">{() => <HomeScreen />}</Stack.Screen>
+    <Stack.Screen name="Fetch">{() => <Fetch />}</Stack.Screen>
+  </Stack.Navigator>
+);
 
-            <Stack.Screen name="Sign Up" component={SignUp}/>
-            
-            <Stack.Screen name="ReactContext" component={ReactContext}/>
-        </Stack.Navigator>
-    )
-    
-  return (isLoggedIn ? <Authorized />  : <UnAuthorized/>)
-}
+const UnAuthorized = ({Stack, naviButton}) => (
+  <Stack.Navigator>
+    {/* <Stack.Screen
+      name="React Saga Screen"
+      options={naviButton('headerRight', 'Log In')}>
+      {() => <ReactSagaScreen />}
+    </Stack.Screen> */}
 
+    <Stack.Screen name="Log In" options={naviButton('headerRight', 'Sign Up')}>
+      {() => <LogIn />}
+    </Stack.Screen>
 
+    <Stack.Screen name="Sign Up" component={SignUp} />
 
+    <Stack.Screen name="ReactContext" component={ReactContext} />
+  </Stack.Navigator>
+);
 
-
-
-
-
-
-export default Navigation
+export default Navigation;
