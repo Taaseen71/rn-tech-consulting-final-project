@@ -12,24 +12,25 @@ import {useNavigation} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
 import {firebaseLogIn} from 'src/helpers/FirebaseHelper';
 import {Formik, withFormik} from 'formik';
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
 import background from 'src/assets/login_wallpaper.jpg';
+import {emailAndPasswordCheck} from 'src/helpers/Schemas';
 
 const LogIn = () => {
   const navigation = useNavigation();
   const [pwd, setPwd] = useState('');
   const [email, setEmail] = useState('');
 
-  const LogInSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string()
-      .required('Required')
-      .min(5, 'Password too short')
-      .matches(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/,
-        'Minimum eight characters, at least one letter and one number',
-      ),
-  });
+  // const LogInSchema = Yup.object().shape({
+  //   email: Yup.string().email('Invalid email').required('Required'),
+  //   password: Yup.string()
+  //     .required('Required')
+  //     .min(5, 'Password too short')
+  //     .matches(
+  //       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/,
+  //       'Minimum eight characters, at least one letter and one number',
+  //     ),
+  // });
 
   return (
     <View flex={1}>
@@ -39,7 +40,7 @@ const LogIn = () => {
         <View flex={9}>
           <Formik
             initialValues={{email: '', password: ''}}
-            validationSchema={LogInSchema}
+            validationSchema={emailAndPasswordCheck}
             onSubmit={values => firebaseLogIn(values.email, values.password)}>
             {({
               handleChange,

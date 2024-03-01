@@ -14,22 +14,21 @@ import {firebaseSignUp} from 'src/helpers/FirebaseHelper';
 import {Formik, withFormik} from 'formik';
 import * as Yup from 'yup';
 import background from 'src/assets/signup2_wallpaper.jpg';
+import {emailAndPasswordCheck} from 'src/helpers/Schemas';
 
 const SignUp = () => {
   const navigation = useNavigation();
-  const [pwd, setPwd] = useState('');
-  const [email, setEmail] = useState('');
 
-  const SignUpSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string()
-      .required('Required')
-      .min(5, 'Password too short')
-      .matches(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/,
-        'Minimum eight characters, at least one letter and one number',
-      ),
-  });
+  // const SignUpSchema = Yup.object().shape({
+  //   email: Yup.string().email('Invalid email').required('Required'),
+  //   password: Yup.string()
+  //     .required('Required')
+  //     .min(5, 'Password too short')
+  //     .matches(
+  //       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/,
+  //       'Minimum eight characters, at least one letter and one number',
+  //     ),
+  // });
 
   return (
     <View flex={1}>
@@ -39,7 +38,7 @@ const SignUp = () => {
         <View flex={6}>
           <Formik
             initialValues={{email: '', password: ''}}
-            validationSchema={SignUpSchema}
+            validationSchema={emailAndPasswordCheck}
             onSubmit={values => firebaseSignUp(values.email, values.password)}>
             {({
               handleChange,
@@ -85,13 +84,6 @@ const SignUp = () => {
               </View>
             )}
           </Formik>
-          <TouchableOpacity
-            style={globalStyle('skyblue').button}
-            onPress={() => {
-              firebaseSignUp(email, pwd);
-            }}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
         </View>
         <View flex={1}>
           <Button
