@@ -1,0 +1,73 @@
+Data Structures
+
+Users? or Clients?: {
+  firstName: string
+  lastName: string
+  email: string
+  userType?: string
+  address: string
+  city: string
+  postalCode: string
+  state: string
+  image: string
+}
+
+Employees?: {
+  firstName: string
+  lastName: string
+  employeeID: string
+  email: string
+  driverLicense: string
+  rating: number
+}
+
+Comments: {
+  employerID: string
+  orderID: string
+  comment: string
+  rating: number
+}
+
+Products: {
+  Id: string
+  name: string
+  price: number
+  quantity: number
+  Details: string
+  Rating: number
+  image: [
+	{uri: string}
+  ]
+}
+
+Orders: {
+  userEmail: string
+  userID: string
+  orderID: string
+  products: [
+    {
+      name: string
+      price: number
+      Details: string
+    }
+  ]
+  quantity: number
+  total: number
+  deliveryAddress: {
+    street: string
+    city: string
+    state: string
+    postalCode: string
+    latitude: number
+    longitude: number
+  }
+  status: string
+  deliveryDate: date
+  estimateTime: dateTime
+  deliveryBoyTrackingLocation: [
+    coordinates: {
+      longitude: number
+      latitude: number
+    }
+  ]
+}

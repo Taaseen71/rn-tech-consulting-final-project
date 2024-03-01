@@ -18,7 +18,7 @@ const HomeScreen = () => {
       <Button
         title="Chat with Driver"
         onPress={() => {
-          navigation.navigate('Fetch');
+          navigation.navigate('ChatApp');
         }}
       />
       <Button
@@ -26,7 +26,7 @@ const HomeScreen = () => {
         onPress={() => {
           alert('Chatting With Admin');
           createChat('admin@admin.com');
-          navigation.navigate('Fetch');
+          navigation.navigate('ChatApp');
         }}
       />
       <Button

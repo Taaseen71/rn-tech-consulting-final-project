@@ -9,9 +9,9 @@ import {
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {currentUser, getChat, postChat} from 'src/helpers/FirebaseHelper';
 import globalStyle from 'src/styles/GlobalStyles';
-// import auth from '@react-native-firebase/auth';
+import whatsapp_background from 'src/assets/whatsapp_background.jpg';
 
-const Fetch = () => {
+const ChatApp = () => {
   const [text, changeText] = useState('');
   const [chats, changeChats] = useState([]);
   const [user, setUser] = useState('');
@@ -73,14 +73,14 @@ const Fetch = () => {
     changeText('');
   };
   const image = {
-    uri: 'https://images.unsplash.com/photo-1487147264018-f937fba0c817?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    uri: whatsapp_background,
   };
   return (
     <View flex={1}>
       <ImageBackground
-        source={image}
+        source={whatsapp_background}
         resizeMode="cover"
-        style={{flex: 1, justifyContent: 'center', opacity: 1}}>
+        style={{width: '100%', height: '100%'}}>
         <View flex={9}>
           <FlatList
             data={chats}
@@ -92,7 +92,7 @@ const Fetch = () => {
           />
         </View>
         <View flex={1} style={globalStyle().inline}>
-          <Button title={'+'} />
+          <Button color="white" title={'+'} />
           <TextInput
             flex={8}
             style={[globalStyle().TextInputComponent, globalStyle(2).borders]}
@@ -103,6 +103,7 @@ const Fetch = () => {
           />
           <Button
             title={'Send'}
+            color="white"
             flex={8}
             onPress={() => {
               postText();
@@ -114,4 +115,4 @@ const Fetch = () => {
   );
 };
 
-export default Fetch;
+export default ChatApp;
