@@ -27,7 +27,8 @@
           ".bundle/",
           "node_modules/",
           "vendor/"
-        ]
+        ],
+        "peek": ["package.json"]
       },
       {
         "name": "Strict",
@@ -53,7 +54,6 @@
     "Gemfile.lock": true,
     "jest.config.js": true,
     "metro.config.js": true,
-    "package.json": true,
     "README.md": true,
     "tsconfig.json": true,
     "yarn.lock": true,

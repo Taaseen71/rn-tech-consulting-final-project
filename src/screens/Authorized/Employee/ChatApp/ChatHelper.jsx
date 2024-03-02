@@ -11,6 +11,7 @@ import React, {useState} from 'react';
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import globalStyle from 'src/styles/GlobalStyles';
+import {uploadStorage} from 'src/helpers/FirebaseHelper';
 // import FileViewer from 'react-native-file-viewer';
 // await FileViewer.open(result?.uri);
 
@@ -35,7 +36,8 @@ const ChatHelper = () => {
       // console.log('FILESIZE ==>', fileSize);
 
       setSelectedFile(result);
-      console.log('SELECTED FILE ==> ', selectedFile);
+      console.log('SELECTED FILE ==> ', result);
+      uploadStorage(result);
       setModalVisible(!modalVisible);
       //   }
     } catch (err) {
@@ -71,7 +73,9 @@ const ChatHelper = () => {
           <Button
             color="white"
             title={'x'}
-            onPress={() => setSelectedFile(null)}
+            onPress={() => {
+              setSelectedFile(null);
+            }}
           />
         )}
       </View>
