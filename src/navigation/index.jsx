@@ -5,14 +5,27 @@ import {HomeScreen, LogIn, SignUp, ChatApp, ReactSagaScreen} from '@screens';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 // import {useSelector} from 'react-redux';
-
+import {useDispatch} from 'react-redux';
+import {logInUser} from 'src/features/user/userSlice';
 import auth from '@react-native-firebase/auth';
+import {userStateChanged} from 'src/helpers/FirebaseHelper';
 
 const Navigation = props => {
   const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    function authStatechanged(user) {
+      setUser(user);
+    }
+    // const subscriber = auth().onAuthStateChanged(authStatechanged);
+    // dispatch(logInUser(user));
+    // return subscriber;
+    return userStateChanged(authStatechanged, dispatch(logInUser(user)));
+  }, [user]);
 
   const naviButton = ({
     optionName: optionName,
@@ -32,14 +45,6 @@ const Navigation = props => {
       ),
     };
   };
-
-  useEffect(() => {
-    function authStatechanged(user) {
-      setUser(user);
-    }
-    const subscriber = auth().onAuthStateChanged(authStatechanged);
-    return subscriber;
-  }, [user]);
 
   return user ? (
     <Authorized Stack={Stack} naviButton={naviButton} />

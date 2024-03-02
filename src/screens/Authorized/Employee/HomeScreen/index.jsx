@@ -2,7 +2,12 @@ import {View, Text, Button} from 'react-native';
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {createChat, firebaseLogOut, getChat} from 'src/helpers/FirebaseHelper';
+import {
+  createChat,
+  firebaseLogOut,
+  getChat,
+  updateUserProfile,
+} from 'src/helpers/FirebaseHelper';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -33,6 +38,12 @@ const HomeScreen = () => {
         title="Log Out"
         onPress={() => {
           firebaseLogOut();
+        }}
+      />
+      <Button
+        title="update profile"
+        onPress={() => {
+          updateUserProfile();
         }}
       />
     </View>

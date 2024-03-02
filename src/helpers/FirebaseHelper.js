@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {current} from '@reduxjs/toolkit';
+// import {current} from '@reduxjs/toolkit';
 
 //USERS
 export const firebaseLogIn = (user, pwd) => {
@@ -14,17 +14,34 @@ export const firebaseLogIn = (user, pwd) => {
     .catch(err => alert(err.message));
 };
 
-export const firebaseSignUp = async (name, pwd) => {
+export const createFirebaseUser = async (name, pwd, userName, phoneNumber) => {
   try {
     await auth()
       .createUserWithEmailAndPassword(name, pwd)
-      .then(resp => {
-        console.log(resp.user);
+      .then(userCredential => {
+        const user = userCredential.user;
+        user
+          .updateProfile({
+            displayName: userName,
+            phoneNumber: phoneNumber,
+            employee: true,
+          })
+          .then(() => {
+            console.log('userCreated');
+          });
+        console.log('RESP ++++>', resp);
         alert('User account created & signed in!');
       });
   } catch (error) {
     alert(error.message);
   }
+};
+
+export const updateUserProfile = async () => {
+  await auth()
+    .currentUser.updateEmail('joe.bloggs@new-email.com')
+    .then(resp => console.log('Update ==>', resp));
+  console.log();
 };
 
 export const firebaseLogOut = () => {
@@ -33,6 +50,14 @@ export const firebaseLogOut = () => {
 
 export const currentUser = () => {
   return auth().currentUser._user.email;
+};
+
+export const userStateChanged = (functionName, dispatch) => {
+  //* Listener
+  const subscriber = auth().onAuthStateChanged(functionName);
+  console.log('FIRING OnAuthStateChange LISTENER', dispatch);
+  dispatch;
+  return subscriber;
 };
 
 /////////////////////////////////////////////////////////////
@@ -62,7 +87,7 @@ export const postChat = async (user, message, recipient) => {
       // .collection(alphabetized)
       .collection('chat')
       //   .doc(JSON.stringify(profileId))
-      .doc(Date())
+      .doc(new Date().toISOString())
       .set({user: user, message: message, timestamp: Date()});
     console.log('Profile posted successfully');
   } catch (error) {

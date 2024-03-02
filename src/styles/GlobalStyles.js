@@ -39,7 +39,7 @@ const globalStyle = (arg1, arg2, arg3, arg4) =>
       flexDirection: 'row',
       justifyContent: arg1 ? arg1 : 'space-between',
       // backgroundColor: 'yellow',
-      margin: 12,
+      // margin: 12,
       alignItems: 'center',
     },
     multiline: {

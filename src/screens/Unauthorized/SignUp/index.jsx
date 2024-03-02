@@ -11,7 +11,7 @@ import {
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
-import {firebaseSignUp} from 'src/helpers/FirebaseHelper';
+import {createFirebaseUser} from 'src/helpers/FirebaseHelper';
 import {Formik} from 'formik';
 import background from 'src/assets/signup4_wallpaper.jpg';
 import {emailAndPasswordCheck} from 'src/helpers/Schemas';
@@ -28,7 +28,9 @@ const SignUp = () => {
           <Formik
             initialValues={{email: '', password: ''}}
             validationSchema={emailAndPasswordCheck}
-            onSubmit={values => firebaseSignUp(values.email, values.password)}>
+            onSubmit={values =>
+              createFirebaseUser(values.email, values.password)
+            }>
             {({
               handleChange,
               handleBlur,
