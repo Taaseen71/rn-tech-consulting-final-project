@@ -54,7 +54,7 @@ export const firebaseLogOut = () => {
   auth().signOut();
 };
 
-export const currentUser = async dispatch => {
+export const currentUser = async () => {
   // return auth().currentUser._user.email;
   let user = await auth().currentUser;
   let userInfo = await firestore()
@@ -68,6 +68,7 @@ export const currentUser = async dispatch => {
     displayName: userInfo?.displayName,
     userType: userInfo?.userType,
     phoneNumber: userInfo?.phoneNumber,
+    profileImage: userInfo?.profileImage,
   };
   return currentUserInfo;
 };
@@ -137,16 +138,8 @@ export const postChat = async ({
 //* Storage
 
 export const uploadStorage = async (user, file) => {
-  const uploadUri = file.file;
-  const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-  // const user = currentUser();
-  console.log('USER ============>', user);
-
-  console.log('UPLOAD', file);
-
   try {
-    await storage().ref(fileName).putFile(uploadUri);
-    const downloadURL = await getDownloadURL(fileName);
+    const downloadURL = await uploadFile(file);
     if (file.type === 'image') {
       postChat({user: user, image: downloadURL});
     } else {
@@ -158,6 +151,18 @@ export const uploadStorage = async (user, file) => {
   }
 };
 
+export const uploadFile = async doc => {
+  const uploadUri = doc.file;
+  const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+  try {
+    await storage().ref(fileName).putFile(uploadUri);
+    const downloadURL = await getDownloadURL(fileName);
+    return downloadURL;
+  } catch (error) {
+    console.error('Error in UploadFile Try Catch', error);
+  }
+};
+
 const getDownloadURL = async fileName => {
   try {
     const url = await storage().ref(fileName).getDownloadURL();
@@ -166,4 +171,38 @@ const getDownloadURL = async fileName => {
     console.error('Error getting download URL:', error);
     throw error;
   }
+};
+
+//* UpdateFirebase Profile
+
+export const updateFirebaseProfile = async ({
+  displayName: displayName,
+  email: email,
+  phoneNumber: phoneNumber,
+  userType: userType,
+  uid: uid,
+  profileImage: profileImage,
+}) => {
+  console.log(displayName);
+  console.log(email);
+  console.log(phoneNumber);
+  console.log(userType);
+  console.log(uid);
+  console.log(profileImage);
+
+  await firestore()
+    .collection('users')
+    .doc(uid)
+    .set({
+      displayName: displayName || null,
+      phoneNumber: phoneNumber || null,
+      profileImage: profileImage || null,
+      userType: userType,
+    });
+
+  // await auth().currentUser.updateProfile({
+  //   displayName: displayName || null,
+  //   phoneNumber: phoneNumber || null,
+  //   profileImage: profileImage || null,
+  // });
 };

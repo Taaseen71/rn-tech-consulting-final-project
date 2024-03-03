@@ -143,7 +143,7 @@ const ChatApp = () => {
           {/* <Button color="white" title={'+'} onPress={() => pickDocument()} /> */}
           <TextInput
             flex={8}
-            style={[globalStyle().TextInputComponent, globalStyle(2).borders]}
+            style={[globalStyle().TextInputComponent, globalStyle(0).borders]}
             // multiline={true}
             onChangeText={changeText}
             value={text}

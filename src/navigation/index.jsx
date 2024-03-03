@@ -17,6 +17,7 @@ import {setCurrentUser, logInUser} from 'src/features/user/userSlice';
 import auth from '@react-native-firebase/auth';
 import {currentUser, userStateChanged} from 'src/helpers/FirebaseHelper';
 import {ForgotPassword} from 'src/screens';
+import HamburgerMenu from 'src/components/HamburgerMenu';
 
 const Navigation = props => {
   const Stack = createNativeStackNavigator();
@@ -77,14 +78,24 @@ const Authorized = ({Stack, naviButton, userData}) => {
 
 const UserScreen = ({Stack, naviButton}) => (
   <Stack.Navigator>
-    <Stack.Screen name="User Homepage">{() => <UserHomeScreen />}</Stack.Screen>
+    <Stack.Screen
+      name="User Homepage"
+      options={{
+        headerLeft: () => <HamburgerMenu />,
+      }}>
+      {() => <UserHomeScreen />}
+    </Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
     <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
   </Stack.Navigator>
 );
 const EmployeeScreen = ({Stack, naviButton}) => (
   <Stack.Navigator>
-    <Stack.Screen name="Employee Homepage">
+    <Stack.Screen
+      name="Employee Homepage"
+      options={{
+        headerLeft: () => <HamburgerMenu />,
+      }}>
       {() => <EmployeeHomeScreen />}
     </Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
