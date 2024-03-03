@@ -15,10 +15,13 @@ import {createFirebaseUser} from 'src/helpers/FirebaseHelper';
 import {Formik} from 'formik';
 import background from 'src/assets/signup4_wallpaper.jpg';
 import {emailAndPasswordCheck} from 'src/helpers/Schemas';
+import {Switch} from 'react-native-paper';
 
 const SignUp = () => {
   const navigation = useNavigation();
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
 
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   return (
     <View flex={1}>
       <ImageBackground
@@ -29,7 +32,12 @@ const SignUp = () => {
             initialValues={{email: '', password: ''}}
             validationSchema={emailAndPasswordCheck}
             onSubmit={values =>
-              createFirebaseUser(values.email, values.password)
+              createFirebaseUser({
+                email: values.email,
+                password: values.password,
+                employee: isSwitchOn ? true : false,
+                displayName: values.name,
+              })
             }>
             {({
               handleChange,
@@ -40,6 +48,13 @@ const SignUp = () => {
               touched,
             }) => (
               <View>
+                <TextInput
+                  style={globalStyle().TextInputComponent}
+                  onChangeText={handleChange('name')}
+                  placeholder={'Name'}
+                  autoCapitalize={'words'}
+                  value={values.name}
+                />
                 <TextInput
                   style={globalStyle().TextInputComponent}
                   onChangeText={handleChange('email')}
@@ -67,6 +82,19 @@ const SignUp = () => {
                 {errors.password && touched.email ? (
                   <Text style={globalStyle().errorText}>{errors.password}</Text>
                 ) : null}
+                <View
+                  style={[
+                    globalStyle().centerView,
+                    globalStyle('center').inline,
+                  ]}>
+                  <Text>Employee Account: </Text>
+
+                  <Switch
+                    value={isSwitchOn}
+                    onValueChange={onToggleSwitch}
+                    color={'black'}
+                  />
+                </View>
                 <TouchableOpacity
                   style={globalStyle('black').button}
                   onPress={handleSubmit}>
@@ -75,6 +103,9 @@ const SignUp = () => {
               </View>
             )}
           </Formik>
+          {/* <View style={[globalStyle().centerView, globalStyle().inline]}>
+           
+          </View> */}
         </View>
         <View flex={1}>
           <Button

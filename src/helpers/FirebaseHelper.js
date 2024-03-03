@@ -8,7 +8,7 @@ import {Alert} from 'react-native';
 export const firebaseLogIn = async (email, pwd) => {
   try {
     const response = await auth().signInWithEmailAndPassword(email, pwd);
-    console.log('User logged in:', response.user.email);
+    console.log('User logged in:', response);
     alert('User logged in successfully.');
   } catch (error) {
     console.error('Error signing in:', error);
@@ -16,20 +16,33 @@ export const firebaseLogIn = async (email, pwd) => {
   }
 };
 
-export const createFirebaseUser = async (
-  email,
-  pwd,
-  displayName,
-  phoneNumber,
-) => {
+export const createFirebaseUser = async ({
+  email: email,
+  password: password,
+  displayName: displayName,
+  phoneNumber: phoneNumber,
+  employee: employee,
+}) => {
   try {
-    const response = await auth().createUserWithEmailAndPassword(email, pwd);
+    const response = await auth().createUserWithEmailAndPassword(
+      email,
+      password,
+    );
     await response.user.updateProfile({
-      displayName: displayName,
-      phoneNumber: phoneNumber,
-      employee: true,
+      displayName: displayName || null,
+      phoneNumber: phoneNumber || null,
     });
-    console.log('User account created and signed in:', response.user.email);
+
+    await firestore()
+      .collection('users')
+      .doc(response.user.uid)
+      .set({
+        displayName: displayName || null,
+        phoneNumber: phoneNumber || null,
+        // userType schema: 0 for admin, 1 for employee, 2 for users
+        userType: employee ? 1 : 2,
+      });
+    console.log('User account created and signed in:', response);
     alert('User account created and signed in successfully!');
   } catch (error) {
     console.error('Error creating user:', error);

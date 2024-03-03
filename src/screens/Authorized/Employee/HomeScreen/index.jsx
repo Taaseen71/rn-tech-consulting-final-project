@@ -12,6 +12,9 @@ import {
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -23,9 +26,33 @@ const HomeScreen = () => {
   // }, []);
 
   return (
-    <View>
-      <Button icon="camera">Press me</Button>
-      <EvilIcons name="camera" style={{color: 'black', fontSize: 50}} />
+    <SafeAreaView>
+      {/* <Button icon="chat">Press me</Button> */}
+      {/* <EvilIcons name="camera" style={{color: 'black', fontSize: 50}} /> */}
+      {/* <AntDesign name="we" style={{color: 'black', fontSize: 50}} /> */}
+      {/* <Entypo name="chat" style={{color: 'black', fontSize: 50}} /> */}
+      <Button
+        onPress={() => {
+          navigation.navigate('ChatApp');
+        }}>
+        <Entypo name="chat" style={{color: 'black', fontSize: 20}} />
+        <Text> Chat</Text>
+      </Button>
+      <Button
+        onPress={() => {
+          navigation.navigate('ChatApp');
+        }}>
+        <AntDesign name="car" style={{color: 'black', fontSize: 20}} />
+        <Text> Driver Chat</Text>
+      </Button>
+
+      <Button
+        onPress={() => {
+          firebaseLogOut();
+        }}>
+        <AntDesign name="logout" style={{color: 'black', fontSize: 20}} />
+        <Text> LogOut</Text>
+      </Button>
       {/* <Button
         title="Chat with Driver"
         onPress={() => {
@@ -52,7 +79,7 @@ const HomeScreen = () => {
           updateUserProfile();
         }}
       /> */}
-    </View>
+    </SafeAreaView>
   );
 };
 
