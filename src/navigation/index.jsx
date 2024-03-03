@@ -6,9 +6,9 @@ import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 // import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import {logInUser} from 'src/features/user/userSlice';
+import {setCurrentUser, logInUser} from 'src/features/user/userSlice';
 import auth from '@react-native-firebase/auth';
-import {userStateChanged} from 'src/helpers/FirebaseHelper';
+import {currentUser, userStateChanged} from 'src/helpers/FirebaseHelper';
 import {ForgotPassword} from 'src/screens';
 
 const Navigation = props => {
@@ -19,13 +19,18 @@ const Navigation = props => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const getUserInfo = async () => {
+      const userInfo = await currentUser();
+      dispatch(setCurrentUser(userInfo));
+    };
+    getUserInfo();
+  }, [user]);
+
+  useEffect(() => {
     function authStatechanged(user) {
       setUser(user);
     }
-    // const subscriber = auth().onAuthStateChanged(authStatechanged);
-    // dispatch(logInUser(user));
-    // return subscriber;
-    return userStateChanged(authStatechanged, dispatch(logInUser(user)));
+    userStateChanged(authStatechanged, dispatch(logInUser(user)));
   }, [user]);
 
   const naviButton = ({

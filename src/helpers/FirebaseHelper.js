@@ -35,7 +35,7 @@ export const createFirebaseUser = async ({
 
     await firestore()
       .collection('users')
-      .doc(response.user.uid)
+      .doc(response.user?.uid)
       .set({
         displayName: displayName || null,
         phoneNumber: phoneNumber || null,
@@ -54,8 +54,22 @@ export const firebaseLogOut = () => {
   auth().signOut();
 };
 
-export const currentUser = () => {
-  return auth().currentUser._user.email;
+export const currentUser = async dispatch => {
+  // return auth().currentUser._user.email;
+  let user = await auth().currentUser;
+  let userInfo = await firestore()
+    .collection('users')
+    .doc(user?.uid)
+    .get()
+    .then(resp => resp._data);
+  const currentUserInfo = {
+    email: user?.email,
+    uid: user?.uid,
+    displayName: userInfo?.displayName,
+    userType: userInfo?.userType,
+    phoneNumber: userInfo?.phoneNumber,
+  };
+  return currentUserInfo;
 };
 
 export const userStateChanged = (functionName, dispatch) => {
@@ -75,14 +89,14 @@ export const ResetPasswordEmail = async email => {
 
 //* Firestore
 
-export const createChat = async recipient => {
-  const alphabetized = [recipient, currentUser()].sort().toString();
-  firestore().collection(alphabetized).doc(`${Date()}`);
-  // .set({user: currentUser(), message: '', timestamp: Date()});
-};
+// export const createChat = async recipient => {
+//   const alphabetized = [recipient, currentUser()].sort().toString();
+//   firestore().collection(alphabetized).doc(`${Date()}`);
+//   // .set({user: currentUser(), message: '', timestamp: Date()});
+// };
 
 export const getChat = (onResult, onError, recipient) => {
-  const alphabetized = [recipient, currentUser()].sort().toString();
+  // const alphabetized = [recipient, currentUser()].sort().toString();
   firestore()
     .collection('chat')
     // .collection(`${currentUser()}+${recipient}`)
@@ -122,13 +136,13 @@ export const postChat = async ({
 
 //* Storage
 
-export const uploadStorage = async file => {
+export const uploadStorage = async (user, file) => {
   const uploadUri = file.file;
   const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-  const user = currentUser();
+  // const user = currentUser();
   console.log('USER ============>', user);
 
-  console.log('UPLOAD', uploadUri);
+  console.log('UPLOAD', file);
 
   try {
     await storage().ref(fileName).putFile(uploadUri);

@@ -22,19 +22,17 @@ import ChatHelper from './ChatHelper';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import {Platform} from 'react-native';
+import {useSelector} from 'react-redux';
 
 const ChatApp = () => {
   const [text, changeText] = useState('');
   const [chats, changeChats] = useState([]);
-  const [user, setUser] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
-  useEffect(() => {
-    setUser(currentUser);
-  }, []);
+  const user = useSelector(state => state.user.data.email);
 
   function onResult(QuerySnapshot) {
-    console.log('Got Users collection result.');
+    // console.log('Got Users collection result.');
     // console.log('QUERY SNAPSHOT ===> ', QuerySnapshot);
     changeChats(QuerySnapshot.docs);
   }
@@ -66,14 +64,13 @@ const ChatApp = () => {
       fromUrl: url,
       toFile: localFile,
     };
-    RNFS.downloadFile(options)
-      .promise.then(() => FileViewer.open(localFile))
-      .then(() => {
-        // success
-      })
-      .catch(error => {
-        // error
-      });
+    RNFS.downloadFile(options).promise.then(() => FileViewer.open(localFile));
+    // .then(() => {
+    //   // success
+    // })
+    // .catch(error => {
+    //   // error
+    // });
   };
 
   const renderItem = useCallback(({item}) => {
