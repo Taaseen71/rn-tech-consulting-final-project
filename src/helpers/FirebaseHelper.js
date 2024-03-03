@@ -76,6 +76,7 @@ export const postChat = async ({
   message: message,
   recipient: recipient,
   downloadUrl: downloadUrl,
+  image: image,
 }) => {
   // const alphabetized = [recipient, currentUser()].sort().toString();
 
@@ -89,6 +90,7 @@ export const postChat = async ({
         user: user,
         message: message ? message : null,
         downloadUrl: downloadUrl ? downloadUrl : null,
+        image: image ? image : null,
         timestamp: Date(),
       });
     console.log('Profile posted');
@@ -102,7 +104,7 @@ export const postChat = async ({
 //* Storage
 
 export const uploadStorage = async file => {
-  const uploadUri = file.uri;
+  const uploadUri = file.file;
   const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
   const user = currentUser();
   console.log('USER ============>', user);
@@ -112,8 +114,12 @@ export const uploadStorage = async file => {
   try {
     await storage().ref(fileName).putFile(uploadUri);
     const downloadURL = await getDownloadURL(fileName);
-    postChat({user: user, downloadUrl: downloadURL});
-    console.log('Image Uploaded');
+    if (file.type === 'image') {
+      postChat({user: user, image: downloadURL});
+    } else {
+      postChat({user: user, downloadUrl: downloadURL});
+    }
+    console.log('file Uploaded');
   } catch (error) {
     console.error('Error uploading file:', error);
   }

@@ -87,6 +87,11 @@ const globalStyle = (arg1, arg2, arg3, arg4) =>
       textAlign: 'right',
       paddingRight: 15,
     },
+    textLink: {
+      color: 'white',
+      fontWeight: 'bold',
+      textDecorationLine: 'underline',
+    },
   });
 
 export default globalStyle;

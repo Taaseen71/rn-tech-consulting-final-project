@@ -5,6 +5,8 @@ import {
   TextInput,
   FlatList,
   ImageBackground,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {
@@ -16,6 +18,9 @@ import {
 import globalStyle from 'src/styles/GlobalStyles';
 import whatsapp_background from 'src/assets/whatsapp_background.jpg';
 import ChatHelper from './ChatHelper';
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
+import {Platform} from 'react-native';
 
 const ChatApp = () => {
   const [text, changeText] = useState('');
@@ -46,6 +51,30 @@ const ChatApp = () => {
     changeText('');
   };
 
+  function getUrlExtension(url) {
+    return url.split(/[#?]/)[0].split('.').pop().trim();
+  }
+
+  openFile = async url => {
+    const extension = getUrlExtension(url);
+
+    // Feel free to change main path according to your requirements.
+    const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
+
+    const options = {
+      fromUrl: url,
+      toFile: localFile,
+    };
+    RNFS.downloadFile(options)
+      .promise.then(() => FileViewer.open(localFile))
+      .then(() => {
+        // success
+      })
+      .catch(error => {
+        // error
+      });
+  };
+
   const renderItem = useCallback(({item}) => {
     return (
       <View
@@ -68,7 +97,23 @@ const ChatApp = () => {
               {item._data.user}
             </Text>
             {item._data.message && <Text> {item._data.message}</Text>}
-            {item._data.downloadUrl && <Text> {item._data.downloadUrl}</Text>}
+            {item._data.image && (
+              <Image
+                style={globalStyle(150, 150).Image}
+                source={{
+                  uri: item._data?.image,
+                }}
+              />
+            )}
+            {item._data.downloadUrl && (
+              <>
+                {/* <Text> {item._data.downloadUrl}</Text> */}
+                <TouchableOpacity
+                  onPress={() => openFile(item._data.downloadUrl)}>
+                  <Text style={globalStyle().textLink}>Click to Open File</Text>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
         </View>
         <Text style={[globalStyle(8, 'white').fontSize]}>

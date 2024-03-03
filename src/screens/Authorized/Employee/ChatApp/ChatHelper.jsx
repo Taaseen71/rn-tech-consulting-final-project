@@ -12,30 +12,36 @@ import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import globalStyle from 'src/styles/GlobalStyles';
 import {uploadStorage} from 'src/helpers/FirebaseHelper';
-// import FileViewer from 'react-native-file-viewer';
-// await FileViewer.open(result?.uri);
+import ImagePicker from 'react-native-image-crop-picker';
 
 const ChatHelper = () => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const pickImage = async () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+      checkFileSize(
+        image?.sourceURL,
+        uploadStorage({file: image.sourceURL, type: 'image'}),
+        setModalVisible(!modalVisible),
+      );
+    });
+  };
 
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.allFiles],
       });
-      // Check if the selected file is within the 5 MB limit
-      const fileSize = await RNFS.stat(result?.uri);
-      const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
-      if (fileSize.size > maxSize) {
-        Alert.alert(
-          'File Size Limit Exceeded',
-          'Please select a file up to 5 MB.',
-        );
-      } else {
-        console.log('FILESIZE ==>', fileSize.size);
-        uploadStorage(result);
-        setModalVisible(!modalVisible);
-      }
+      checkFileSize(
+        result?.uri,
+        (uploadStorage({file: result.uri, type: 'other'}),
+        setModalVisible(!modalVisible)),
+      );
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the document picker
@@ -44,16 +50,18 @@ const ChatHelper = () => {
       }
     }
   };
-  const uploadFile = () => {
-    // Implement your file upload logic here
-    if (selectedFile) {
-      // You can use the selectedFile.uri to get the file path for upload
+
+  const checkFileSize = async (file, func) => {
+    let fileSize = await RNFS.stat(file);
+    const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
+    if (fileSize.size > maxSize) {
       Alert.alert(
-        'File Uploaded',
-        `File ${selectedFile.name} has been uploaded successfully.`,
+        'File Size Limit Exceeded',
+        'Please select a file up to 5 MB.',
       );
     } else {
-      Alert.alert('No File Selected', 'Please select a file to upload.');
+      console.log('FileSize ==>', fileSize.size, 'MaxSize ==>', maxSize);
+      func;
     }
   };
 
@@ -84,7 +92,9 @@ const ChatHelper = () => {
               <View style={globalStyle().inline}>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}>
+                  onPress={() => {
+                    pickImage();
+                  }}>
                   <Text style={styles.textStyle}>Image</Text>
                 </Pressable>
                 <Pressable
