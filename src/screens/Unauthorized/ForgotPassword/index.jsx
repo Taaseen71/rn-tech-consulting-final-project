@@ -5,18 +5,17 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
+  StyleSheet,
 } from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
-import {firebaseLogIn} from 'src/helpers/FirebaseHelper';
+import {ResetPasswordEmail, firebaseLogIn} from 'src/helpers/FirebaseHelper';
 import {Formik} from 'formik';
 import background from 'src/assets/login2_wallpaper.jpg';
-import {emailAndPasswordCheck} from 'src/helpers/Schemas';
-
-const LogIn = () => {
+import {emailCheck} from 'src/helpers/Schemas';
+const ForgotPassword = () => {
   const navigation = useNavigation();
-
   return (
     <View flex={1}>
       <ImageBackground
@@ -24,17 +23,9 @@ const LogIn = () => {
         style={{width: '100%', height: '100%'}}>
         <View flex={9}>
           <Formik
-            initialValues={{email: '', password: ''}}
-            validationSchema={emailAndPasswordCheck}
-            onSubmit={values => firebaseLogIn(values.email, values.password)}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
+            initialValues={{email: ''}}
+            onSubmit={values => ResetPasswordEmail(values)}>
+            {({handleChange, handleBlur, handleSubmit, values}) => (
               <View>
                 <TextInput
                   style={globalStyle().TextInputComponent}
@@ -44,21 +35,6 @@ const LogIn = () => {
                   autoCapitalize={'none'}
                   value={values.email}
                 />
-                {errors.email && touched.email ? (
-                  <Text style={globalStyle().errorText}>{errors.email}</Text>
-                ) : null}
-                <TextInput
-                  style={globalStyle().TextInputComponent}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  placeholder={'Enter Password'}
-                  autoCapitalize={'none'}
-                  onSubmitEditing={handleSubmit}
-                  value={values.password}
-                />
-                {errors.password && touched.email ? (
-                  <Text style={globalStyle().errorText}>{errors.password}</Text>
-                ) : null}
                 <TouchableOpacity
                   style={globalStyle('black').button}
                   onPress={handleSubmit}>
@@ -67,13 +43,13 @@ const LogIn = () => {
               </View>
             )}
           </Formik>
-          <Button
+          {/* <Button
             title="Forgot Password?"
             color="black"
             onPress={() => {
               navigation.navigate('Forgot Password');
             }}
-          />
+          /> */}
         </View>
         <View flex={1}>
           <Button
@@ -89,4 +65,6 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default ForgotPassword;
+
+const styles = StyleSheet.create({});

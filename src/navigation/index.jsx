@@ -1,7 +1,7 @@
 import {View, Text, Button} from 'react-native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeScreen, LogIn, SignUp, ChatApp, ReactSagaScreen} from '@screens';
+import {HomeScreen, LogIn, SignUp, ChatApp} from '@screens';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 // import {useSelector} from 'react-redux';
@@ -9,6 +9,7 @@ import {useDispatch} from 'react-redux';
 import {logInUser} from 'src/features/user/userSlice';
 import auth from '@react-native-firebase/auth';
 import {userStateChanged} from 'src/helpers/FirebaseHelper';
+import {ForgotPassword} from 'src/screens';
 
 const Navigation = props => {
   const Stack = createNativeStackNavigator();
@@ -82,6 +83,13 @@ const UnAuthorized = ({Stack, naviButton}) => (
       }}
       component={SignUp}
     />
+    <Stack.Screen
+      name="Forgot Password"
+      options={{
+        headerTintColor: 'black',
+      }}>
+      {() => <ForgotPassword />}
+    </Stack.Screen>
   </Stack.Navigator>
 );
 

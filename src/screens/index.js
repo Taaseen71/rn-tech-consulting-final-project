@@ -7,7 +7,7 @@ import OrderScreen from './Authorized/User/OrderScreen';
 import CartScreen from './Authorized/User/CartScreen';
 // import ChatScreen from './Authorized/User/ChatScreen';
 import OrderPlacedWithMaps from './Authorized/User/OrderPlacedScreenWithMaps';
-
+import ForgotPassword from './Unauthorized/ForgotPassword';
 export {
   HomeScreen,
   LogIn,
@@ -17,4 +17,5 @@ export {
   OrderScreen,
   CartScreen,
   OrderPlacedWithMaps,
+  ForgotPassword,
 };

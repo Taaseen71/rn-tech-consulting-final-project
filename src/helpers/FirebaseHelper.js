@@ -2,6 +2,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 // import {current} from '@reduxjs/toolkit';
 import storage from '@react-native-firebase/storage';
+import {Alert} from 'react-native';
 
 //USERS
 export const firebaseLogIn = async (email, pwd) => {
@@ -50,6 +51,11 @@ export const userStateChanged = (functionName, dispatch) => {
   console.log('FIRING OnAuthStateChange LISTENER', dispatch);
   dispatch;
   return subscriber;
+};
+
+export const ResetPasswordEmail = async email => {
+  await auth().sendPasswordResetEmail(email.email);
+  Alert.alert(`Password reset link sent to ${email.email}`);
 };
 
 /////////////////////////////////////////////////////////////

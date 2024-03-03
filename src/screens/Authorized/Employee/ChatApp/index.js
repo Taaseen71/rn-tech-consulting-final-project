@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  StyleSheet,
 } from 'react-native';
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {
@@ -129,7 +130,7 @@ const ChatApp = () => {
       <ImageBackground
         source={whatsapp_background}
         resizeMode="cover"
-        style={{width: '100%', height: '100%'}}>
+        style={styles.backgroundImage}>
         <View flex={9}>
           <FlatList
             data={chats}
@@ -166,3 +167,9 @@ const ChatApp = () => {
 };
 
 export default ChatApp;
+const styles = StyleSheet.create({
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+  },
+});
