@@ -28,7 +28,7 @@
           "node_modules/",
           "vendor/"
         ],
-        "peek": ["package.json"]
+        "peek": ["package.json", "babel.config.js"]
       },
       {
         "name": "Strict",
@@ -49,7 +49,6 @@
     ".prettierrc.js": true,
     ".watchmanconfig": true,
     "app.json": true,
-    "babel.config.js": true,
     "Gemfile": true,
     "Gemfile.lock": true,
     "jest.config.js": true,

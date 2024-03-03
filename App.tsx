@@ -1,23 +1,17 @@
 import React from 'react';
 import Navigation from 'src/navigation';
 import ErrorBoundary from 'src/components/ErrorBoundary';
-import { NavigationContainer } from '@react-navigation/native';
-import { Provider } from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
 // import store from 'src/store';
-import {store} from 'src/store';
 
 function App(): JSX.Element {
- 
   return (
-    <Provider store={store}>
-      <ErrorBoundary fallback={'There was an error'}>
-        <NavigationContainer>
-              <Navigation />
-        </NavigationContainer>
-      </ErrorBoundary>
-    </Provider>
+    <ErrorBoundary fallback={'There was an error'}>
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
+    </ErrorBoundary>
   );
 }
-
 
 export default App;
