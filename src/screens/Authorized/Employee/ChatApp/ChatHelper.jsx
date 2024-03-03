@@ -16,7 +16,6 @@ import {uploadStorage} from 'src/helpers/FirebaseHelper';
 // await FileViewer.open(result?.uri);
 
 const ChatHelper = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   const pickDocument = async () => {
@@ -24,22 +23,19 @@ const ChatHelper = () => {
       const result = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.allFiles],
       });
-      //   Check if the selected file is within the 5 MB limit
-      //   const fileSize = await RNFS.stat(result?.uri);
-      //   const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
-      //   if (fileSize.size > maxSize) {
-      //     Alert.alert(
-      //       'File Size Limit Exceeded',
-      //       'Please select a file up to 5 MB.',
-      //     );
-      //   } else {
-      // console.log('FILESIZE ==>', fileSize);
-
-      setSelectedFile(result);
-      console.log('SELECTED FILE ==> ', result);
-      uploadStorage(result);
-      setModalVisible(!modalVisible);
-      //   }
+      // Check if the selected file is within the 5 MB limit
+      const fileSize = await RNFS.stat(result?.uri);
+      const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
+      if (fileSize.size > maxSize) {
+        Alert.alert(
+          'File Size Limit Exceeded',
+          'Please select a file up to 5 MB.',
+        );
+      } else {
+        console.log('FILESIZE ==>', fileSize.size);
+        uploadStorage(result);
+        setModalVisible(!modalVisible);
+      }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the document picker
@@ -69,15 +65,6 @@ const ChatHelper = () => {
           title={'+'}
           onPress={() => setModalVisible(true)}
         />
-        {selectedFile && (
-          <Button
-            color="white"
-            title={'x'}
-            onPress={() => {
-              setSelectedFile(null);
-            }}
-          />
-        )}
       </View>
 
       <View>

@@ -29,7 +29,7 @@ const ChatApp = () => {
 
   function onResult(QuerySnapshot) {
     console.log('Got Users collection result.');
-    console.log('QUERY SNAPSHOT ===> ', QuerySnapshot);
+    // console.log('QUERY SNAPSHOT ===> ', QuerySnapshot);
     changeChats(QuerySnapshot.docs);
   }
 
@@ -67,12 +67,12 @@ const ChatApp = () => {
             <Text style={[globalStyle(10, 'white').fontSize]}>
               {item._data.user}
             </Text>
-            <Text>{item._data.message && item._data.message}</Text>
-            <Text>{item._data.downloadUrl && item._data.downloadUrl}</Text>
+            {item._data.message && <Text> {item._data.message}</Text>}
+            {item._data.downloadUrl && <Text> {item._data.downloadUrl}</Text>}
           </View>
         </View>
         <Text style={[globalStyle(8, 'white').fontSize]}>
-          {item._data.timestamp.slice(15, 25)}
+          {item._data?.timestamp?.slice(15, 25)}
         </Text>
       </View>
     );

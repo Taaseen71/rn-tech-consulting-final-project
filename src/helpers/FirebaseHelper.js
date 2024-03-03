@@ -4,45 +4,36 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
 //USERS
-export const firebaseLogIn = (user, pwd) => {
-  auth()
-    .signInWithEmailAndPassword(user, pwd)
-    .then(resp => {
-      console.log('Response ==>', resp.user._user);
-
-      alert('User LogIn');
-    })
-    .catch(err => alert(err.message));
-};
-
-export const createFirebaseUser = async (name, pwd, userName, phoneNumber) => {
+export const firebaseLogIn = async (email, pwd) => {
   try {
-    await auth()
-      .createUserWithEmailAndPassword(name, pwd)
-      .then(userCredential => {
-        const user = userCredential.user;
-        user
-          .updateProfile({
-            displayName: userName,
-            phoneNumber: phoneNumber,
-            employee: true,
-          })
-          .then(() => {
-            console.log('userCreated');
-          });
-        console.log('RESP ++++>', resp);
-        alert('User account created & signed in!');
-      });
+    const response = await auth().signInWithEmailAndPassword(email, pwd);
+    console.log('User logged in:', response.user.email);
+    alert('User logged in successfully.');
   } catch (error) {
+    console.error('Error signing in:', error);
     alert(error.message);
   }
 };
 
-export const updateUserProfile = async () => {
-  await auth()
-    .currentUser.updateEmail('joe.bloggs@new-email.com')
-    .then(resp => console.log('Update ==>', resp));
-  console.log();
+export const createFirebaseUser = async (
+  email,
+  pwd,
+  displayName,
+  phoneNumber,
+) => {
+  try {
+    const response = await auth().createUserWithEmailAndPassword(email, pwd);
+    await response.user.updateProfile({
+      displayName: displayName,
+      phoneNumber: phoneNumber,
+      employee: true,
+    });
+    console.log('User account created and signed in:', response.user.email);
+    alert('User account created and signed in successfully!');
+  } catch (error) {
+    console.error('Error creating user:', error);
+    alert(error.message);
+  }
 };
 
 export const firebaseLogOut = () => {
@@ -87,6 +78,7 @@ export const postChat = async ({
   downloadUrl: downloadUrl,
 }) => {
   // const alphabetized = [recipient, currentUser()].sort().toString();
+
   try {
     await firestore()
       // .collection(alphabetized)
@@ -118,16 +110,10 @@ export const uploadStorage = async file => {
   console.log('UPLOAD', uploadUri);
 
   try {
-    const response = await storage().ref(fileName).putFile(uploadUri);
-
-    // console.log('RESP', response);
-
+    await storage().ref(fileName).putFile(uploadUri);
     const downloadURL = await getDownloadURL(fileName);
-    console.log('Download URL:', downloadURL);
-
     postChat({user: user, downloadUrl: downloadURL});
-
-    console.log('Upload IMAGE ==>', 'Image Uploaded');
+    console.log('Image Uploaded');
   } catch (error) {
     console.error('Error uploading file:', error);
   }
