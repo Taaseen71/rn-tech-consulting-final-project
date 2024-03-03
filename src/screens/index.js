@@ -1,4 +1,4 @@
-import HomeScreen from './Authorized/Employee/HomeScreen';
+import EmployeeHomeScreen from './Authorized/Employee/EmployeeHomeScreen';
 import LogIn from './Unauthorized/LogIn';
 import SignUp from './Unauthorized/SignUp';
 import ChatApp from './Authorized/Employee/ChatApp';
@@ -8,8 +8,9 @@ import CartScreen from './Authorized/User/CartScreen';
 // import ChatScreen from './Authorized/User/ChatScreen';
 import OrderPlacedWithMaps from './Authorized/User/OrderPlacedScreenWithMaps';
 import ForgotPassword from './Unauthorized/ForgotPassword';
+import UserHomeScreen from './Authorized/User/UserHomeScreen';
 export {
-  HomeScreen,
+  EmployeeHomeScreen,
   LogIn,
   SignUp,
   ChatApp,
@@ -18,4 +19,5 @@ export {
   CartScreen,
   OrderPlacedWithMaps,
   ForgotPassword,
+  UserHomeScreen,
 };
