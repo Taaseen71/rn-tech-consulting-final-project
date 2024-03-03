@@ -7,6 +7,7 @@ import {
   SignUp,
   ChatApp,
   UserHomeScreen,
+  Profile,
 } from '@screens';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -39,8 +40,6 @@ const Navigation = props => {
     }
     userStateChanged(authStatechanged, dispatch(logInUser(user)));
   }, [user]);
-
-  console.log('hi', userData);
 
   const naviButton = ({
     optionName: optionName,
@@ -80,6 +79,7 @@ const UserScreen = ({Stack, naviButton}) => (
   <Stack.Navigator>
     <Stack.Screen name="User Homepage">{() => <UserHomeScreen />}</Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
+    <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
   </Stack.Navigator>
 );
 const EmployeeScreen = ({Stack, naviButton}) => (
@@ -88,6 +88,7 @@ const EmployeeScreen = ({Stack, naviButton}) => (
       {() => <EmployeeHomeScreen />}
     </Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
+    <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
   </Stack.Navigator>
 );
 

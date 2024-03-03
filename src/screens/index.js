@@ -9,6 +9,8 @@ import CartScreen from './Authorized/User/CartScreen';
 import OrderPlacedWithMaps from './Authorized/User/OrderPlacedScreenWithMaps';
 import ForgotPassword from './Unauthorized/ForgotPassword';
 import UserHomeScreen from './Authorized/User/UserHomeScreen';
+import Profile from './Authorized/CommonScreens/Profile';
+
 export {
   EmployeeHomeScreen,
   LogIn,
@@ -20,4 +22,5 @@ export {
   OrderPlacedWithMaps,
   ForgotPassword,
   UserHomeScreen,
+  Profile,
 };
