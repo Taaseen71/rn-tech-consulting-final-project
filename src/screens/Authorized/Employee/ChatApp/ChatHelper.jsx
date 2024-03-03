@@ -18,18 +18,34 @@ const ChatHelper = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const pickImage = async () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      console.log(image);
+    // ImagePicker.openPicker({
+    //   width: 300,
+    //   height: 400,
+    //   cropping: true,
+    // }).then(image => {
+    //   console.log(image);
+    //   checkFileSize(
+    //     image?.sourceURL,
+    //     uploadStorage({file: image.sourceURL, type: 'image'}),
+    //     setModalVisible(!modalVisible),
+    //   ).catch(err => {
+    //     console.log(err);
+    //   });
+    // });
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true,
+      });
       checkFileSize(
         image?.sourceURL,
         uploadStorage({file: image.sourceURL, type: 'image'}),
         setModalVisible(!modalVisible),
       );
-    });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const pickDocument = async () => {
@@ -44,9 +60,9 @@ const ChatHelper = () => {
       );
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        // User cancelled the document picker
+        console.log('User cancelled the document picker');
       } else {
-        throw err;
+        console.log(err);
       }
     }
   };
@@ -110,7 +126,7 @@ const ChatHelper = () => {
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}>
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.textStyle}>x</Text>
               </Pressable>
             </View>
           </View>
@@ -154,7 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F194FF',
   },
   buttonClose: {
-    backgroundColor: 'grey',
+    backgroundColor: 'black',
   },
   textStyle: {
     color: 'white',
