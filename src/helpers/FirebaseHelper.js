@@ -2,12 +2,13 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 // import {current} from '@reduxjs/toolkit';
 import storage from '@react-native-firebase/storage';
+import {Alert} from 'react-native';
 
 //USERS
 export const firebaseLogIn = async (email, pwd) => {
   try {
     const response = await auth().signInWithEmailAndPassword(email, pwd);
-    console.log('User logged in:', response.user.email);
+    console.log('User logged in:', response);
     alert('User logged in successfully.');
   } catch (error) {
     console.error('Error signing in:', error);
@@ -15,20 +16,33 @@ export const firebaseLogIn = async (email, pwd) => {
   }
 };
 
-export const createFirebaseUser = async (
-  email,
-  pwd,
-  displayName,
-  phoneNumber,
-) => {
+export const createFirebaseUser = async ({
+  email: email,
+  password: password,
+  displayName: displayName,
+  phoneNumber: phoneNumber,
+  employee: employee,
+}) => {
   try {
-    const response = await auth().createUserWithEmailAndPassword(email, pwd);
+    const response = await auth().createUserWithEmailAndPassword(
+      email,
+      password,
+    );
     await response.user.updateProfile({
-      displayName: displayName,
-      phoneNumber: phoneNumber,
-      employee: true,
+      displayName: displayName || null,
+      phoneNumber: phoneNumber || null,
     });
-    console.log('User account created and signed in:', response.user.email);
+
+    await firestore()
+      .collection('users')
+      .doc(response.user?.uid)
+      .set({
+        displayName: displayName || null,
+        phoneNumber: phoneNumber || null,
+        // userType schema: 0 for admin, 1 for employee, 2 for users
+        userType: employee ? 1 : 2,
+      });
+    console.log('User account created and signed in:', response);
     alert('User account created and signed in successfully!');
   } catch (error) {
     console.error('Error creating user:', error);
@@ -40,8 +54,23 @@ export const firebaseLogOut = () => {
   auth().signOut();
 };
 
-export const currentUser = () => {
-  return auth().currentUser._user.email;
+export const currentUser = async () => {
+  // return auth().currentUser._user.email;
+  let user = await auth().currentUser;
+  let userInfo = await firestore()
+    .collection('users')
+    .doc(user?.uid)
+    .get()
+    .then(resp => resp._data);
+  const currentUserInfo = {
+    email: user?.email,
+    uid: user?.uid,
+    displayName: userInfo?.displayName,
+    userType: userInfo?.userType,
+    phoneNumber: userInfo?.phoneNumber,
+    profileImage: userInfo?.profileImage,
+  };
+  return currentUserInfo;
 };
 
 export const userStateChanged = (functionName, dispatch) => {
@@ -52,18 +81,23 @@ export const userStateChanged = (functionName, dispatch) => {
   return subscriber;
 };
 
+export const ResetPasswordEmail = async email => {
+  await auth().sendPasswordResetEmail(email.email);
+  Alert.alert(`Password reset link sent to ${email.email}`);
+};
+
 /////////////////////////////////////////////////////////////
 
 //* Firestore
 
-export const createChat = async recipient => {
-  const alphabetized = [recipient, currentUser()].sort().toString();
-  firestore().collection(alphabetized).doc(`${Date()}`);
-  // .set({user: currentUser(), message: '', timestamp: Date()});
-};
+// export const createChat = async recipient => {
+//   const alphabetized = [recipient, currentUser()].sort().toString();
+//   firestore().collection(alphabetized).doc(`${Date()}`);
+//   // .set({user: currentUser(), message: '', timestamp: Date()});
+// };
 
 export const getChat = (onResult, onError, recipient) => {
-  const alphabetized = [recipient, currentUser()].sort().toString();
+  // const alphabetized = [recipient, currentUser()].sort().toString();
   firestore()
     .collection('chat')
     // .collection(`${currentUser()}+${recipient}`)
@@ -103,17 +137,9 @@ export const postChat = async ({
 
 //* Storage
 
-export const uploadStorage = async file => {
-  const uploadUri = file.file;
-  const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-  const user = currentUser();
-  console.log('USER ============>', user);
-
-  console.log('UPLOAD', uploadUri);
-
+export const uploadStorage = async (user, file) => {
   try {
-    await storage().ref(fileName).putFile(uploadUri);
-    const downloadURL = await getDownloadURL(fileName);
+    const downloadURL = await uploadFile(file);
     if (file.type === 'image') {
       postChat({user: user, image: downloadURL});
     } else {
@@ -125,6 +151,18 @@ export const uploadStorage = async file => {
   }
 };
 
+export const uploadFile = async doc => {
+  const uploadUri = doc.file;
+  const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+  try {
+    await storage().ref(fileName).putFile(uploadUri);
+    const downloadURL = await getDownloadURL(fileName);
+    return downloadURL;
+  } catch (error) {
+    console.error('Error in UploadFile Try Catch', error);
+  }
+};
+
 const getDownloadURL = async fileName => {
   try {
     const url = await storage().ref(fileName).getDownloadURL();
@@ -133,4 +171,38 @@ const getDownloadURL = async fileName => {
     console.error('Error getting download URL:', error);
     throw error;
   }
+};
+
+//* UpdateFirebase Profile
+
+export const updateFirebaseProfile = async ({
+  displayName: displayName,
+  email: email,
+  phoneNumber: phoneNumber,
+  userType: userType,
+  uid: uid,
+  profileImage: profileImage,
+}) => {
+  console.log(displayName);
+  console.log(email);
+  console.log(phoneNumber);
+  console.log(userType);
+  console.log(uid);
+  console.log(profileImage);
+
+  await firestore()
+    .collection('users')
+    .doc(uid)
+    .set({
+      displayName: displayName || null,
+      phoneNumber: phoneNumber || null,
+      profileImage: profileImage || null,
+      userType: userType,
+    });
+
+  // await auth().currentUser.updateProfile({
+  //   displayName: displayName || null,
+  //   phoneNumber: phoneNumber || null,
+  //   profileImage: profileImage || null,
+  // });
 };

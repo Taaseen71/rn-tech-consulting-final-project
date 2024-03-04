@@ -13,25 +13,13 @@ import RNFS from 'react-native-fs';
 import globalStyle from 'src/styles/GlobalStyles';
 import {uploadStorage} from 'src/helpers/FirebaseHelper';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useSelector} from 'react-redux';
 
 const ChatHelper = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const user = useSelector(state => state.user.data.email);
 
   const pickImage = async () => {
-    // ImagePicker.openPicker({
-    //   width: 300,
-    //   height: 400,
-    //   cropping: true,
-    // }).then(image => {
-    //   console.log(image);
-    //   checkFileSize(
-    //     image?.sourceURL,
-    //     uploadStorage({file: image.sourceURL, type: 'image'}),
-    //     setModalVisible(!modalVisible),
-    //   ).catch(err => {
-    //     console.log(err);
-    //   });
-    // });
     try {
       const image = await ImagePicker.openPicker({
         width: 300,
@@ -40,7 +28,7 @@ const ChatHelper = () => {
       });
       checkFileSize(
         image?.sourceURL,
-        uploadStorage({file: image.sourceURL, type: 'image'}),
+        uploadStorage(user, {file: image.sourceURL, type: 'image'}),
         setModalVisible(!modalVisible),
       );
     } catch (err) {
@@ -55,7 +43,7 @@ const ChatHelper = () => {
       });
       checkFileSize(
         result?.uri,
-        (uploadStorage({file: result.uri, type: 'other'}),
+        (uploadStorage(user, {file: result.uri, type: 'other'}),
         setModalVisible(!modalVisible)),
       );
     } catch (err) {

@@ -69,7 +69,7 @@ const globalStyle = (arg1, arg2, arg3, arg4) =>
       margin: 12,
     },
     borders: {
-      borderWidth: 0,
+      borderWidth: arg1 ? arg1 : 0,
       padding: 10,
       margin: 3,
       borderRadius: 6,

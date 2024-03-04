@@ -1,5 +1,10 @@
 module.exports = {
   presets: ['module:metro-react-native-babel-preset'],
+  env: {
+    production: {
+      plugins: ['react-native-paper/babel'],
+    },
+  },
   plugins: [
     [
       'module-resolver',
@@ -9,7 +14,7 @@ module.exports = {
           '@assets': './src/assets',
           '@components': './src/components',
           '@constants': './src/constants',
-          '@config' : './src/config',
+          '@config': './src/config',
           '@helpers': './src/helpers',
           '@hooks': './src/hooks',
           '@models': './src/models',
@@ -23,5 +28,6 @@ module.exports = {
         },
       },
     ],
+    'react-native-paper/babel',
   ],
 };

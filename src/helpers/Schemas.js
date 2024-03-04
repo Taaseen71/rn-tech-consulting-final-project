@@ -10,3 +10,6 @@ export const emailAndPasswordCheck = Yup.object().shape({
       'Minimum eight characters, at least one letter and one number',
     ),
 });
+export const emailCheck = Yup.object().shape(
+  Yup.string().email('Invalid email').required('Email Required'),
+);

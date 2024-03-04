@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  StyleSheet,
 } from 'react-native';
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {
@@ -21,19 +22,17 @@ import ChatHelper from './ChatHelper';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import {Platform} from 'react-native';
+import {useSelector} from 'react-redux';
 
 const ChatApp = () => {
   const [text, changeText] = useState('');
   const [chats, changeChats] = useState([]);
-  const [user, setUser] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
-  useEffect(() => {
-    setUser(currentUser);
-  }, []);
+  const user = useSelector(state => state.user.data.email);
 
   function onResult(QuerySnapshot) {
-    console.log('Got Users collection result.');
+    // console.log('Got Users collection result.');
     // console.log('QUERY SNAPSHOT ===> ', QuerySnapshot);
     changeChats(QuerySnapshot.docs);
   }
@@ -65,14 +64,13 @@ const ChatApp = () => {
       fromUrl: url,
       toFile: localFile,
     };
-    RNFS.downloadFile(options)
-      .promise.then(() => FileViewer.open(localFile))
-      .then(() => {
-        // success
-      })
-      .catch(error => {
-        // error
-      });
+    RNFS.downloadFile(options).promise.then(() => FileViewer.open(localFile));
+    // .then(() => {
+    //   // success
+    // })
+    // .catch(error => {
+    //   // error
+    // });
   };
 
   const renderItem = useCallback(({item}) => {
@@ -129,7 +127,7 @@ const ChatApp = () => {
       <ImageBackground
         source={whatsapp_background}
         resizeMode="cover"
-        style={{width: '100%', height: '100%'}}>
+        style={styles.backgroundImage}>
         <View flex={9}>
           <FlatList
             data={chats}
@@ -145,7 +143,7 @@ const ChatApp = () => {
           {/* <Button color="white" title={'+'} onPress={() => pickDocument()} /> */}
           <TextInput
             flex={8}
-            style={[globalStyle().TextInputComponent, globalStyle(2).borders]}
+            style={[globalStyle().TextInputComponent, globalStyle(0).borders]}
             // multiline={true}
             onChangeText={changeText}
             value={text}
@@ -166,3 +164,9 @@ const ChatApp = () => {
 };
 
 export default ChatApp;
+const styles = StyleSheet.create({
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+  },
+});

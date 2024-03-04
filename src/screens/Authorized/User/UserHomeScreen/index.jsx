@@ -1,0 +1,29 @@
+import {View, Text, SafeAreaView} from 'react-native';
+import {Button, Icon, Menu, Divider} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import HamburgerMenu from 'src/components/HamburgerMenu';
+
+const UserHomeScreen = () => {
+  const navigation = useNavigation();
+  const [visible, setVisible] = React.useState(false);
+
+  // navigation.setOptions({
+  //   headerLeft: () => (
+  //     <HamburgerMenu visible={visible} setVisible={setVisible} />
+  //   ),
+  // });
+
+  return (
+    <SafeAreaView>
+      {/* <View
+        style={{
+          paddingTop: 50,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}></View> */}
+    </SafeAreaView>
+  );
+};
+
+export default UserHomeScreen;

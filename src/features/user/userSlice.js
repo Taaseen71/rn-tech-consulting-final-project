@@ -4,12 +4,16 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     data: {},
+    userData: {},
     isFetching: false,
     failure: false,
     errorMessage: undefined,
     statusCode: undefined,
   },
   reducers: {
+    setCurrentUser: (state, action) => {
+      state.userData = action.payload;
+    },
     logInUser: (state, action) => {
       state.data = action.payload;
     },
@@ -41,7 +45,14 @@ export const userSlice = createSlice({
   },
 });
 
-export const {logInUser, logOutUser, signUpUser, request, success, failure} =
-  userSlice.actions; //Export Reducer Functions
+export const {
+  logInUser,
+  logOutUser,
+  signUpUser,
+  request,
+  success,
+  failure,
+  setCurrentUser,
+} = userSlice.actions; //Export Reducer Functions
 
 export default userSlice.reducer;
