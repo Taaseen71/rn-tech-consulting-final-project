@@ -93,7 +93,7 @@ const Profile = () => {
       />
       <SegmentedButtons
         value={userType}
-        onValueChange={setUserType}
+        // onValueChange={setUserType}
         buttons={[
           {
             value: 0,
