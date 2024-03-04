@@ -80,6 +80,13 @@ const Authorized = ({Stack, naviButton, userData}) => {
 const UserScreen = ({Stack, naviButton}) => (
   <Stack.Navigator>
     <Stack.Screen
+      name="User Homepage"
+      options={{
+        headerLeft: () => <HamburgerMenu />,
+      }}>
+      {() => <UserHomeScreen />}
+    </Stack.Screen>
+    <Stack.Screen
       name="Order Placed"
       options={{headerLeft: () => <HamburgerMenu />}}
       // options={naviButton({
@@ -89,13 +96,6 @@ const UserScreen = ({Stack, naviButton}) => (
       // })}
     >
       {() => <OrderPlacedScreenWithMaps />}
-    </Stack.Screen>
-    <Stack.Screen
-      name="User Homepage"
-      options={{
-        headerLeft: () => <HamburgerMenu />,
-      }}>
-      {() => <UserHomeScreen />}
     </Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
     <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
