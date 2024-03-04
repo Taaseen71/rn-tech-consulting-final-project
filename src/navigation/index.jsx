@@ -88,7 +88,10 @@ const UserScreen = ({Stack, naviButton}) => (
     </Stack.Screen>
     <Stack.Screen
       name="Order Placed"
-      options={{headerLeft: () => <HamburgerMenu />}}
+      options={{
+        headerTintColor: 'black',
+      }}
+      // options={{headerLeft: () => <HamburgerMenu />}}
       // options={naviButton({
       //   optionName: 'headerRight',
       //   pageName: 'ChatApp',
