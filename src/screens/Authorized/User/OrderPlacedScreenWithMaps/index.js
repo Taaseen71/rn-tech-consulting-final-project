@@ -12,6 +12,7 @@ const OrderPlacedWithMaps = () => {
   useEffect(() => {
     requestLocationPermission();
 
+    console.log('Subscribed Location Getter');
     const geoLocationGetter = Geolocation.watchPosition(
       position => {
         console.log(
@@ -37,6 +38,7 @@ const OrderPlacedWithMaps = () => {
     );
     return () => {
       Geolocation.clearWatch(geoLocationGetter);
+      console.log('Unsubscribed Location Getter');
     };
   }, []);
 
