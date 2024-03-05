@@ -21,8 +21,7 @@ import {
 const CartScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const selector = useSelector(state => state.cart.items);
-
+  const selector = useSelector(state => state.cart);
   console.log('SELECTOR', selector);
 
   const renderItem = ({item}) => {
@@ -69,10 +68,14 @@ const CartScreen = () => {
   return (
     <SafeAreaView>
       <FlatList
-        data={selector}
+        data={selector.items}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
       />
+      {/* <View style={[styles.centerView, globalStyle('center').inline]}>
+        <Text>Total:</Text>
+        <Text>{selector.total}</Text>
+      </View> */}
       <Button
         title="Place Order"
         color="black"

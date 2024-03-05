@@ -8,7 +8,7 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     items: [],
-    value: 0,
+    total: 0,
   },
   reducers: {
     addToCart: (state, action) => {
@@ -24,10 +24,12 @@ export const cartSlice = createSlice({
         );
 
         state.items = updatedItems;
+        state.total += parseInt(action.payload.price);
       } else {
         // createProduct
         console.log('not found');
         state.items = [...state.items, {...action.payload, quantity: 1}];
+        state.total += parseInt(action.payload.price);
       }
     },
     removeFromCart: (state, action) => {
@@ -42,18 +44,19 @@ export const cartSlice = createSlice({
               : item,
           );
           state.items = updatedItems;
+          state.total -= parseInt(action.payload.price);
         } else {
           //remove from cart
           state.items = state.items.filter(
             item => item.id !== action.payload.id,
           );
+          state.total -= parseInt(action.payload.price);
         }
       } else {
         console.log('Not in Cart');
       }
     },
     placeOrder: state => {
-      //   const resetItems = [];
       state.items = [];
     },
   },
