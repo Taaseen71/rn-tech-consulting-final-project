@@ -28,10 +28,10 @@ export const createFirebaseUser = async ({
       email,
       password,
     );
-    await response.user.updateProfile({
-      displayName: displayName || null,
-      phoneNumber: phoneNumber || null,
-    });
+    // await response.user.updateProfile({
+    //   displayName: displayName || null,
+    //   phoneNumber: phoneNumber || null,
+    // });
 
     await firestore()
       .collection('users')
@@ -39,6 +39,8 @@ export const createFirebaseUser = async ({
       .set({
         displayName: displayName || null,
         phoneNumber: phoneNumber || null,
+        email: email,
+        uid: response.user?.uid || null,
         // userType schema: 0 for admin, 1 for employee, 2 for users
         userType: employee ? 1 : 2,
       });
@@ -61,7 +63,7 @@ export const currentUser = async () => {
     .collection('users')
     .doc(user?.uid)
     .get()
-    .then(resp => resp._data);
+    .then(resp => resp.data());
   const currentUserInfo = {
     email: user?.email,
     uid: user?.uid,
@@ -214,6 +216,8 @@ export const updateFirebaseProfile = async ({
       phoneNumber: phoneNumber || null,
       profileImage: profileImage || null,
       userType: userType,
+      email: email,
+      uid: uid,
     });
 
   // await auth().currentUser.updateProfile({
