@@ -7,7 +7,9 @@ import {
   SignUp,
   ChatApp,
   UserHomeScreen,
+  OrderPlacedScreenWithMaps,
   Profile,
+  ForgotPassword,
 } from '@screens';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -16,7 +18,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setCurrentUser, logInUser} from 'src/features/user/userSlice';
 import auth from '@react-native-firebase/auth';
 import {currentUser, userStateChanged} from 'src/helpers/FirebaseHelper';
-import {ForgotPassword} from 'src/screens';
 import HamburgerMenu from 'src/components/HamburgerMenu';
 
 const Navigation = props => {
@@ -84,6 +85,20 @@ const UserScreen = ({Stack, naviButton}) => (
         headerLeft: () => <HamburgerMenu />,
       }}>
       {() => <UserHomeScreen />}
+    </Stack.Screen>
+    <Stack.Screen
+      name="Order Placed"
+      options={{
+        headerTintColor: 'black',
+      }}
+      // options={{headerLeft: () => <HamburgerMenu />}}
+      // options={naviButton({
+      //   optionName: 'headerRight',
+      //   pageName: 'ChatApp',
+      //   color: 'black',
+      // })}
+    >
+      {() => <OrderPlacedScreenWithMaps />}
     </Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
     <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>

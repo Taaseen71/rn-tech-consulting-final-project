@@ -40,12 +40,20 @@ const HamburgerMenu = () => {
       />
       <Menu.Item
         onPress={() => {
-          navigation.navigate('ChatApp');
+          navigation.navigate('Order Placed');
           setVisible(!visible);
         }}
         title="Driver chat"
         leadingIcon="car"
       />
+      {/* <Menu.Item
+        onPress={() => {
+          navigation.navigate('ChatApp');
+          setVisible(!visible);
+        }}
+        title="Driver chat"
+        leadingIcon="car"
+      /> */}
       <Divider />
       <Menu.Item
         onPress={() => {
