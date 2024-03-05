@@ -72,10 +72,10 @@ const CartScreen = () => {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
       />
-      {/* <View style={[styles.centerView, globalStyle('center').inline]}>
+      <View style={[styles.centerView, globalStyle('center').inline]}>
         <Text>Total:</Text>
         <Text>{selector.total}</Text>
-      </View> */}
+      </View>
       <Button
         title="Place Order"
         color="black"

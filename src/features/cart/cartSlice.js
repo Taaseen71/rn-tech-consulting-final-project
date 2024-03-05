@@ -36,7 +36,7 @@ export const cartSlice = createSlice({
       const foundProduct = findProductById(state.items, action.payload.id);
 
       if (foundProduct) {
-        if (foundProduct.quantity > 0) {
+        if (foundProduct.quantity > 1) {
           // reduce quantity
           const updatedItems = state.items.map(item =>
             item.id === action.payload.id
@@ -58,6 +58,7 @@ export const cartSlice = createSlice({
     },
     placeOrder: state => {
       state.items = [];
+      state.total = 0;
     },
   },
 });
