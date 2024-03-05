@@ -52,10 +52,14 @@ export const cartSlice = createSlice({
         console.log('Not in Cart');
       }
     },
+    placeOrder: state => {
+      //   const resetItems = [];
+      state.items = [];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {addToCart, removeFromCart} = cartSlice.actions;
+export const {addToCart, removeFromCart, placeOrder} = cartSlice.actions;
 
 export default cartSlice.reducer;

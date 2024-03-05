@@ -12,7 +12,11 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import globalStyle from 'src/styles/GlobalStyles';
-import {addToCart, removeFromCart} from 'src/features/cart/cartSlice';
+import {
+  addToCart,
+  placeOrder,
+  removeFromCart,
+} from 'src/features/cart/cartSlice';
 
 const CartScreen = () => {
   const navigation = useNavigation();
@@ -70,10 +74,13 @@ const CartScreen = () => {
         keyExtractor={keyExtractor}
       />
       <Button
-        title="Order Placed"
+        title="Place Order"
         color="black"
         onPress={() => {
-          navigation.navigate('Order Placed');
+          dispatch(placeOrder());
+          setTimeout(() => {
+            navigation.navigate('Order Placed');
+          }, 3000);
         }}
       />
     </SafeAreaView>
