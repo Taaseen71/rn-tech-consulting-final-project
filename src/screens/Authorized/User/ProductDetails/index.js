@@ -3,9 +3,12 @@ import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
 import {Button} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
+import {addToCart} from 'src/features/cart/cartSlice';
 
 const ProductDetails = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const route = useRoute();
   const {item, otherParam} = route.params;
   //   console.log('ROUTE ==>', route.params);
@@ -17,7 +20,10 @@ const ProductDetails = () => {
         <Text>{item.title}</Text>
         <Text>Price: {item.price}</Text>
       </View>
-      <Button onPress={() => {}}>
+      <Button
+        onPress={() => {
+          dispatch(addToCart(item));
+        }}>
         <Text>Add To Cart</Text>
       </Button>
     </View>

@@ -64,7 +64,7 @@ const Navigation = props => {
         mode={'text'}
         textColor={color ? color : 'black'}
         onPress={() => navigation.navigate(pageTitle ? pageTitle : pageName)}>
-        <Text>{pageTitle}</Text>
+        <Text>{pageTitle ? pageTitle : pageName}</Text>
         <Icon name="cart" />
       </Button>
     );
