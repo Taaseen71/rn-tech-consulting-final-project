@@ -39,7 +39,7 @@ const ChatHelper = () => {
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pickSingle({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.pdf],
       });
       checkFileSize(
         result?.uri,
