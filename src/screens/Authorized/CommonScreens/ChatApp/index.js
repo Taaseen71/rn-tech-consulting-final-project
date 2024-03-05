@@ -32,8 +32,6 @@ const ChatApp = () => {
   const user = useSelector(state => state.user.data.email);
 
   function onResult(QuerySnapshot) {
-    // console.log('Got Users collection result.');
-    // console.log('QUERY SNAPSHOT ===> ', QuerySnapshot);
     changeChats(QuerySnapshot.docs);
   }
 
@@ -65,12 +63,6 @@ const ChatApp = () => {
       toFile: localFile,
     };
     RNFS.downloadFile(options).promise.then(() => FileViewer.open(localFile));
-    // .then(() => {
-    //   // success
-    // })
-    // .catch(error => {
-    //   // error
-    // });
   };
 
   const renderItem = useCallback(({item}) => {

@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   items: [],
+  products: [],
   isFetching: false,
   failure: false,
   errorMessage: undefined,
@@ -20,6 +21,9 @@ export const itemSlice = createSlice({
       state.failure = false;
       state.errorMessage = undefined;
     },
+    setProducts: (state, action) => {
+      state.products = action.payload;
+    },
     failure: (state, action) => {
       state.isFetching = false;
       state.failure = true;
@@ -28,6 +32,6 @@ export const itemSlice = createSlice({
   },
 });
 
-export const {request, success, failure} = itemSlice.actions;
+export const {request, success, setProducts, failure} = itemSlice.actions;
 
 export default itemSlice.reducer;

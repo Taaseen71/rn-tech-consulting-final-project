@@ -76,7 +76,7 @@ export const currentUser = async () => {
 export const userStateChanged = (functionName, dispatch) => {
   //* Listener
   const subscriber = auth().onAuthStateChanged(functionName);
-  console.log('FIRING OnAuthStateChange LISTENER', dispatch);
+  // console.log('FIRING OnAuthStateChange LISTENER', dispatch);
   dispatch;
   return subscriber;
 };
@@ -130,6 +130,22 @@ export const postChat = async ({
     console.log('Profile posted');
   } catch (error) {
     console.error('Error posting profile:', error);
+  }
+};
+
+export const getProducts = async () => {
+  try {
+    const results = await firestore().collection('products').get();
+    // console.log(results?.docs);
+    const products = results?.docs.map((doc, id) => ({
+      id: id,
+      title: doc.data().title,
+      price: doc.data().price,
+      imageURL: doc.data().imageURL,
+    }));
+    return products;
+  } catch (error) {
+    console.log(error);
   }
 };
 
