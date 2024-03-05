@@ -84,7 +84,7 @@ const getGeoLocation = setCurrentLocation => {
   setInterval(() => {
     Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
+        // console.log(position);
         return setCurrentLocation(position.coords);
       },
       error => console.log(error.code, error.message),
