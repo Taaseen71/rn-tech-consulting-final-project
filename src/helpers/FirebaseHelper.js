@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
 
-//USERS
+//*USERS
 export const firebaseLogIn = async (email, pwd) => {
   try {
     const response = await auth().signInWithEmailAndPassword(email, pwd);
@@ -92,12 +92,6 @@ export const ResetPasswordEmail = async email => {
 
 //* Firestore
 
-// export const createChat = async recipient => {
-//   const alphabetized = [recipient, currentUser()].sort().toString();
-//   firestore().collection(alphabetized).doc(`${Date()}`);
-//   // .set({user: currentUser(), message: '', timestamp: Date()});
-// };
-
 export const getChat = (onResult, onError, recipient) => {
   // const alphabetized = [recipient, currentUser()].sort().toString();
   firestore()
@@ -114,8 +108,6 @@ export const postChat = async ({
   downloadUrl: downloadUrl,
   image: image,
 }) => {
-  // const alphabetized = [recipient, currentUser()].sort().toString();
-
   try {
     await firestore()
       // .collection(alphabetized)
@@ -188,6 +180,44 @@ const getDownloadURL = async fileName => {
   } catch (error) {
     console.error('Error getting download URL:', error);
     throw error;
+  }
+};
+
+export const getOrders = async uid => {
+  try {
+    let col = firestore().collection('orders');
+    if (uid) {
+      //? if Userfield supplied, return just user orders
+      return await col.doc(uid).get();
+    } else {
+      //? else return all users
+      return await col.get();
+    }
+  } catch (error) {
+    console.log('ERROR Getting Orders=> ', error);
+    Alert.alert('There was an error getting the Order');
+  }
+};
+
+export const placeOrderToServer = async data => {
+  try {
+    // console.log('Cartdata ==>', data.cartData, 'user=>', data.userData);
+    const orders = await getOrders(data.userData.uid);
+    const existingOrders = orders.exists ? orders.data().orders : [];
+    const updatedOrders = [
+      ...existingOrders,
+      {order: data.cartData, timestamp: new Date().toISOString()},
+    ];
+
+    await firestore().collection('orders').doc(data.userData.uid).set({
+      user: data.userData.uid,
+      orders: updatedOrders,
+    });
+
+    Alert.alert('Placed Order');
+  } catch (error) {
+    console.error('Error placing order:', error);
+    Alert.alert('Could Not Place Order', error.message);
   }
 };
 

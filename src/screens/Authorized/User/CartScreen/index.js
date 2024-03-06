@@ -9,7 +9,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
+// const navigation = useNavigation();
 import {useDispatch, useSelector} from 'react-redux';
 import globalStyle from 'src/styles/GlobalStyles';
 import {
@@ -19,10 +20,10 @@ import {
 } from 'src/features/cart/cartSlice';
 
 const CartScreen = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const selector = useSelector(state => state.cart);
-  console.log('SELECTOR', selector);
+  const userCart = useSelector(state => state.cart);
+  const userData = useSelector(state => state.user.userData);
+  console.log('UserCartItems => ', userCart);
 
   const renderItem = ({item}) => {
     return (
@@ -65,27 +66,33 @@ const CartScreen = () => {
     );
   };
   const keyExtractor = item => item.id;
-  return (
-    <SafeAreaView>
-      <FlatList
-        data={selector.items}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-      />
+
+  const FooterCode = () => (
+    <View>
       <View style={[styles.centerView, globalStyle('center').inline]}>
         <Text>Total:</Text>
-        <Text>{selector.total}</Text>
+        <Text>{userCart.total}</Text>
       </View>
       <Button
         title="Place Order"
         color="black"
         onPress={() => {
-          dispatch(placeOrder());
-          setTimeout(() => {
-            navigation.navigate('Order Placed');
-          }, 3000);
+          dispatch(placeOrder({userData: userData, cartData: userCart.items}));
         }}
       />
+    </View>
+  );
+
+  return (
+    <SafeAreaView flex={1}>
+      <View flex={1}>
+        <FlatList
+          data={userCart.items}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+        />
+      </View>
+      <FooterCode />
     </SafeAreaView>
   );
 };

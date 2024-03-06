@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {placeOrderToServer} from 'src/helpers/FirebaseHelper';
 
 const findProductById = (items, productId) => {
   return items.find(item => item.id === productId);
@@ -56,7 +57,8 @@ export const cartSlice = createSlice({
         console.log('Not in Cart');
       }
     },
-    placeOrder: state => {
+    placeOrder: (state, action) => {
+      placeOrderToServer(action.payload);
       state.items = [];
       state.total = 0;
     },
