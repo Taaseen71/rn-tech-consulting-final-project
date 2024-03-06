@@ -45,9 +45,9 @@ const UserHomeScreen = () => {
             });
           }}>
           <Image style={styles.image} source={{uri: item.imageURL}} />
-          <View style={[globalStyle('space-around').inline]}>
+          <View style={[]}>
             <Text>{item.title}</Text>
-            <Text>{item.price}</Text>
+            <Text>Price: {item.price}</Text>
           </View>
         </TouchableOpacity>
       </View>
