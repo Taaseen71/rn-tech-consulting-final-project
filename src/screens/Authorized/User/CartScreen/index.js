@@ -73,13 +73,17 @@ const CartScreen = () => {
         <Text>Total:</Text>
         <Text>{userCart.total}</Text>
       </View>
-      <Button
-        title="Place Order"
-        color="black"
-        onPress={() => {
-          dispatch(placeOrder({userData: userData, cartData: userCart.items}));
-        }}
-      />
+      {userCart.total > 0 && (
+        <Button
+          title="Place Order"
+          color="black"
+          onPress={() => {
+            dispatch(
+              placeOrder({userData: userData, cartData: userCart.items}),
+            );
+          }}
+        />
+      )}
     </View>
   );
 
