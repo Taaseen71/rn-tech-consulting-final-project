@@ -11,7 +11,35 @@ const OrderPlacedWithMaps = () => {
 
   useEffect(() => {
     requestLocationPermission();
-    getGeoLocation(setCurrentLocation);
+
+    console.log('Subscribed Location Getter');
+    const geoLocationGetter = Geolocation.watchPosition(
+      position => {
+        console.log(
+          'Latitude:',
+          position.coords.latitude,
+          'Longitude:',
+          position.coords.longitude,
+          'Speed:',
+          position.coords.speed,
+        );
+        // console.log('Location Updating, OrderPlacedScreen, Line 88');
+        return setCurrentLocation(position.coords);
+      },
+      error => console.log(error.code, error.message),
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 300, // Minimum distance (in meters) for an update event.
+        interval: 5000, // Milliseconds between each update
+        fastestInterval: 2000, // Fastest update interval
+        forceRequestLocation: true, // Whether to trigger a location request even if a location is already available
+        showLocationDialog: true, // Whether to show a location dialog when location permissions are not granted
+      },
+    );
+    return () => {
+      Geolocation.clearWatch(geoLocationGetter);
+      console.log('Unsubscribed Location Getter');
+    };
   }, []);
 
   return (
@@ -20,31 +48,31 @@ const OrderPlacedWithMaps = () => {
         showsUserLocation={true}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
+        initialRegion={{
+          latitude: 40.757889,
+          longitude: -73.896725,
+          latitudeDelta: 0.015,
+          longitudeDelta: 100,
+        }}
         region={{
           latitude: currentLocation?.latitude,
           longitude: currentLocation?.longitude,
-          latitudeDelta: 0.015,
+          latitudeDelta: 0.05,
           longitudeDelta: 0.0121,
         }}>
-        <Marker
-          title={'Hi'}
-          draggable
-          coordinate={{
-            latitude: currentLocation?.latitude,
-            longitude: currentLocation?.longitude,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
-          }}
-          image={carIcon}
-        />
+        {currentLocation && (
+          <Marker
+            title={'Uber'}
+            // draggable
+
+            coordinate={{
+              latitude: currentLocation?.latitude,
+              longitude: currentLocation?.longitude,
+            }}
+            image={carIcon}
+          />
+        )}
       </MapView>
-      {/* <Button
-        title="ChatScreen"
-        color="black"
-        onPress={() => {
-          navigation.navigate('ChatApp');
-        }}
-      /> */}
     </View>
   );
 };
@@ -80,16 +108,29 @@ const requestLocationPermission = async () => {
   }
 };
 
-const getGeoLocation = setCurrentLocation => {
-  setInterval(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        // console.log(position);
-        console.log('Location Updating, OrderPlacedScreen, Line 88');
-        return setCurrentLocation(position.coords);
-      },
-      error => console.log(error.code, error.message),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
-  }, 10000);
-};
+// const getGeoLocation = setCurrentLocation => {
+//   const getLocation = () => {
+//     Geolocation.getCurrentPosition(
+//       position => {
+//         // console.log(position);
+//         console.log('Location Updating, OrderPlacedScreen, Line 88');
+//         return setCurrentLocation(position.coords);
+//       },
+//       error => console.log(error.code, error.message),
+//       {
+//         enableHighAccuracy: true,
+//         distanceFilter: 50, // Minimum distance (in meters) for an update event.
+//         interval: 5000, // Milliseconds between each update
+//         fastestInterval: 2000, // Fastest update interval
+//         forceRequestLocation: true, // Whether to trigger a location request even if a location is already available
+//         showLocationDialog: true, // Whether to show a location dialog when location permissions are not granted
+//       },
+//     );
+//   };
+//   // GET One first
+//   getLocation();
+//   // GET one every set seconds
+//   // setInterval(() => {
+//   //   getLocation();
+//   // }, 30000);
+// };
