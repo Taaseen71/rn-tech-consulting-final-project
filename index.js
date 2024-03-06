@@ -13,7 +13,7 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: 'tomato',
+    primary: 'black',
     secondary: 'yellow',
   },
 };
@@ -21,7 +21,7 @@ const theme = {
 export default function Main() {
   return (
     <StoreProvider store={store}>
-      <PaperProvider>
+      <PaperProvider theme={theme}>
         <App />
       </PaperProvider>
     </StoreProvider>

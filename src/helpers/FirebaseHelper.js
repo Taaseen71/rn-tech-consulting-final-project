@@ -102,11 +102,11 @@ export const getChat = (onResult, onError, recipient) => {
 };
 
 export const postChat = async ({
-  user: user,
-  message: message,
-  recipient: recipient,
-  downloadUrl: downloadUrl,
-  image: image,
+  user,
+  message,
+  recipient,
+  downloadUrl,
+  image,
 }) => {
   try {
     await firestore()
@@ -115,13 +115,14 @@ export const postChat = async ({
       //   .doc(JSON.stringify(profileId))
       .doc(new Date().toISOString())
       .set({
-        user: user,
+        user: user.displayName,
+        uid: user.uid,
         message: message ? message : null,
         downloadUrl: downloadUrl ? downloadUrl : null,
         image: image ? image : null,
         timestamp: Date(),
       });
-    console.log('Profile posted');
+    console.log('Text posted', user, message, recipient, downloadUrl, image);
   } catch (error) {
     console.error('Error posting profile:', error);
   }
@@ -153,9 +154,12 @@ export const uploadStorage = async (user, file) => {
     if (file.type === 'image') {
       postChat({user: user, image: downloadURL});
     } else {
-      postChat({user: user, downloadUrl: downloadURL});
+      postChat({
+        user: user,
+        downloadUrl: downloadURL,
+      });
     }
-    console.log('file Uploaded');
+    console.log('file Uploaded', user, file);
   } catch (error) {
     console.error('Error uploading file:', error);
   }

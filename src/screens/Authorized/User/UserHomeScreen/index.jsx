@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   SafeAreaView,
   FlatList,
   Image,
@@ -8,7 +7,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
-import {Button, Icon, Menu, Divider} from 'react-native-paper';
+import {Button, Icon, Menu, Divider, Text, Card} from 'react-native-paper';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {setProducts} from 'src/features/item/itemSlice';
@@ -44,11 +43,13 @@ const UserHomeScreen = () => {
               otherParam: 'anything you want here',
             });
           }}>
-          <Image style={styles.image} source={{uri: item.imageURL}} />
-          <View style={[]}>
-            <Text>{item.title}</Text>
-            <Text>Price: {item.price}</Text>
-          </View>
+          <Card width={150}>
+            <Card.Cover source={{uri: item.imageURL}} />
+            <Card.Content>
+              <Text variant="titleSmall">{item.title}</Text>
+              <Text variant="bodySmall">Price: ${item.price}</Text>
+            </Card.Content>
+          </Card>
         </TouchableOpacity>
       </View>
     );

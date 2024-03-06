@@ -1,8 +1,8 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
-import {Button} from 'react-native-paper';
+import {Button, Text, Card} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart} from 'src/features/cart/cartSlice';
 
@@ -22,11 +22,13 @@ const ProductDetails = () => {
 
   return (
     <View flex={1} style={globalStyle().centerView}>
-      <Image style={styles.image} source={{uri: item.imageURL}} />
-      <View style={[globalStyle('space-around').inline]}>
-        <Text>{item.title}</Text>
-        <Text>Price: {item.price}</Text>
-      </View>
+      <Card mode={'contained'}>
+        <Card.Cover style={styles.image} source={{uri: item.imageURL}} />
+        <Card.Content>
+          <Text variant="titleLarge">{item.title}</Text>
+          <Text variant="bodyMedium">Price: ${item.price}</Text>
+        </Card.Content>
+      </Card>
       <View>
         {foundItem && <Text>Item Quantity in Cart: {foundItem.quantity}</Text>}
       </View>

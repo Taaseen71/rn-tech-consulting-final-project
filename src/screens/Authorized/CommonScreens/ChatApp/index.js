@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Button,
   TextInput,
   FlatList,
   ImageBackground,
@@ -23,13 +22,14 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import {Platform} from 'react-native';
 import {useSelector} from 'react-redux';
+import {Button, Icon} from 'react-native-paper';
 
 const ChatApp = () => {
   const [text, changeText] = useState('');
   const [chats, changeChats] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const user = useSelector(state => state.user.data.email);
+  const user = useSelector(state => state.user.userData);
 
   function onResult(QuerySnapshot) {
     changeChats(QuerySnapshot.docs);
@@ -44,8 +44,11 @@ const ChatApp = () => {
   }, []);
 
   const postText = () => {
-    postChat({user: user, message: text});
-    changeText('');
+    if (text.length > 0) {
+      postChat({user: user, message: text});
+      changeText('');
+    } else {
+    }
   };
 
   function getUrlExtension(url) {
@@ -69,14 +72,14 @@ const ChatApp = () => {
     return (
       <View
         style={[
-          item._data.user === user
+          item._data.uid === user.uid
             ? globalStyle().rightView
             : globalStyle().leftView,
           globalStyle(1, 2).marginsAndPadding,
         ]}>
         <View
           style={[
-            item._data.user === user
+            item._data.uid === user.uid
               ? [globalStyle('rgba(0, 192, 255,1)').bcolor]
               : [globalStyle('rgba(62, 227, 81, 1)').bcolor],
             globalStyle('50%').maxWidth,
@@ -131,7 +134,7 @@ const ChatApp = () => {
           />
         </View>
         <View flex={1} style={globalStyle().inline}>
-          <ChatHelper />
+          <ChatHelper flex={1} />
           {/* <Button color="white" title={'+'} onPress={() => pickDocument()} /> */}
           <TextInput
             flex={8}
@@ -142,13 +145,20 @@ const ChatApp = () => {
             onSubmitEditing={() => postText()}
           />
           <Button
-            title={'Send'}
-            color="white"
-            flex={8}
+            textColor="white"
+            mode="text"
             onPress={() => {
               postText();
             }}
-          />
+            labelStyle={{
+              marginHorizontal: 0,
+              marginVertical: 0,
+              paddingHorizontal: 0,
+              // marginRight: 55,
+            }}
+            style={{width: 30}}
+            contentStyle={{flexDirection: 'row-reverse'}}
+            icon="send"></Button>
         </View>
       </ImageBackground>
     </View>

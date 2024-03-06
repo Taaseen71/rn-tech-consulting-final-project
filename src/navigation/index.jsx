@@ -112,7 +112,13 @@ const UserScreen = ({Stack, naviButton}) => (
       }}>
       {() => <OrderPlacedScreenWithMaps />}
     </Stack.Screen>
-    <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
+    <Stack.Screen
+      name="ChatApp"
+      options={{
+        headerTintColor: 'black',
+      }}>
+      {() => <ChatApp />}
+    </Stack.Screen>
     <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
     <Stack.Screen name="Cart Screen">{() => <CartScreen />}</Stack.Screen>
     <Stack.Screen

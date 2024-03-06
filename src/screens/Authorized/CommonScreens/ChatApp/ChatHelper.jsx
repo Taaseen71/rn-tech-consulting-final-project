@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
+  // Button,
   Alert,
   Modal,
   Pressable,
@@ -14,10 +14,11 @@ import globalStyle from 'src/styles/GlobalStyles';
 import {uploadStorage} from 'src/helpers/FirebaseHelper';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector} from 'react-redux';
+import {Button} from 'react-native-paper';
 
 const ChatHelper = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const user = useSelector(state => state.user.data.email);
+  const user = useSelector(state => state.user.userData);
 
   const pickImage = async () => {
     try {
@@ -72,11 +73,23 @@ const ChatHelper = () => {
   return (
     <View>
       <View style={globalStyle().inline}>
-        <Button
+        {/* <Button
           color="white"
           title={'+'}
           onPress={() => setModalVisible(true)}
-        />
+        /> */}
+        <Button
+          textColor="white"
+          icon="plus"
+          labelStyle={{
+            marginHorizontal: 0,
+            marginVertical: 0,
+            paddingHorizontal: 0,
+            marginRight: 30,
+          }}
+          style={{width: 5}}
+          contentStyle={{width: 20}}
+          onPress={() => setModalVisible(true)}></Button>
       </View>
 
       <View>
