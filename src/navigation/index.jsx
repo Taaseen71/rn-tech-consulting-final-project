@@ -11,6 +11,7 @@ import {
   CartScreen,
   ForgotPassword,
   ProductDetails,
+  CheckOutScreen,
 } from '@screens';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -93,6 +94,9 @@ const Navigation = props => {
   );
 };
 
+const blackBackButton = {
+  headerTintColor: 'black',
+};
 const Authorized = ({Stack, naviButton, userData, CartButton}) => {
   if (userData?.userType === 1) {
     return <EmployeeScreen Stack={Stack} naviButton={naviButton} />;
@@ -117,22 +121,19 @@ const UserScreen = ({Stack, naviButton, CartButton}) => (
       }}>
       {() => <UserHomeScreen />}
     </Stack.Screen>
-    <Stack.Screen
-      name="Order Placed"
-      options={{
-        headerTintColor: 'black',
-      }}>
+    <Stack.Screen name="Order Placed" options={blackBackButton}>
       {() => <OrderPlacedScreenWithMaps />}
     </Stack.Screen>
-    <Stack.Screen
-      name="ChatApp"
-      options={{
-        headerTintColor: 'black',
-      }}>
+    <Stack.Screen name="ChatApp" options={blackBackButton}>
       {() => <ChatApp />}
     </Stack.Screen>
     <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
-    <Stack.Screen name="Cart Screen">{() => <CartScreen />}</Stack.Screen>
+    <Stack.Screen name="Cart Screen" options={blackBackButton}>
+      {() => <CartScreen />}
+    </Stack.Screen>
+    <Stack.Screen name="CheckOut" options={blackBackButton}>
+      {() => <CheckOutScreen />}
+    </Stack.Screen>
     <Stack.Screen
       options={{
         headerRight: () => <CartButton />,
@@ -172,18 +173,8 @@ const UnAuthorized = ({Stack, naviButton}) => (
       {() => <LogIn />}
     </Stack.Screen>
 
-    <Stack.Screen
-      name="Sign Up"
-      options={{
-        headerTintColor: 'black',
-      }}
-      component={SignUp}
-    />
-    <Stack.Screen
-      name="Forgot Password"
-      options={{
-        headerTintColor: 'black',
-      }}>
+    <Stack.Screen name="Sign Up" options={blackBackButton} component={SignUp} />
+    <Stack.Screen name="Forgot Password" options={blackBackButton}>
       {() => <ForgotPassword />}
     </Stack.Screen>
   </Stack.Navigator>
