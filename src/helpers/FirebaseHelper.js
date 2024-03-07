@@ -193,7 +193,8 @@ export const getOrders = async uid => {
     let col = firestore().collection('orders');
     if (uid) {
       //? if Userfield supplied, return just user orders
-      return await col.doc(uid).get();
+      let orders = await col.doc(uid).get();
+      return orders.data();
     } else {
       //? else return all users
       return await col.get();
@@ -208,10 +209,14 @@ export const placeOrderToServer = async data => {
   try {
     // console.log('Cartdata ==>', data.cartData, 'user=>', data.userData);
     const orders = await getOrders(data.userData.uid);
-    const existingOrders = orders.exists ? orders.data().orders : [];
+    const existingOrders = orders ? orders.orders : [];
     const updatedOrders = [
       ...existingOrders,
-      {order: data.cartData, timestamp: new Date().toISOString()},
+      {
+        order: data.cartData,
+        timestamp: new Date().toISOString(),
+        orderStatus: 'Ordered',
+      },
     ];
 
     await firestore().collection('orders').doc(data.userData.uid).set({

@@ -32,6 +32,15 @@ const HamburgerMenu = () => {
       <Divider />
       <Menu.Item
         onPress={() => {
+          navigation.navigate('Order History');
+          setVisible(!visible);
+        }}
+        title="Order History"
+        leadingIcon="package-variant"
+      />
+      <Divider />
+      <Menu.Item
+        onPress={() => {
           navigation.navigate('ChatApp');
           setVisible(!visible);
         }}

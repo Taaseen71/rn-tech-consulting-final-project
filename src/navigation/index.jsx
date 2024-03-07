@@ -12,6 +12,7 @@ import {
   ForgotPassword,
   ProductDetails,
   CheckOutScreen,
+  OrderHistoryScreen,
 } from '@screens';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -146,6 +147,9 @@ const UserScreen = ({Stack, naviButton, CartButton}) => (
     </Stack.Screen>
     <Stack.Screen name="CheckOut" options={blackBackButton}>
       {() => <CheckOutScreen />}
+    </Stack.Screen>
+    <Stack.Screen name="Order History" options={blackBackButton}>
+      {() => <OrderHistoryScreen />}
     </Stack.Screen>
     <Stack.Screen
       options={{

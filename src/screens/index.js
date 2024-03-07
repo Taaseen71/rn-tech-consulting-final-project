@@ -10,6 +10,7 @@ import ForgotPassword from './Unauthorized/ForgotPassword';
 import UserHomeScreen from './Authorized/User/UserHomeScreen';
 import Profile from './Authorized/CommonScreens/Profile';
 import ProductDetails from './Authorized/User/ProductDetails';
+import OrderHistoryScreen from './Authorized/User/OrderHistoryScreen';
 export {
   EmployeeHomeScreen,
   LogIn,
@@ -22,5 +23,6 @@ export {
   ForgotPassword,
   UserHomeScreen,
   Profile,
+  OrderHistoryScreen,
   ProductDetails,
 };
