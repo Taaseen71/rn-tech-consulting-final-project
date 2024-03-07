@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   TextInput,
   FlatList,
   ImageBackground,
@@ -22,7 +21,7 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import {Platform} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Button, Icon} from 'react-native-paper';
+import {Button, Card, Text, Icon} from 'react-native-paper';
 
 const ChatApp = () => {
   const [text, changeText] = useState('');
@@ -77,7 +76,7 @@ const ChatApp = () => {
             : globalStyle().leftView,
           globalStyle(1, 2).marginsAndPadding,
         ]}>
-        <View
+        <Card
           style={[
             item._data.uid === user.uid
               ? [globalStyle('rgba(0, 192, 255,1)').bcolor]
@@ -91,7 +90,7 @@ const ChatApp = () => {
             </Text>
             {item._data.message && <Text> {item._data.message}</Text>}
             {item._data.image && (
-              <Image
+              <Card.Cover
                 style={globalStyle(150, 150).Image}
                 source={{
                   uri: item._data?.image,
@@ -108,7 +107,7 @@ const ChatApp = () => {
               </>
             )}
           </View>
-        </View>
+        </Card>
         <Text style={[globalStyle(8, 'white').fontSize]}>
           {item._data?.timestamp?.slice(15, 25)}
         </Text>

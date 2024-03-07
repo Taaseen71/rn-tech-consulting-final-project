@@ -29,6 +29,7 @@ const Navigation = props => {
   const dispatch = useDispatch();
   const [userData, setUserData] = useState(5);
   const [user, setUser] = useState(null);
+  const cartTotal = useSelector(state => state.cart.cartNumber);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -54,7 +55,7 @@ const Navigation = props => {
   }) => {
     return icon ? (
       <IconButton
-        icon="cart-outline"
+        icon={icon}
         color={color ? color : 'black'}
         size={20}
         onPress={() => navigation.navigate(pageTitle ? pageTitle : pageName)}
@@ -70,38 +71,49 @@ const Navigation = props => {
     );
   };
 
+  const CartButton = () => (
+    <Button
+      mode={'text'}
+      textColor={'black'}
+      onPress={() => navigation.navigate('Cart Screen')}
+      icon={'cart-outline'}>
+      <Text>{cartTotal}</Text>
+    </Button>
+  );
+
   return user ? (
-    <Authorized Stack={Stack} naviButton={naviButton} userData={userData} />
+    <Authorized
+      Stack={Stack}
+      naviButton={naviButton}
+      userData={userData}
+      CartButton={CartButton}
+    />
   ) : (
     <UnAuthorized Stack={Stack} naviButton={naviButton} userData={userData} />
   );
 };
 
-const navigationOptions = {
-  headerBackTitleStyle: {color: 'black'},
-};
-
-const Authorized = ({Stack, naviButton, userData}) => {
+const Authorized = ({Stack, naviButton, userData, CartButton}) => {
   if (userData?.userType === 1) {
     return <EmployeeScreen Stack={Stack} naviButton={naviButton} />;
   } else if (userData?.userType === 2) {
-    return <UserScreen Stack={Stack} naviButton={naviButton} />;
+    return (
+      <UserScreen
+        Stack={Stack}
+        naviButton={naviButton}
+        CartButton={CartButton}
+      />
+    );
   }
 };
 
-const UserScreen = ({Stack, naviButton}) => (
+const UserScreen = ({Stack, naviButton, CartButton}) => (
   <Stack.Navigator>
     <Stack.Screen
       name="User Homepage"
       options={{
         headerLeft: () => <HamburgerMenu />,
-        headerRight: () =>
-          naviButton({
-            pageTitle: 'Cart Screen',
-            pageName: 'CartScreen',
-            color: 'black',
-            icon: 'cart-outline',
-          }),
+        headerRight: () => <CartButton />,
       }}>
       {() => <UserHomeScreen />}
     </Stack.Screen>
@@ -123,13 +135,7 @@ const UserScreen = ({Stack, naviButton}) => (
     <Stack.Screen name="Cart Screen">{() => <CartScreen />}</Stack.Screen>
     <Stack.Screen
       options={{
-        headerRight: () =>
-          naviButton({
-            pageTitle: 'Cart Screen',
-            pageName: 'CartScreen',
-            color: 'black',
-            icon: 'cart-outline',
-          }),
+        headerRight: () => <CartButton />,
         headerTintColor: 'black',
       }}
       name="Product Details">

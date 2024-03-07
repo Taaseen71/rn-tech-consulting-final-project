@@ -9,6 +9,7 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     items: [],
+    cartNumber: 0,
     total: 0,
   },
   reducers: {
@@ -26,11 +27,13 @@ export const cartSlice = createSlice({
 
         state.items = updatedItems;
         state.total += parseInt(action.payload.price);
+        state.cartNumber += 1;
       } else {
         // createProduct
         console.log('not found');
         state.items = [...state.items, {...action.payload, quantity: 1}];
         state.total += parseInt(action.payload.price);
+        state.cartNumber += 1;
       }
     },
     removeFromCart: (state, action) => {
@@ -46,12 +49,14 @@ export const cartSlice = createSlice({
           );
           state.items = updatedItems;
           state.total -= parseInt(action.payload.price);
+          state.cartNumber -= 1;
         } else {
           //remove from cart
           state.items = state.items.filter(
             item => item.id !== action.payload.id,
           );
           state.total -= parseInt(action.payload.price);
+          state.cartNumber -= 1;
         }
       } else {
         console.log('Not in Cart');
@@ -61,6 +66,7 @@ export const cartSlice = createSlice({
       placeOrderToServer(action.payload);
       state.items = [];
       state.total = 0;
+      state.cartNumber = 0;
     },
   },
 });
