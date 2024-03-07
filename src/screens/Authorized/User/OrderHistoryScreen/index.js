@@ -10,7 +10,7 @@ const OrderHistoryScreen = () => {
 
   const [expanded, setExpanded] = React.useState(true);
 
-  const handlePress = () => setExpanded(!expanded);
+  //   const handlePress = () => setExpanded(!expanded);
 
   const getUserOrders = async () => {
     const orders = await getOrders(user.uid);
