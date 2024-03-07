@@ -72,15 +72,28 @@ const Navigation = props => {
     );
   };
 
-  const CartButton = () => (
-    <Button
-      mode={'text'}
-      textColor={'black'}
-      onPress={() => navigation.navigate('Cart Screen')}
-      icon={'cart-outline'}>
-      <Text>{cartTotal}</Text>
-    </Button>
-  );
+  const CartButton = () => {
+    if (cartTotal) {
+      return (
+        <Button
+          mode={'text'}
+          textColor={'black'}
+          onPress={() => navigation.navigate('Cart Screen')}
+          icon={'cart'}>
+          <Text>{cartTotal}</Text>
+        </Button>
+      );
+    } else {
+      return (
+        <IconButton
+          icon="cart-outline"
+          iconColor={'black'}
+          size={20}
+          onPress={() => navigation.navigate('Cart Screen')}
+        />
+      );
+    }
+  };
 
   return user ? (
     <Authorized
