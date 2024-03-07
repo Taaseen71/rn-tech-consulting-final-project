@@ -1,7 +1,7 @@
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {TextInput} from 'react-native-paper';
+import {Button, Card, Text, TextInput} from 'react-native-paper';
 import globalStyle from 'src/styles/GlobalStyles';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
@@ -58,12 +58,7 @@ const CheckOutScreen = () => {
 
   return (
     <View flex={1}>
-      <View flex={1}>
-        <Text>
-          Latitude: {currentLocation?.latitude}, Longitude:
-          {currentLocation?.longitude}
-        </Text>
-
+      <View flex={1} style={globalStyle(5, 3).marginsAndPadding}>
         <TextInput
           style={[globalStyle().TextInputComponent, globalStyle(0).borders]}
           placeholder="Address"
@@ -77,6 +72,12 @@ const CheckOutScreen = () => {
           onChangeText={setPhoneNumber}
           value={phoneNumber}
         />
+        <View style={globalStyle().centerView}>
+          <Text variant="bodyLarge">Latitude: {currentLocation?.latitude}</Text>
+          <Text variant="bodyLarge">
+            Longitude: {currentLocation?.longitude}
+          </Text>
+        </View>
       </View>
       <View flex={1} style={styles.container}>
         <MapView
@@ -111,12 +112,14 @@ const CheckOutScreen = () => {
           )}
         </MapView>
       </View>
-
-      <Button
-        title="Place Order"
-        color="black"
-        onPress={placeOrderWithUpdatedCart}
-      />
+      <View style={globalStyle(15, 0).marginsAndPadding}>
+        <Button
+          mode={'contained'}
+          textColor={'white'}
+          onPress={placeOrderWithUpdatedCart}>
+          Place Order
+        </Button>
+      </View>
     </View>
   );
 };
@@ -125,12 +128,11 @@ export default CheckOutScreen;
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    top: 250,
-    height: 250,
-    width: 400,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 45,
+    margin: 20,
   },
   map: {
     ...StyleSheet.absoluteFillObject,

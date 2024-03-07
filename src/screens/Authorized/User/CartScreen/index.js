@@ -1,7 +1,6 @@
 import {
   StyleSheet,
   View,
-  Button,
   FlatList,
   TouchableOpacity,
   Image,
@@ -17,7 +16,14 @@ import {
   placeOrder,
   removeFromCart,
 } from 'src/features/cart/cartSlice';
-import {Text, Card} from 'react-native-paper';
+import {
+  Button,
+  Text,
+  Card,
+  Divider,
+  Icon,
+  IconButton,
+} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 
 const CartScreen = () => {
@@ -34,28 +40,30 @@ const CartScreen = () => {
           <Card width={300} style={[globalStyle('space-around').inline]}>
             <Card.Cover style={styles.image} source={{uri: item.imageURL[0]}} />
             <View>
-              <View style={globalStyle().inline}>
+              <View style={globalStyle().centerView}>
                 <Text>{item.title}</Text>
-                <Text>{item.price}</Text>
+                {/* <Text>{item.price}</Text> */}
               </View>
               <View style={globalStyle().inline}>
-                <Button
-                  title={'+'}
-                  onPress={() => {
-                    dispatch(addToCart(item));
-                  }}
+                <IconButton
+                  icon="plus"
+                  iconColor={'black'}
+                  size={20}
+                  onPress={() => dispatch(addToCart(item))}
                 />
-                <Button
-                  title={'-'}
-                  onPress={() => {
-                    dispatch(removeFromCart(item));
-                  }}
+                <IconButton
+                  icon="minus"
+                  iconColor={'black'}
+                  size={20}
+                  onPress={() => dispatch(removeFromCart(item))}
                 />
               </View>
             </View>
             <View style={globalStyle().centerView}>
-              <Text>Quantity: {item.quantity}</Text>
-              <Text>Total: {item.quantity * item.price}</Text>
+              <Text variant="bodyMedium">Quantity: {item.quantity}</Text>
+              <Text variant="bodyMedium">
+                Total: {item.quantity * item.price}
+              </Text>
             </View>
           </Card>
         </TouchableOpacity>
@@ -66,6 +74,7 @@ const CartScreen = () => {
 
   const FooterCode = () => (
     <View>
+      <Divider />
       <View style={[styles.centerView, globalStyle('center').inline]}>
         <Text variant="titleSmall">Total:</Text>
         <Text variant="titleSmall">${userCart.total}</Text>
@@ -80,13 +89,16 @@ const CartScreen = () => {
         //     );
         //   }}
         // />
-        <Button
-          title="Check Out"
-          color="black"
-          onPress={() => {
-            navigation.navigate('CheckOut');
-          }}
-        />
+        <View style={globalStyle(15, 0).marginsAndPadding}>
+          <Button
+            mode={'contained'}
+            textColor={'white'}
+            onPress={() => {
+              navigation.navigate('CheckOut');
+            }}>
+            Check Out
+          </Button>
+        </View>
       )}
     </View>
   );

@@ -21,7 +21,7 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import {Platform} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Button, Card, Text, Icon} from 'react-native-paper';
+import {Button, Card, Text, Icon, IconButton} from 'react-native-paper';
 
 const ChatApp = () => {
   const [text, changeText] = useState('');
@@ -132,7 +132,7 @@ const ChatApp = () => {
             }
           />
         </View>
-        <View flex={1} style={globalStyle().inline}>
+        <View flex={1} style={styles.inline}>
           <ChatHelper flex={1} />
           {/* <Button color="white" title={'+'} onPress={() => pickDocument()} /> */}
           <TextInput
@@ -143,21 +143,14 @@ const ChatApp = () => {
             value={text}
             onSubmitEditing={() => postText()}
           />
-          <Button
-            textColor="white"
-            mode="text"
+          <IconButton
+            icon="send"
+            iconColor={'black'}
+            size={20}
             onPress={() => {
               postText();
             }}
-            labelStyle={{
-              marginHorizontal: 0,
-              marginVertical: 0,
-              paddingHorizontal: 0,
-              // marginRight: 55,
-            }}
-            style={{width: 30}}
-            contentStyle={{flexDirection: 'row-reverse'}}
-            icon="send"></Button>
+          />
         </View>
       </ImageBackground>
     </View>
@@ -169,5 +162,10 @@ const styles = StyleSheet.create({
   backgroundImage: {
     width: '100%',
     height: '100%',
+  },
+  inline: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

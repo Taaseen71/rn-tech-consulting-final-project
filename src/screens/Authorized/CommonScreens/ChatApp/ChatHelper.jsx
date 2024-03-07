@@ -14,7 +14,7 @@ import globalStyle from 'src/styles/GlobalStyles';
 import {uploadStorage} from 'src/helpers/FirebaseHelper';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector} from 'react-redux';
-import {Button} from 'react-native-paper';
+import {Button, IconButton} from 'react-native-paper';
 
 const ChatHelper = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -71,25 +71,14 @@ const ChatHelper = () => {
   };
 
   return (
-    <View>
+    <View flex={2}>
       <View style={globalStyle().inline}>
-        {/* <Button
-          color="white"
-          title={'+'}
-          onPress={() => setModalVisible(true)}
-        /> */}
-        <Button
-          textColor="white"
+        <IconButton
           icon="plus"
-          labelStyle={{
-            marginHorizontal: 0,
-            marginVertical: 0,
-            paddingHorizontal: 0,
-            marginRight: 30,
-          }}
-          style={{width: 5}}
-          contentStyle={{width: 20}}
-          onPress={() => setModalVisible(true)}></Button>
+          iconColor={'black'}
+          size={20}
+          onPress={() => setModalVisible(true)}
+        />
       </View>
 
       <View>
