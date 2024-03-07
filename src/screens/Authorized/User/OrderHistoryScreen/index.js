@@ -23,17 +23,29 @@ const OrderHistoryScreen = () => {
     return () => {};
   }, []);
 
+  const formatTimestamp = timestamp => {
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleDateString(); // Format the date
+    const formattedTime = date.toLocaleTimeString(); // Format the time
+    return `${formattedDate} \t\t\t${formattedTime}`; // Concatenate date and time
+  };
+
   return (
     <ScrollView>
       <List.Section title="Orders">
         {userOrders?.orders?.map((order, id) => (
           <List.Accordion
             title={`Order# ${id + 1}`}
-            description={`Order Status: ${order.orderStatus}.\nTotal: ${order.order.total}.\nPlaced on ${order.timestamp}.`}
+            description={`Order Status: ${order.orderStatus}. \t\t Total: ${
+              order.order.total
+            }\n Placed on ${formatTimestamp(order.timestamp)}.`}
             //   onPress={handlePress}
           >
             {order?.order?.items?.map(item => (
-              <List.Item title={`${item.title}`} />
+              <List.Item
+                title={`${item.title}`}
+                description={`Quantity: ${item?.quantity}`}
+              />
             ))}
           </List.Accordion>
         ))}
