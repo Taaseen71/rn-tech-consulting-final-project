@@ -33,10 +33,10 @@ const OrderHistoryScreen = () => {
   return (
     <ScrollView>
       <List.Section title="Orders">
-        {userOrders?.orders?.map((order, id) => (
+        {userOrders?.orders?.reverse().map((order, id) => (
           <List.Accordion
-            title={`Order# ${id + 1}`}
-            description={`Order Status: ${order.orderStatus}. \t\t Total: ${
+            title={`Order# ${userOrders.orders.length - id}`}
+            description={`Order Status: ${order.orderStatus}. \t\t Total: $${
               order.order.total
             }\n Placed on ${formatTimestamp(order.timestamp)}.`}
             //   onPress={handlePress}
