@@ -2,11 +2,11 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-const OrderScreen = () => {
+const CheckOutScreen = () => {
   const navigation = useNavigation();
   return (
     <View>
-      <Text>OrderScreen</Text>
+      <Text>CheckOutScreen</Text>
       <Button
         title="CartScreen"
         color="white"
@@ -18,6 +18,6 @@ const OrderScreen = () => {
   );
 };
 
-export default OrderScreen;
+export default CheckOutScreen;
 
 const styles = StyleSheet.create({});
