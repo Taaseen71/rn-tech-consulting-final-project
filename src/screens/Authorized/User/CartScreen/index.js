@@ -18,6 +18,7 @@ import {
   placeOrder,
   removeFromCart,
 } from 'src/features/cart/cartSlice';
+import {Card} from 'react-native-paper';
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -28,20 +29,15 @@ const CartScreen = () => {
   const renderItem = ({item}) => {
     return (
       <SafeAreaView flex={1}>
-        <TouchableOpacity
-          style={styles.centerView}
-          onPress={() => {
-            navigation.navigate('Product Details', {
-              item: item,
-              otherParam: 'anything you want here',
-            });
-          }}>
-          <View style={[globalStyle('space-around').inline]}>
-            <Image style={styles.image} source={{uri: item.imageURL}} />
+        <TouchableOpacity style={styles.centerView}>
+          <Card width={300} style={[globalStyle('space-around').inline]}>
+            <Card.Cover style={styles.image} source={{uri: item.imageURL[0]}} />
             <View>
-              <Text>{item.title}</Text>
-              <Text>{item.price}</Text>
-              <View>
+              <View style={globalStyle().inline}>
+                <Text>{item.title}</Text>
+                <Text>{item.price}</Text>
+              </View>
+              <View style={globalStyle().inline}>
                 <Button
                   title={'+'}
                   onPress={() => {
@@ -56,11 +52,11 @@ const CartScreen = () => {
                 />
               </View>
             </View>
-            <View>
+            <View style={globalStyle().centerView}>
               <Text>Quantity: {item.quantity}</Text>
               <Text>Total: {item.quantity * item.price}</Text>
             </View>
-          </View>
+          </Card>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -114,8 +110,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 300,
+    height: 200,
   },
   logo: {
     width: 66,

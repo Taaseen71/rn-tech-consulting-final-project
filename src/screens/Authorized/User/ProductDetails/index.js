@@ -2,9 +2,11 @@ import {Image, StyleSheet, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
-import {Button, Text, Card} from 'react-native-paper';
+import {Button, Text, Card, Divider} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart} from 'src/features/cart/cartSlice';
+import {ImageSlider} from 'react-native-image-slider-banner';
+import data from '../UserHomeScreen/data.json';
 
 const ProductDetails = () => {
   const navigation = useNavigation();
@@ -14,7 +16,7 @@ const ProductDetails = () => {
   const [foundItem, setFoundItem] = useState('');
 
   const {item, otherParam} = route.params;
-  //   console.log('ROUTE ==>', route.params);
+  console.log('ROUTE ==>', route.params);
 
   useEffect(() => {
     setFoundItem(selector.find(product => product.id === item.id));
@@ -23,22 +25,34 @@ const ProductDetails = () => {
   return (
     <View flex={1} style={globalStyle().centerView}>
       <Card mode={'contained'}>
-        <Card.Cover style={styles.image} source={{uri: item.imageURL}} />
-        <Card.Content>
+        <ImageSlider
+          data={item.imageURL.map(image => ({img: image}))}
+          autoPlay={true}
+          timer={4000}
+          preview={false}
+          onItemChanged={item => {}}
+          closeIconColor="#fff"
+        />
+        <Card.Content style={globalStyle().centerView}>
           <Text variant="titleLarge">{item.title}</Text>
           <Text variant="bodyMedium">Price: ${item.price}</Text>
+          <Divider />
+          <Text variant="bodyMedium">{item.description}</Text>
         </Card.Content>
+        <View>
+          <Button
+            onPress={() => {
+              dispatch(addToCart(item));
+            }}>
+            <Text variant="titleSmall">Add To Cart</Text>
+          </Button>
+          <View style={globalStyle().centerView}>
+            {foundItem && (
+              <Text>Item Quantity in Cart: {foundItem.quantity}</Text>
+            )}
+          </View>
+        </View>
       </Card>
-      <View>
-        {foundItem && <Text>Item Quantity in Cart: {foundItem.quantity}</Text>}
-      </View>
-
-      <Button
-        onPress={() => {
-          dispatch(addToCart(item));
-        }}>
-        <Text>Add To Cart</Text>
-      </Button>
     </View>
   );
 };

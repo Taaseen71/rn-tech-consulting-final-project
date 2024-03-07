@@ -44,7 +44,7 @@ const UserHomeScreen = () => {
             });
           }}>
           <Card width={150}>
-            <Card.Cover source={{uri: item.imageURL}} />
+            <Card.Cover source={{uri: item.imageURL[0]}} />
             <Card.Content>
               <Text variant="titleSmall">{item.title}</Text>
               <Text variant="bodySmall">Price: ${item.price}</Text>

@@ -137,6 +137,7 @@ export const getProducts = async () => {
       title: doc.data().title,
       price: doc.data().price,
       imageURL: doc.data().imageURL,
+      description: doc.data().description,
     }));
     return products;
   } catch (error) {
