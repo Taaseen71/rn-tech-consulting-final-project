@@ -30,6 +30,32 @@ const CheckOutScreen = () => {
     };
   }, []);
 
+  const placeOrderWithUpdatedCart = () => {
+    const updatedCartData = {
+      ...userCart,
+      userName: userData.displayName,
+      phoneNumber: phoneNumber,
+      address: {
+        latitude: currentLocation?.latitude,
+        longitude: currentLocation?.longitude,
+        address: address,
+      },
+    };
+
+    // console.log({
+    //   userData: userData,
+    //   cartData: updatedCartData,
+    // });
+
+    dispatch(
+      placeOrder({
+        userData: userData,
+        cartData: updatedCartData,
+      }),
+    );
+    navigation.navigate('User Homepage');
+  };
+
   return (
     <View flex={1}>
       <View flex={1}>
@@ -89,29 +115,7 @@ const CheckOutScreen = () => {
       <Button
         title="Place Order"
         color="black"
-        onPress={() => {
-          const updatedCartData = {
-            ...userCart.items,
-            userName: userData.displayName,
-            phoneNumber: phoneNumber,
-            address: {
-              latitude: currentLocation?.latitude,
-              longitude: currentLocation?.longitude,
-              address: address,
-            },
-          };
-          // console.log({
-          //   userData: userData,
-          //   cartData: updatedCartData,
-          // });
-          dispatch(
-            placeOrder({
-              userData: userData,
-              cartData: updatedCartData,
-            }),
-          );
-          navigation.navigate('User Homepage');
-        }}
+        onPress={placeOrderWithUpdatedCart}
       />
     </View>
   );
