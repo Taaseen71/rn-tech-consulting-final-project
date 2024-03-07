@@ -6,7 +6,6 @@ import {Button, Text, Card, Divider} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart} from 'src/features/cart/cartSlice';
 import {ImageSlider} from 'react-native-image-slider-banner';
-import data from '../UserHomeScreen/data.json';
 
 const ProductDetails = () => {
   const navigation = useNavigation();

@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Text,
   View,
   Button,
   FlatList,
@@ -18,7 +17,7 @@ import {
   placeOrder,
   removeFromCart,
 } from 'src/features/cart/cartSlice';
-import {Card} from 'react-native-paper';
+import {Text, Card} from 'react-native-paper';
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -66,8 +65,8 @@ const CartScreen = () => {
   const FooterCode = () => (
     <View>
       <View style={[styles.centerView, globalStyle('center').inline]}>
-        <Text>Total:</Text>
-        <Text>{userCart.total}</Text>
+        <Text variant="titleSmall">Total:</Text>
+        <Text variant="titleSmall">${userCart.total}</Text>
       </View>
       {userCart.total > 0 && (
         <Button
