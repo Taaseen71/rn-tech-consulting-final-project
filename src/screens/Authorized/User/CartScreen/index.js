@@ -18,9 +18,11 @@ import {
   removeFromCart,
 } from 'src/features/cart/cartSlice';
 import {Text, Card} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 const CartScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const userCart = useSelector(state => state.cart);
   const userData = useSelector(state => state.user.userData);
   console.log('UserCartItems => ', userCart);
@@ -69,13 +71,20 @@ const CartScreen = () => {
         <Text variant="titleSmall">${userCart.total}</Text>
       </View>
       {userCart.total > 0 && (
+        // <Button
+        //   title="Place Order"
+        //   color="black"
+        //   onPress={() => {
+        //     dispatch(
+        //       placeOrder({userData: userData, cartData: userCart.items}),
+        //     );
+        //   }}
+        // />
         <Button
-          title="Place Order"
+          title="Check Out"
           color="black"
           onPress={() => {
-            dispatch(
-              placeOrder({userData: userData, cartData: userCart.items}),
-            );
+            navigation.navigate('CheckOut');
           }}
         />
       )}
