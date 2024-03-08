@@ -63,54 +63,59 @@ const Profile = () => {
   };
 
   return (
-    <View styles={globalStyle().centerView}>
-      <Button onPress={uploadProfileImage}>
-        <Avatar.Image size={150} source={{uri: profileImage || null}} />
-      </Button>
-      <TextInput
-        style={[globalStyle().TextInputComponent, globalStyle(1).borders]}
-        placeholder="Display Name"
-        onChangeText={setDisplayName}
-        value={displayName}
-      />
-      <TextInput
-        style={[globalStyle().TextInputComponent, globalStyle(1).borders]}
-        placeholder="Email"
-        value={email}
-        // onSubmitEditing={() => postText()}
-      />
-      <TextInput
-        style={[globalStyle().TextInputComponent, globalStyle(1).borders]}
-        placeholder="User Type"
-        keyboardType="number-pad"
-        value={uid}
-      />
-      <TextInput
-        style={[globalStyle().TextInputComponent, globalStyle(1).borders]}
-        placeholder="Phone Number"
-        onChangeText={setPhoneNumber}
-        value={phoneNumber}
-      />
-      <SegmentedButtons
-        value={userType}
-        onValueChange={() => {}}
-        // onValueChange={setUserType}
-        buttons={[
-          {
-            value: 0,
-            label: 'Admin',
-          },
-          {
-            value: 1,
-            label: 'Employee',
-          },
-          {
-            value: 2,
-            label: 'User',
-          },
-        ]}
-      />
+    <View>
+      <View style={styles.container}>
+        <Button onPress={uploadProfileImage}>
+          <Avatar.Image size={150} source={{uri: profileImage || null}} />
+        </Button>
+        <TextInput
+          style={[globalStyle().TextInputComponent, globalStyle(0.3).borders]}
+          placeholder="Display Name"
+          onChangeText={setDisplayName}
+          value={displayName}
+        />
+        <TextInput
+          style={[globalStyle().TextInputComponent, globalStyle(0.3).borders]}
+          placeholder="Email"
+          value={email}
+          // onSubmitEditing={() => postText()}
+        />
+        <TextInput
+          style={[globalStyle().TextInputComponent, globalStyle(0.3).borders]}
+          placeholder="User Type"
+          keyboardType="number-pad"
+          value={uid}
+        />
+        <TextInput
+          style={[globalStyle().TextInputComponent, globalStyle(0.3).borders]}
+          placeholder="Phone Number"
+          onChangeText={setPhoneNumber}
+          value={phoneNumber}
+        />
+        <SegmentedButtons
+          value={userType}
+          onValueChange={() => {}}
+          // onValueChange={setUserType}
+          buttons={[
+            {
+              value: 0,
+              label: 'Admin',
+            },
+            {
+              value: 1,
+              label: 'Employee',
+            },
+            {
+              value: 2,
+              label: 'User',
+            },
+          ]}
+        />
+      </View>
       <Button
+        mode={'contained'}
+        textColor={'white'}
+        style={styles.button}
         onPress={() => {
           updateFirebaseProfile({
             displayName: displayName,
@@ -129,4 +134,11 @@ const Profile = () => {
 
 export default Profile;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    margin: 15,
+  },
+  button: {
+    marginHorizontal: 15,
+  },
+});

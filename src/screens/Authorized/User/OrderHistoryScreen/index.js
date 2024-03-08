@@ -25,8 +25,8 @@ const OrderHistoryScreen = () => {
 
   const formatTimestamp = timestamp => {
     const date = new Date(timestamp);
-    const formattedDate = date.toLocaleDateString(); // Format the date
-    const formattedTime = date.toLocaleTimeString(); // Format the time
+    const formattedDate = date.toLocaleDateString(); // Format date
+    const formattedTime = date.toLocaleTimeString(); // Format time
     return `${formattedDate} \t\t\t${formattedTime}`; // Concatenate date and time
   };
 
@@ -41,7 +41,7 @@ const OrderHistoryScreen = () => {
             }\n Placed on ${formatTimestamp(order.timestamp)}.`}
             //   onPress={handlePress}
           >
-            {order?.order?.items?.map(item => (
+            {order?.order?.items?.map((item, id) => (
               <List.Item
                 title={`${item.title}`}
                 description={`Quantity: ${item?.quantity}`}

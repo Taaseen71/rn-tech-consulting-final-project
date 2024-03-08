@@ -22,7 +22,7 @@ const ProductDetails = () => {
   }, [selector]);
 
   return (
-    <View flex={1} style={globalStyle().centerView}>
+    <View flex={1} style={[globalStyle().centerView, styles.container]}>
       <Card mode={'contained'}>
         <ImageSlider
           data={item.imageURL.map(image => ({img: image}))}
@@ -35,21 +35,21 @@ const ProductDetails = () => {
         <Card.Content style={globalStyle().centerView}>
           <Text variant="titleLarge">{item.title}</Text>
           <Text variant="bodyMedium">Price: ${item.price}</Text>
-          <Divider />
           <Text variant="bodyMedium">{item.description}</Text>
         </Card.Content>
-        <View>
+        <Divider />
+        <View style={styles.buttonContainer}>
           <Button
             onPress={() => {
               dispatch(addToCart(item));
             }}>
             <Text variant="titleSmall">Add To Cart</Text>
           </Button>
-          <View style={globalStyle().centerView}>
-            {foundItem && (
+          {foundItem && (
+            <View style={globalStyle().centerView}>
               <Text>Item Quantity in Cart: {foundItem.quantity}</Text>
-            )}
-          </View>
+            </View>
+          )}
         </View>
       </Card>
     </View>
@@ -59,7 +59,8 @@ const ProductDetails = () => {
 export default ProductDetails;
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    // paddingTop: 10,
+    margin: 15,
   },
   centerView: {
     alignItems: 'center',
@@ -67,9 +68,10 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 10,
   },
-  image: {
-    width: 300,
-    height: 500,
+  buttonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   logo: {
     width: 66,
