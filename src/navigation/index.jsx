@@ -13,6 +13,7 @@ import {
   ProductDetails,
   CheckOutScreen,
   OrderHistoryScreen,
+  OrderDetailsScreen,
 } from '@screens';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -164,11 +165,14 @@ const UserScreen = ({Stack, naviButton, CartButton}) => (
 const EmployeeScreen = ({Stack, naviButton}) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Employee Homepage"
+      name="Orders"
       options={{
-        headerLeft: () => <HamburgerMenu />,
+        headerLeft: () => <HamburgerMenu employee={true} />,
       }}>
       {() => <EmployeeHomeScreen />}
+    </Stack.Screen>
+    <Stack.Screen name="Order Details" options={blackBackButton}>
+      {() => <OrderDetailsScreen />}
     </Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
     <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>

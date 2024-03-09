@@ -37,7 +37,7 @@ const globalStyle = (arg1, arg2, arg3, arg4) =>
     },
     inline: {
       // width: '100%',
-      marginHorizontal: 12,
+      marginHorizontal: arg2 ? arg2 : 12,
       flexDirection: 'row',
       justifyContent: arg1 ? arg1 : 'space-between',
       // backgroundColor: 'yellow',

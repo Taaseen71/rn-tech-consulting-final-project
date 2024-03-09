@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {getOrders} from 'src/helpers/FirebaseHelper';
 import {Button, Card, List} from 'react-native-paper';
+import {formatTimestamp} from 'src/helpers/functionHelpers';
 
 const OrderHistoryScreen = () => {
   const [userOrders, setUserOrders] = useState([]);
@@ -23,18 +24,12 @@ const OrderHistoryScreen = () => {
     return () => {};
   }, []);
 
-  const formatTimestamp = timestamp => {
-    const date = new Date(timestamp);
-    const formattedDate = date.toLocaleDateString(); // Format date
-    const formattedTime = date.toLocaleTimeString(); // Format time
-    return `${formattedDate} \t\t\t${formattedTime}`; // Concatenate date and time
-  };
-
   return (
     <ScrollView>
       <List.Section title="Orders">
         {userOrders?.orders?.reverse().map((order, id) => (
           <List.Accordion
+            key={id}
             title={`Order# ${userOrders.orders.length - id}`}
             description={`Order Status: ${order.orderStatus}. \t\t Total: $${
               order.order.total
@@ -43,6 +38,7 @@ const OrderHistoryScreen = () => {
           >
             {order?.order?.items?.map((item, id) => (
               <List.Item
+                key={id}
                 title={`${item.title}`}
                 description={`Quantity: ${item?.quantity}`}
               />

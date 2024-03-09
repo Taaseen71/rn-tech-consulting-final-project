@@ -4,7 +4,7 @@ import {Button, Menu, Divider, Icon} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {firebaseLogOut} from 'src/helpers/FirebaseHelper';
 
-const HamburgerMenu = () => {
+const HamburgerMenu = ({employee}) => {
   const navigation = useNavigation();
   const [visible, setVisible] = React.useState(false);
 
@@ -29,15 +29,20 @@ const HamburgerMenu = () => {
         title="Profile"
         leadingIcon="account"
       />
-      <Divider />
-      <Menu.Item
-        onPress={() => {
-          navigation.navigate('Order History');
-          setVisible(!visible);
-        }}
-        title="Order History"
-        leadingIcon="package-variant"
-      />
+      {!employee && (
+        <View>
+          <Divider />
+          <Menu.Item
+            onPress={() => {
+              navigation.navigate('Order History');
+              setVisible(!visible);
+            }}
+            title="Order History"
+            leadingIcon="package-variant"
+          />
+        </View>
+      )}
+
       <Divider />
       <Menu.Item
         onPress={() => {
@@ -47,14 +52,14 @@ const HamburgerMenu = () => {
         title="Chat"
         leadingIcon="chat"
       />
-      <Menu.Item
+      {/* <Menu.Item
         onPress={() => {
           navigation.navigate('Order Placed');
           setVisible(!visible);
         }}
         title="Driver chat"
         leadingIcon="car"
-      />
+      /> */}
       {/* <Menu.Item
         onPress={() => {
           navigation.navigate('ChatApp');

@@ -23,17 +23,17 @@ const logger = createLogger({
   diff: true,
 });
 
-// const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(logger),
-  // }).concat(logger, sagaMiddleware),
+      // }).concat(logger),
+    }).concat(logger, sagaMiddleware),
 });
 
-// sagaMiddleware.run(sagas);
+sagaMiddleware.run(sagas);
 
 export const persistor = persistStore(store);

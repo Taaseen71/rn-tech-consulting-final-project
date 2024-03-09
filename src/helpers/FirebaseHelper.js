@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 // import {current} from '@reduxjs/toolkit';
 import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
+import {setOrders} from 'src/features/orders/orderSlice';
 
 //*USERS
 export const firebaseLogIn = async (email, pwd) => {
@@ -188,7 +189,7 @@ const getDownloadURL = async fileName => {
   }
 };
 
-export const getOrders = async uid => {
+export const getOrders = async (uid, dispatch) => {
   try {
     let col = firestore().collection('orders');
     if (uid) {
@@ -197,7 +198,9 @@ export const getOrders = async uid => {
       return orders.data();
     } else {
       //? else return all users
-      return await col.get();
+      let orders = await col.get();
+      return orders?.docs.flatMap(doc => doc?.data()?.orders);
+      // return orders;
     }
   } catch (error) {
     console.log('ERROR Getting Orders=> ', error);

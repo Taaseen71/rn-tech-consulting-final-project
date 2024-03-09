@@ -27,7 +27,7 @@ const ProductDetails = () => {
         <ImageSlider
           data={item.imageURL.map(image => ({img: image}))}
           autoPlay={true}
-          timer={4000}
+          timer={3000}
           preview={false}
           onItemChanged={item => {}}
           closeIconColor="#fff"
