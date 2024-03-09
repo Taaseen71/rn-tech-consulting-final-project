@@ -4,11 +4,15 @@ import {useRoute} from '@react-navigation/native';
 import {Text, Card, Divider, List, Menu, IconButton} from 'react-native-paper';
 import globalStyle from 'src/styles/GlobalStyles';
 import {formatTimestamp} from 'src/helpers/functionHelpers';
+import {useDispatch, useSelector} from 'react-redux';
+import {changeDeliveryStatus} from 'src/features/orders/orderSlice';
 
 const OrderDetailsScreen = () => {
   const route = useRoute();
   const [foundItem, setFoundItem] = useState('');
   const [visible, setVisible] = React.useState(false);
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.user.userData);
 
   const openMenu = () => setVisible(true);
 
@@ -79,18 +83,43 @@ const OrderDetailsScreen = () => {
                 }>
                 <Menu.Item
                   disabled={order.orderStatus == 'Ordered' && true}
-                  onPress={() => {}}
+                  onPress={() => {
+                    dispatch(
+                      shipped({
+                        order: order,
+                        status: 'Ordered',
+                      }),
+                    );
+                  }}
                   title="Ordered"
                 />
                 <Menu.Item
                   disabled={order.orderStatus == 'Shipped' && true}
-                  onPress={() => {}}
+                  onPress={() => {
+                    dispatch(
+                      changeDeliveryStatus({
+                        order: order,
+                        status: 'Shipped',
+                        user: userData,
+                        orders: route.params.orders,
+                      }),
+                    );
+                  }}
                   title="Shipped"
                 />
                 <Divider />
                 <Menu.Item
                   disabled={order.orderStatus == 'Delivered' && true}
-                  onPress={() => {}}
+                  onPress={() => {
+                    dispatch(
+                      changeDeliveryStatus({
+                        order: order,
+                        status: 'Delivered',
+                        user: userData,
+                        orders: route.params.orders,
+                      }),
+                    );
+                  }}
                   title="Delivered"
                 />
               </Menu>

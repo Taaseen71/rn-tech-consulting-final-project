@@ -7,7 +7,6 @@ import {formatTimestamp} from 'src/helpers/functionHelpers';
 import globalStyle from 'src/styles/GlobalStyles';
 
 const EmployeeHomeScreen = () => {
-  const [expanded, setExpanded] = useState(false);
   const navigation = useNavigation();
 
   //?  CustomHooks
@@ -35,7 +34,7 @@ const EmployeeHomeScreen = () => {
                 onPress={() => {
                   navigation.navigate('Order Details', {
                     order: order,
-                    otherParam: 'anything',
+                    orders: userOrders,
                   });
                 }}
                 icon={'arrow-bottom-right-bold-box'}>

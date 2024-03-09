@@ -1,10 +1,20 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-const findOrder = (uid, orderNumber) => {
-  let order = state.orderData[uid].find(
+const changeStateOrderData = (status, orderNumber, orders) => {
+  let orderID = orders.findIndex(
     uniqueOrder => uniqueOrder.timestamp === orderNumber,
   );
-  return order;
+  if (orderID !== -1) {
+    const updateOrder = {...orders[orderID], orderStatus: status};
+
+    const newOrders = [
+      ...orders.slice(0, orderID),
+      updateOrder,
+      ...orders.slice(orderID + 1),
+    ];
+    return newOrders;
+  }
+  return null;
 };
 
 export const orderSlice = createSlice({
@@ -17,19 +27,19 @@ export const orderSlice = createSlice({
       //   console.log('ACTIONPAYLOAD', action.payload);
       state.orderData = action.payload;
     },
-    shipped: (state, action) => {
-      console.log('ActionPayload Shipped ==>', action.payload);
-
-      //   const uid = action.payload.userOrder.uid;
-      //   const orderNumber = action.payload.userOrder.timestamp;
-      //   let order = findOrder(uid, orderNumber);
-      //   console.log('Find-Order ==>', order);
-      //   order.orderStatus = 'Shipped';
+    changeDeliveryStatus: (state, action) => {
+      const orderNumber = action.payload.order.timestamp;
+      const changeOrders = changeStateOrderData(
+        action.payload.status,
+        orderNumber,
+        action.payload.orders,
+      );
+      state.orderData = changeOrders;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {setOrders, shipped} = orderSlice.actions;
+export const {setOrders, changeDeliveryStatus} = orderSlice.actions;
 
 export default orderSlice.reducer;
