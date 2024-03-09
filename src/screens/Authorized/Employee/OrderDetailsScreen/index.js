@@ -1,6 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Text, Card, Divider, List, Menu, IconButton} from 'react-native-paper';
 import globalStyle from 'src/styles/GlobalStyles';
 import {formatTimestamp} from 'src/helpers/functionHelpers';
@@ -9,6 +9,7 @@ import {changeDeliveryStatus} from 'src/features/orders/orderSlice';
 
 const OrderDetailsScreen = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const [foundItem, setFoundItem] = useState('');
   const [visible, setVisible] = React.useState(false);
   const dispatch = useDispatch();
@@ -85,11 +86,14 @@ const OrderDetailsScreen = () => {
                   disabled={order.orderStatus == 'Ordered' && true}
                   onPress={() => {
                     dispatch(
-                      shipped({
+                      changeDeliveryStatus({
                         order: order,
                         status: 'Ordered',
+                        user: userData,
+                        orders: route.params.orders,
                       }),
                     );
+                    navigation.navigate('Orders');
                   }}
                   title="Ordered"
                 />
@@ -104,6 +108,7 @@ const OrderDetailsScreen = () => {
                         orders: route.params.orders,
                       }),
                     );
+                    navigation.navigate('Orders');
                   }}
                   title="Shipped"
                 />
@@ -119,6 +124,7 @@ const OrderDetailsScreen = () => {
                         orders: route.params.orders,
                       }),
                     );
+                    navigation.navigate('Orders');
                   }}
                   title="Delivered"
                 />

@@ -12,10 +12,6 @@ const EmployeeHomeScreen = () => {
   //?  CustomHooks
   const {userOrders, setUserOrders} = getDispatchedOrders();
 
-  useEffect(() => {
-    // console.log('userOrders', userOrders);
-  }, []);
-
   return (
     <ScrollView>
       <List.Section title="Orders">

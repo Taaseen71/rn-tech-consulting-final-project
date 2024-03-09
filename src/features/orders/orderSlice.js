@@ -17,11 +17,13 @@ const changeStateOrderData = (status, orderNumber, orders) => {
   return null;
 };
 
+const initialState = {
+  orderData: [],
+};
+
 export const orderSlice = createSlice({
   name: 'orders',
-  initialState: {
-    orderData: [],
-  },
+  initialState,
   reducers: {
     setOrders: (state, action) => {
       //   console.log('ACTIONPAYLOAD', action.payload);
