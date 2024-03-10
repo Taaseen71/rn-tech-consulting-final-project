@@ -106,11 +106,17 @@ const CartScreen = () => {
   return (
     <SafeAreaView flex={1}>
       <View flex={1}>
-        <FlatList
-          data={userCart.items}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-        />
+        {!userCart.cartNumber ? (
+          <View flex={1} style={styles.noContent}>
+            <Text>Cart Empty. Add Items To Cart.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={userCart.items}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+          />
+        )}
       </View>
       <FooterCode />
     </SafeAreaView>
@@ -128,6 +134,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 5,
     marginTop: 10,
+  },
+  noContent: {
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
     width: 300,
