@@ -89,7 +89,6 @@ const OrderDetailsScreen = () => {
                       changeDeliveryStatus({
                         order: order,
                         status: 'Ordered',
-                        user: userData,
                         orders: route.params.orders,
                       }),
                     );
@@ -104,7 +103,6 @@ const OrderDetailsScreen = () => {
                       changeDeliveryStatus({
                         order: order,
                         status: 'Shipped',
-                        user: userData,
                         orders: route.params.orders,
                       }),
                     );
@@ -120,7 +118,6 @@ const OrderDetailsScreen = () => {
                       changeDeliveryStatus({
                         order: order,
                         status: 'Delivered',
-                        user: userData,
                         orders: route.params.orders,
                       }),
                     );

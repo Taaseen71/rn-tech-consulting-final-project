@@ -189,6 +189,8 @@ const getDownloadURL = async fileName => {
   }
 };
 
+//* ORDERS
+
 export const getOrders = async (uid, dispatch) => {
   try {
     let col = firestore().collection('orders');
@@ -199,7 +201,13 @@ export const getOrders = async (uid, dispatch) => {
     } else {
       //? else return all users
       let orders = await col.get();
-      return orders?.docs.flatMap(doc => doc?.data()?.orders);
+      return orders?.docs.flatMap(doc => {
+        const uid = doc.data().user;
+        const ordersData = doc?.data()?.orders;
+        if (ordersData) {
+          return ordersData.map(order => ({...order, uid: uid}));
+        }
+      });
       // return orders;
     }
   } catch (error) {
@@ -231,6 +239,33 @@ export const placeOrderToServer = async data => {
   } catch (error) {
     console.error('Error placing order:', error);
     Alert.alert('Could Not Place Order', error.message);
+  }
+};
+
+export const updateOrderStatus = async data => {
+  try {
+    const uid = data.order?.uid;
+    const orderRef = firestore().collection('orders').doc(uid);
+    const orderDoc = await orderRef.get();
+    if (!orderDoc.exists) {
+      console.error('Doc Not Found');
+    }
+    const orders = orderDoc.data().orders;
+    const orderID = orders.findIndex(
+      order => order.timestamp === data.order.timestamp,
+    );
+    if (orderID === -1) {
+      console.error('order not found');
+    }
+
+    orders[orderID].orderStatus = data.status;
+
+    console.log('ORDER ID ====>', orderID);
+    await orderRef.update({
+      orders: orders,
+    });
+  } catch (error) {
+    console.error('Error updating order status:', error);
   }
 };
 
