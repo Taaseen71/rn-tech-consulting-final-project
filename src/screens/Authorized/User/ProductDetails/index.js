@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addToCart} from 'src/features/cart/cartSlice';
 import {ImageSlider} from 'react-native-image-slider-banner';
 import {dispatchedAddToCart} from 'src/helpers/DispatchHelpers';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ProductDetails = memo(() => {
   const route = useRoute();
@@ -16,8 +17,8 @@ const ProductDetails = memo(() => {
   const {foundItem, setFoundItem, addItemToCart} = dispatchedAddToCart(item);
 
   return (
-    <View flex={1} style={[globalStyle().centerView, styles.container]}>
-      <Card mode={'contained'}>
+    <SafeAreaView flex={1} style={[globalStyle().centerView, styles.container]}>
+      <Card mode={'elevated'}>
         <ImageSlider
           data={item.imageURL.map(image => ({img: image}))}
           autoPlay={true}
@@ -26,10 +27,11 @@ const ProductDetails = memo(() => {
           onItemChanged={item => {}}
           closeIconColor="#fff"
         />
-        <Card.Content style={globalStyle().centerView}>
+        <Card.Content
+          style={[globalStyle().centerView, styles.paddingVertical]}>
           <Text variant="titleLarge">{item.title}</Text>
           <Text variant="bodyMedium">Price: ${item.price}</Text>
-          <Text variant="bodyMedium">{item.description}</Text>
+          <Text variant="bodySmall">{item.description}</Text>
         </Card.Content>
         <Divider />
         <View style={styles.buttonContainer}>
@@ -43,7 +45,7 @@ const ProductDetails = memo(() => {
           )}
         </View>
       </Card>
-    </View>
+    </SafeAreaView>
   );
 });
 
@@ -67,5 +69,8 @@ const styles = StyleSheet.create({
   logo: {
     width: 66,
     height: 58,
+  },
+  paddingVertical: {
+    paddingBottom: 25,
   },
 });
