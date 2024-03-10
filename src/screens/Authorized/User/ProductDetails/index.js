@@ -1,25 +1,19 @@
 import {Image, StyleSheet, View} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useState, useEffect, memo} from 'react';
+import {useRoute} from '@react-navigation/native';
 import globalStyle from 'src/styles/GlobalStyles';
 import {Button, Text, Card, Divider} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart} from 'src/features/cart/cartSlice';
 import {ImageSlider} from 'react-native-image-slider-banner';
+import {dispatchedAddToCart} from 'src/helpers/DispatchHelpers';
 
-const ProductDetails = () => {
-  const navigation = useNavigation();
-  const selector = useSelector(state => state.cart.items);
-  const dispatch = useDispatch();
+const ProductDetails = memo(() => {
   const route = useRoute();
-  const [foundItem, setFoundItem] = useState('');
-
   const {item, otherParam} = route.params;
-  console.log('ROUTE ==>', route.params);
+  // console.log('ROUTE ==>', route.params);
 
-  useEffect(() => {
-    setFoundItem(selector.find(product => product.id === item.id));
-  }, [selector]);
+  const {foundItem, setFoundItem, addItemToCart} = dispatchedAddToCart(item);
 
   return (
     <View flex={1} style={[globalStyle().centerView, styles.container]}>
@@ -39,22 +33,19 @@ const ProductDetails = () => {
         </Card.Content>
         <Divider />
         <View style={styles.buttonContainer}>
-          <Button
-            onPress={() => {
-              dispatch(addToCart(item));
-            }}>
+          <Button onPress={addItemToCart}>
             <Text variant="titleSmall">Add To Cart</Text>
           </Button>
           {foundItem && (
             <View style={globalStyle().centerView}>
-              <Text>Item Quantity in Cart: {foundItem.quantity}</Text>
+              <Text>Item Quantity in Cart: {foundItem?.quantity}</Text>
             </View>
           )}
         </View>
       </Card>
     </View>
   );
-};
+});
 
 export default ProductDetails;
 const styles = StyleSheet.create({

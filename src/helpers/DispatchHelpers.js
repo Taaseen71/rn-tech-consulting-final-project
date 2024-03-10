@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getOrders, getProducts} from './FirebaseHelper';
 import {setOrders} from 'src/features/orders/orderSlice';
 import {setProducts} from 'src/features/item/itemSlice';
+import {addToCart} from 'src/features/cart/cartSlice';
 
 export const getDispatchedOrders = () => {
   const dispatch = useDispatch();
@@ -64,4 +65,25 @@ export const getOrderHistory = () => {
   }, []);
 
   return {userOrders: userOrders, setUserOrders: setUserOrders};
+};
+
+export const dispatchedAddToCart = item => {
+  const cartItems = useSelector(state => state.cart.items);
+  const dispatch = useDispatch();
+
+  const [foundItem, setFoundItem] = useState({});
+
+  const addItemToCart = () => {
+    dispatch(addToCart(item));
+  };
+
+  useEffect(() => {
+    setFoundItem(cartItems.find(product => product.id === item.id));
+  }, [cartItems]);
+
+  return {
+    foundItem: foundItem,
+    setFoundItem: setFoundItem,
+    addItemToCart: addItemToCart,
+  };
 };
