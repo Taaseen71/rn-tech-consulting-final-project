@@ -2,35 +2,18 @@ import {
   View,
   SafeAreaView,
   FlatList,
-  Image,
   StyleSheet,
   TouchableOpacity,
-  Pressable,
 } from 'react-native';
-import {Button, Icon, Menu, Divider, Text, Card} from 'react-native-paper';
-import React, {useEffect, useState} from 'react';
+import {Text, Card} from 'react-native-paper';
+import React, {memo} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {setProducts} from 'src/features/item/itemSlice';
-// import HamburgerMenu from 'src/components/HamburgerMenu';
-import data from './data.json';
-import globalStyle from 'src/styles/GlobalStyles';
-import {getProducts} from 'src/helpers/FirebaseHelper';
-import {useDispatch} from 'react-redux';
+import {fetchProducts} from 'src/helpers/DispatchHelpers';
 
-const UserHomeScreen = () => {
+const UserHomeScreen = memo(() => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const products = await getProducts();
-      setItems(products);
-      dispatch(setProducts(products));
-    };
-    fetchProducts();
-  }, []);
+  const {items, setItems} = fetchProducts();
 
   const renderItem = ({item}) => {
     return (
@@ -66,7 +49,7 @@ const UserHomeScreen = () => {
       />
     </SafeAreaView>
   );
-};
+});
 
 export default UserHomeScreen;
 const styles = StyleSheet.create({

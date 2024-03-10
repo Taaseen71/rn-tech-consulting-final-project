@@ -1,12 +1,12 @@
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {Button, List} from 'react-native-paper';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {getDispatchedOrders} from 'src/helpers/DispatchHelpers';
 import {formatTimestamp} from 'src/helpers/functionHelpers';
 import globalStyle from 'src/styles/GlobalStyles';
 
-const EmployeeHomeScreen = () => {
+const EmployeeHomeScreen = memo(() => {
   const navigation = useNavigation();
 
   //?  CustomHooks
@@ -15,16 +15,12 @@ const EmployeeHomeScreen = () => {
   return (
     <ScrollView>
       <List.Section title="Orders">
-        {userOrders.map((order, _id) => (
+        {userOrders.map((order, id) => (
           <List.Accordion
-            key={_id}
+            key={id}
             title={`${order.order?.userName}`}
-            left={props => <List.Icon {...props} icon="package" />}
-
-            // expanded={expanded}
-            // onPress={() => setExpanded(!expanded)}
-          >
-            <View style={globalStyle('space-between', '0').inline}>
+            left={props => <List.Icon {...props} icon="package" />}>
+            <View style={globalStyle('space-between', 0.1).inline}>
               <List.Item title={`Status: ${order.orderStatus}`} />
               <Button
                 onPress={() => {
@@ -44,6 +40,6 @@ const EmployeeHomeScreen = () => {
       </List.Section>
     </ScrollView>
   );
-};
+});
 
 export default EmployeeHomeScreen;
