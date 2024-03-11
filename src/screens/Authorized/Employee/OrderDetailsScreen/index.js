@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Text, Card, Divider, List, Menu, IconButton} from 'react-native-paper';
@@ -6,6 +6,7 @@ import globalStyle from 'src/styles/GlobalStyles';
 import {formatTimestamp} from 'src/helpers/functionHelpers';
 import {useDispatch, useSelector} from 'react-redux';
 import {changeDeliveryStatus} from 'src/features/orders/orderSlice';
+import EmployeeMap from './EmployeeMap';
 
 const OrderDetailsScreen = () => {
   const route = useRoute();
@@ -22,7 +23,7 @@ const OrderDetailsScreen = () => {
   const {order, otherParam} = route.params;
   console.log('ROUTE ==>', route.params);
   return (
-    <View>
+    <ScrollView>
       <Card style={globalStyle(5, 5).marginsAndPadding}>
         <Card.Content>
           <View style={globalStyle().centerView}>
@@ -131,10 +132,14 @@ const OrderDetailsScreen = () => {
           </View>
         </Card.Content>
       </Card>
-    </View>
+
+      <EmployeeMap
+        style={{height: 200, width: '100%'}}
+        latitude={order.order?.address?.latitude}
+        longitude={order.order?.address?.longitude}
+      />
+    </ScrollView>
   );
 };
 
 export default OrderDetailsScreen;
-
-const styles = StyleSheet.create({});
