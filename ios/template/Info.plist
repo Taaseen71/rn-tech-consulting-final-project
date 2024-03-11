@@ -35,7 +35,7 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string></string>
 	<key>CFBundleDisplayName</key>
-	<string>template</string>
+	<string>Coffee Shop</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
