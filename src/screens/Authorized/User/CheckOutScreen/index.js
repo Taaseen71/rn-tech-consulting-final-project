@@ -18,16 +18,21 @@ const CheckOutScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState(
     useSelector(state => state.user.userData.phoneNumber),
   );
-  const [currentLocation, setCurrentLocation] = useState();
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 40.757889,
+    longitude: -73.896725,
+  });
   useEffect(() => {
     requestLocationPermission();
 
     console.log('Subscribed Location Getter');
-    const geoLocationGetter = getcurrentLocationWatcher(setCurrentLocation);
-    return () => {
-      Geolocation.clearWatch(geoLocationGetter);
-      console.log('Unsubscribed Location Getter');
-    };
+    if (Platform.OS === 'ios') {
+      const geoLocationGetter = getcurrentLocationWatcher(setCurrentLocation);
+      return () => {
+        Geolocation.clearWatch(geoLocationGetter);
+        console.log('Unsubscribed Location Getter');
+      };
+    }
   }, []);
 
   const placeOrderWithUpdatedCart = () => {
@@ -81,35 +86,37 @@ const CheckOutScreen = () => {
       </View>
       <View flex={1} style={styles.container}>
         <MapView
-          showsUserLocation={true}
+          showsUserLocation={Platform.OS === 'ios' ? true : false}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           initialRegion={{
-            latitude: currentLocation?.latitude,
-            longitude: currentLocation?.longitude,
+            latitude: currentLocation?.latitude || 40.757889,
+            longitude: currentLocation?.longitude || -73.896725,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
           region={{
-            latitude: currentLocation?.latitude,
-            longitude: currentLocation?.longitude,
+            latitude: currentLocation?.latitude || 40.757889,
+            longitude: currentLocation?.longitude || -73.896725,
             latitudeDelta: 0.05,
             longitudeDelta: 0.0121,
           }}>
-          {currentLocation && (
-            <Marker
-              title={'Address'}
-              draggable
-              coordinate={{
-                latitude: currentLocation?.latitude,
-                longitude: currentLocation?.longitude,
-              }}
-              onDragEnd={end => {
-                console.log(end.nativeEvent.coordinate);
-                setCurrentLocation(end.nativeEvent.coordinate);
-              }}
-            />
-          )}
+          {/* {currentLocation && ( */}
+          <Marker
+            title={'Address'}
+            draggable
+            coordinate={{
+              latitude: currentLocation?.latitude || 40.757889,
+              longitude: currentLocation?.longitude || -73.896725,
+              latitudeDelta: 0.05,
+              longitudeDelta: 0.0121,
+            }}
+            onDragEnd={end => {
+              console.log(end.nativeEvent.coordinate);
+              setCurrentLocation(end.nativeEvent.coordinate);
+            }}
+          />
+          {/*)}*/}
         </MapView>
       </View>
       <View style={globalStyle(15, 0).marginsAndPadding}>
@@ -162,10 +169,11 @@ const requestLocationPermission = async () => {
     if (authorizationStatus === 'denied') {
       console.log('denied', error);
     }
-  } else {
-    const granted = await Geolocation.requestPermissions();
-    if (!granted) {
-      console.log('Not Granted', error);
-    }
   }
+  // else {
+  //   const granted = await Geolocation.requestPermissions();
+  //   if (!granted) {
+  //     console.log('Not Granted', error);
+  //   }
+  // }
 };

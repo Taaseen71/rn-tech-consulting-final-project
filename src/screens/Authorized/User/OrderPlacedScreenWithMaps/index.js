@@ -55,8 +55,8 @@ const OrderPlacedWithMaps = () => {
           longitudeDelta: 100,
         }}
         region={{
-          latitude: currentLocation?.latitude,
-          longitude: currentLocation?.longitude,
+          latitude: currentLocation?.latitude || 40.757889,
+          longitude: currentLocation?.longitude || -73.896725,
           latitudeDelta: 0.05,
           longitudeDelta: 0.0121,
         }}>
@@ -68,6 +68,8 @@ const OrderPlacedWithMaps = () => {
             coordinate={{
               latitude: currentLocation?.latitude,
               longitude: currentLocation?.longitude,
+              latitudeDelta: 0.015,
+              longitudeDelta: 100,
             }}
             image={carIcon}
           />
@@ -100,12 +102,13 @@ const requestLocationPermission = async () => {
     if (authorizationStatus === 'denied') {
       console.log('denied', error);
     }
-  } else {
-    const granted = await Geolocation.requestPermissions();
-    if (!granted) {
-      console.log('Not Granted', error);
-    }
   }
+  //  else {
+  //   const granted = await Geolocation.requestPermissions();
+  //   if (!granted) {
+  //     console.log('Not Granted', error);
+  //   }
+  // }
 };
 
 // const getGeoLocation = setCurrentLocation => {
