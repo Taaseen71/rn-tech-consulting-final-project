@@ -66,7 +66,10 @@ const Profile = () => {
     <View>
       <View style={styles.container}>
         <Button onPress={uploadProfileImage}>
-          <Avatar.Image size={150} source={{uri: profileImage || null}} />
+          {profileImage && (
+            <Avatar.Image size={150} source={{uri: profileImage}} />
+          )}
+          {/* <Avatar.Image size={150} source={{uri: profileImage || null}} /> */}
         </Button>
         <TextInput
           style={[globalStyle().TextInputComponent, globalStyle(0.3).borders]}
