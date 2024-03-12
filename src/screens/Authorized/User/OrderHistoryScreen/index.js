@@ -1,11 +1,13 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {memo} from 'react';
-import {List} from 'react-native-paper';
+import {Button, List} from 'react-native-paper';
 import {formatTimestamp} from 'src/helpers/functionHelpers';
 import {getOrderHistory} from 'src/helpers/DispatchHelpers';
+import {useNavigation} from '@react-navigation/native';
 
 const OrderHistoryScreen = memo(() => {
   const {userOrders, setUserOrders} = getOrderHistory();
+  const navigation = useNavigation();
 
   return (
     <ScrollView>
@@ -18,11 +20,24 @@ const OrderHistoryScreen = memo(() => {
               order.order.total
             }\n Placed on ${formatTimestamp(order.timestamp)}.`}>
             {order?.order?.items?.map((item, id) => (
-              <List.Item
-                key={id}
-                title={`${item.title}`}
-                description={`Quantity: ${item?.quantity}`}
-              />
+              <View key={id}>
+                <List.Item
+                  key={id}
+                  title={`${item.title}`}
+                  description={`Quantity: ${item?.quantity}`}
+                />
+                {order.orderStatus === 'Delivered' && (
+                  <Button
+                    onPress={() => {
+                      navigation.navigate('RateDriverScreen', {
+                        item: item,
+                        otherParam: 'anything you want here',
+                      });
+                    }}>
+                    Rate Driver
+                  </Button>
+                )}
+              </View>
             ))}
           </List.Accordion>
         ))}

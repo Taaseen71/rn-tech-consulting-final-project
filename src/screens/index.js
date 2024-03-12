@@ -11,6 +11,7 @@ import Profile from './Authorized/CommonScreens/Profile';
 import ProductDetails from './Authorized/User/ProductDetails';
 import OrderHistoryScreen from './Authorized/User/OrderHistoryScreen';
 import OrderDetailsScreen from './Authorized/Employee/OrderDetailsScreen';
+import RateDriverScreen from './Authorized/User/RateDriverScreen';
 export {
   EmployeeHomeScreen,
   LogIn,
@@ -25,4 +26,5 @@ export {
   OrderHistoryScreen,
   OrderDetailsScreen,
   ProductDetails,
+  RateDriverScreen,
 };
