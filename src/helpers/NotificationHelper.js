@@ -1,4 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
+import {useEffect, useRef} from 'react';
 import {Alert, PermissionsAndroid, Platform} from 'react-native';
 
 class NotificationHelper {
@@ -13,6 +14,8 @@ class NotificationHelper {
 
     if (enabled) {
       console.log('Authorization status:', authStatus);
+    } else {
+      console.log('notification Permission not granted');
     }
   };
 
@@ -40,22 +43,22 @@ class NotificationHelper {
     console.log('DEVICE token', token);
   };
 
-  getForegroundNotification = async user_uid => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      const {uid, text} = remoteMessage.data || {};
-      if (text) {
-        if (uid === user_uid) {
-          Alert.alert(JSON.stringify(text));
-        } else {
-          console.log(' uid does not match');
-        }
-      } else {
-        Alert.alert(JSON.stringify(text));
-      }
-    });
+  //   getForegroundNotification = async user_uid => {
+  //     const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //       const {uid, text} = remoteMessage.data || {};
+  //       if (text) {
+  //         if (uid === user_uid) {
+  //           Alert.alert(JSON.stringify(text));
+  //         } else {
+  //           console.log(' uid does not match');
+  //         }
+  //       } else {
+  //         Alert.alert(JSON.stringify(text));
+  //       }
+  //     });
 
-    return unsubscribe; // Return the unsubscribe function
-  };
+  //     return unsubscribe; // Return the unsubscribe function
+  //   };
 
   sendNotification = async (user, data) => {
     const url = 'https://fcm.googleapis.com/fcm/send';
@@ -92,3 +95,38 @@ class NotificationHelper {
 }
 
 export default new NotificationHelper();
+
+export const useForegroundNotifications = user_uid => {
+  //CUSTOM HOOK
+  const unsubscribeRef = useRef(null);
+
+  const getForegroundNotification = async user_uid => {
+    unsubscribeRef.current = messaging().onMessage(async remoteMessage => {
+      const {uid, text} = remoteMessage.data || {};
+      if (text) {
+        if (uid === user_uid) {
+          Alert.alert(JSON.stringify(text));
+        } else {
+          console.log('uid does not match');
+        }
+      } else {
+        Alert.alert(JSON.stringify(text));
+      }
+    });
+  };
+
+  const cleanupForegroundNotification = () => {
+    if (unsubscribeRef.current) {
+      unsubscribeRef.current();
+      unsubscribeRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    getForegroundNotification(user_uid);
+
+    return cleanupForegroundNotification;
+  }, [user_uid]);
+
+  return null;
+};

@@ -1,7 +1,7 @@
 //! CUSTOM HOOKS
 //? Creating custom hooks for useDispatch here to use Globally
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getOrders, getProducts} from './FirebaseHelper';
 import {setOrders} from 'src/features/orders/orderSlice';
@@ -12,6 +12,7 @@ export const getDispatchedOrders = () => {
   const dispatch = useDispatch();
   const [userOrders, setUserOrders] = useState([]);
   const reduxOrders = useSelector(state => state.order.orderData);
+  const user = useSelector(state => state.user.userData);
 
   useEffect(() => {
     const fetchOrdersToDispatch = async () => {
@@ -32,12 +33,13 @@ export const getDispatchedOrders = () => {
     setUserOrders(reduxOrders);
   }, [dispatch, reduxOrders]);
 
-  return {userOrders: userOrders, setUserOrders: setUserOrders};
+  return {userOrders: userOrders, setUserOrders: setUserOrders, user: user};
 };
 
 export const fetchProducts = () => {
   const dispatch = useDispatch();
   const [items, setItems] = useState([]);
+  const user = useSelector(state => state.user.userData);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -48,7 +50,7 @@ export const fetchProducts = () => {
     fetchProducts();
   }, [dispatch]);
 
-  return {items: items, setItems: setItems};
+  return {items: items, setItems: setItems, user: user};
 };
 
 export const getOrderHistory = () => {

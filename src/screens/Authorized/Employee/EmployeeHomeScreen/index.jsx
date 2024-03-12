@@ -5,20 +5,16 @@ import {useNavigation} from '@react-navigation/native';
 import {getDispatchedOrders} from 'src/helpers/DispatchHelpers';
 import {formatTimestamp} from 'src/helpers/functionHelpers';
 import globalStyle from 'src/styles/GlobalStyles';
-import NotificationHelper from 'src/helpers/NotificationHelper';
+import NotificationHelper, {
+  useForegroundNotifications,
+} from 'src/helpers/NotificationHelper';
 
 const EmployeeHomeScreen = memo(() => {
   const navigation = useNavigation();
 
   //?  CustomHooks
-  const {userOrders, setUserOrders} = getDispatchedOrders();
-
-  useEffect(() => {
-    const unsubscribe = NotificationHelper.getForegroundNotification();
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const {userOrders, setUserOrders, user} = getDispatchedOrders();
+  useForegroundNotifications();
 
   return (
     <ScrollView>

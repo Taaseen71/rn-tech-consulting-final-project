@@ -9,22 +9,16 @@ import {Text, Card} from 'react-native-paper';
 import React, {memo, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {fetchProducts} from 'src/helpers/DispatchHelpers';
-import NotificationHelper from 'src/helpers/NotificationHelper';
+import NotificationHelper, {
+  useForegroundNotifications,
+} from 'src/helpers/NotificationHelper';
 import {useSelector} from 'react-redux';
 
 const UserHomeScreen = memo(() => {
   const navigation = useNavigation();
-  const user = useSelector(state => state.user.userData);
 
-  const {items, setItems} = fetchProducts();
-
-  useEffect(() => {
-    NotificationHelper.requestNotificationPermissionForAndroid();
-    const unsubscribe = NotificationHelper.getForegroundNotification(user.uid);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const {items, setItems, user} = fetchProducts();
+  useForegroundNotifications(user.uid);
 
   const renderItem = ({item}) => {
     return (
