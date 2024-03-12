@@ -14,7 +14,7 @@ const OrderDetailsScreen = () => {
   const [foundItem, setFoundItem] = useState('');
   const [visible, setVisible] = React.useState(false);
   const dispatch = useDispatch();
-  const userData = useSelector(state => state.user.userData);
+  const employee = useSelector(state => state.user.userData);
 
   const openMenu = () => setVisible(true);
 
@@ -91,6 +91,7 @@ const OrderDetailsScreen = () => {
                         order: order,
                         status: 'Ordered',
                         orders: route.params.orders,
+                        employee: employee,
                       }),
                     );
                     navigation.navigate('Orders');
@@ -105,6 +106,7 @@ const OrderDetailsScreen = () => {
                         order: order,
                         status: 'Shipped',
                         orders: route.params.orders,
+                        employee: employee,
                       }),
                     );
                     navigation.navigate('Orders');
@@ -120,6 +122,7 @@ const OrderDetailsScreen = () => {
                         order: order,
                         status: 'Delivered',
                         orders: route.params.orders,
+                        employee: employee,
                       }),
                     );
                     navigation.navigate('Orders');

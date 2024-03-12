@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
 import {setOrders} from 'src/features/orders/orderSlice';
+import NotificationHelper from './NotificationHelper';
 
 //*USERS
 export const firebaseLogIn = async (email, pwd) => {
@@ -218,24 +219,26 @@ export const getOrders = async (uid, dispatch) => {
 
 export const placeOrderToServer = async data => {
   try {
-    // console.log('Cartdata ==>', data.cartData, 'user=>', data.userData);
-    const orders = await getOrders(data.userData.uid);
-    const existingOrders = orders ? orders.orders : [];
-    const updatedOrders = [
-      ...existingOrders,
-      {
-        order: data.cartData,
-        timestamp: new Date().toISOString(),
-        orderStatus: 'Ordered',
-      },
-    ];
+    // const orders = await getOrders(data.userData.uid);
+    // const existingOrders = orders ? orders.orders : [];
+    // const updatedOrders = [
+    //   ...existingOrders,
+    //   {
+    //     order: data.cartData,
+    //     timestamp: new Date().toISOString(),
+    //     orderStatus: 'Ordered',
+    //   },
+    // ];
 
-    await firestore().collection('orders').doc(data.userData.uid).set({
-      user: data.userData.uid,
-      orders: updatedOrders,
-    });
+    // await firestore().collection('orders').doc(data.userData.uid).set({
+    //   user: data.userData.uid,
+    //   orders: updatedOrders,
+    // });
 
     Alert.alert('Placed Order');
+    NotificationHelper.sendNotification(data.userData.uid, {
+      text: 'New Order Placed',
+    });
   } catch (error) {
     console.error('Error placing order:', error);
     Alert.alert('Could Not Place Order', error.message);
@@ -259,7 +262,11 @@ export const updateOrderStatus = async data => {
     }
 
     orders[orderID].orderStatus = data.status;
-
+    orders[orderID].employee = data.employee;
+    NotificationHelper.sendNotification(uid, {
+      uid: uid,
+      text: `${data.employee?.displayName} has changed Order Status`,
+    });
     console.log('ORDER ID ====>', orderID);
     await orderRef.update({
       orders: orders,
