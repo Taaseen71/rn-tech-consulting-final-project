@@ -153,7 +153,7 @@ const UserScreen = ({Stack, naviButton, CartButton}) => (
     <Stack.Screen name="Order History" options={blackBackButton}>
       {() => <OrderHistoryScreen />}
     </Stack.Screen>
-    <Stack.Screen name="RateDriverScreen" options={blackBackButton}>
+    <Stack.Screen name="Rate Driver" options={blackBackButton}>
       {() => <RateDriverScreen />}
     </Stack.Screen>
     <Stack.Screen

@@ -29,7 +29,7 @@ const OrderHistoryScreen = memo(() => {
                 {order.orderStatus === 'Delivered' && (
                   <Button
                     onPress={() => {
-                      navigation.navigate('RateDriverScreen', {
+                      navigation.navigate('Rate Driver', {
                         item: item,
                         otherParam: 'anything you want here',
                       });
