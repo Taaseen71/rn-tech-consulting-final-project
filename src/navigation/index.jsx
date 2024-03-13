@@ -180,6 +180,9 @@ const EmployeeScreen = ({Stack, naviButton}) => (
     </Stack.Screen>
     <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
     <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
+    <Stack.Screen name="Order Placed" options={blackBackButton}>
+      {() => <OrderPlacedScreenWithMaps />}
+    </Stack.Screen>
   </Stack.Navigator>
 );
 

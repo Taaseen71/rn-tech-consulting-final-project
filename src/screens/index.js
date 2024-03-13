@@ -4,7 +4,7 @@ import SignUp from './Unauthorized/SignUp';
 import ChatApp from './Authorized/CommonScreens/ChatApp';
 import CheckOutScreen from './Authorized/User/CheckOutScreen';
 import CartScreen from './Authorized/User/CartScreen';
-import OrderPlacedScreenWithMaps from './Authorized/User/OrderPlacedScreenWithMaps';
+import OrderPlacedScreenWithMaps from './Authorized/CommonScreens/OrderPlacedScreenWithMaps';
 import ForgotPassword from './Unauthorized/ForgotPassword';
 import UserHomeScreen from './Authorized/User/UserHomeScreen';
 import Profile from './Authorized/CommonScreens/Profile';

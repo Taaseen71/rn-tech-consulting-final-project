@@ -52,16 +52,14 @@ const HamburgerMenu = ({employee}) => {
         title="Chat"
         leadingIcon="chat"
       />
-      {!employee && (
-        <Menu.Item
-          onPress={() => {
-            navigation.navigate('Order Placed');
-            setVisible(!visible);
-          }}
-          title="Track Driver"
-          leadingIcon="car"
-        />
-      )}
+      <Menu.Item
+        onPress={() => {
+          navigation.navigate('Order Placed');
+          setVisible(!visible);
+        }}
+        title="Track Driver"
+        leadingIcon="car"
+      />
       {/* <Menu.Item
         onPress={() => {
           navigation.navigate('ChatApp');
