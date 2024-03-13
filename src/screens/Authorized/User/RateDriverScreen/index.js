@@ -1,17 +1,25 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Button, Icon, RadioButton} from 'react-native-paper';
+import {rateDriver} from 'src/helpers/FirebaseHelper';
 
 const RateDriverScreen = () => {
   const route = useRoute();
-  const {order, otherParam} = route.params;
-  const [value, setValue] = React.useState(0);
+  const {order, orders, orderNumber} = route.params;
+  const [rating, setRating] = React.useState(0);
+  const navigation = useNavigation();
+
+  const handleSubmit = () => {
+    console.log('ORDER', rating, orderNumber, orders);
+    rateDriver(order, orders, rating, orderNumber);
+    navigation.goBack();
+  };
 
   return (
     <RadioButton.Group
-      onValueChange={newValue => setValue(newValue)}
-      value={value}>
+      onValueChange={newValue => setRating(newValue)}
+      value={rating}>
       <View style={styles.inline}>
         <RadioButton.Android value={5} />
         <Icon source={'star'} size={35} />
@@ -43,7 +51,7 @@ const RateDriverScreen = () => {
         <Icon source={'star'} size={35} />
       </View>
 
-      <Button onPress={() => {}}>Submit</Button>
+      <Button onPress={handleSubmit}>Submit</Button>
     </RadioButton.Group>
   );
 };

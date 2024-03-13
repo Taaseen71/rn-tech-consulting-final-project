@@ -278,6 +278,42 @@ export const updateOrderStatus = async data => {
   }
 };
 
+export const rateDriver = async (order, orders, rating, orderNumber) => {
+  try {
+    const uid = orders.user;
+    const orderRef = firestore().collection('orders').doc(uid);
+    const orderDoc = await orderRef.get();
+    if (!orderDoc.exists) {
+      console.error('Doc Not Found');
+    }
+    const allOrders = orderDoc.data().orders;
+
+    if (!allOrders[orderNumber]) {
+      console.error('Order not found at index:', orderNumber);
+      return;
+    }
+
+    allOrders[orderNumber] = {
+      ...allOrders[orderNumber],
+      employee: {...allOrders[orderNumber].employee, employeeRating: rating},
+    };
+    NotificationHelper.sendNotification(uid, {
+      text: `${allOrders[orderNumber].order.userName} has Given a Rating`,
+    });
+    // console.log('ORDER ID ====>', orderID);
+    await orderRef.update({
+      orders: allOrders,
+    });
+
+    console.log('OrderRef', allOrders[orderNumber].employee);
+  } catch (error) {
+    console.error(
+      '(FirebaseHelper) Error updating Employee rating ===> ',
+      error,
+    );
+  }
+};
+
 //* UpdateFirebase Profile
 
 export const updateFirebaseProfile = async ({

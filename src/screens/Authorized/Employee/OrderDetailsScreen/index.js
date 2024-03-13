@@ -47,6 +47,11 @@ const OrderDetailsScreen = () => {
                 {order.order?.address?.phoneNumber}
               </Text>
             )}
+            {order?.employee?.employeeRating && (
+              <Text variant="bodyMedium">
+                {`Employee Rating: ${order?.employee?.employeeRating}`}
+              </Text>
+            )}
           </View>
         </Card.Content>
       </Card>

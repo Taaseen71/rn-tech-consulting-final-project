@@ -20,19 +20,21 @@ const OrderHistoryScreen = memo(() => {
               description={`Order Status: ${order.orderStatus}. \t\t Total: $${
                 order.order.total
               }\n Placed on ${formatTimestamp(order.timestamp)}.`}>
-              {order?.order?.items?.map((item, id) => (
+              {order?.order?.items?.map((item, idx) => (
                 <List.Item
-                  key={id}
+                  key={idx}
                   title={`${item.title}`}
                   description={`Quantity: ${item?.quantity}`}
                 />
               ))}
               {order.orderStatus === 'Delivered' && (
                 <Button
+                  key={id}
                   onPress={() => {
                     navigation.navigate('Rate Driver', {
-                      item: item,
-                      otherParam: 'anything you want here',
+                      order: order,
+                      orders: userOrders,
+                      orderNumber: id,
                     });
                   }}>
                   Rate Driver
