@@ -11,6 +11,8 @@ import {
   updateFirebaseProfile,
   uploadFile,
 } from 'src/helpers/FirebaseHelper';
+import defaultIMG from './defaultAvatarImage.jpg';
+import {useNavigation} from '@react-navigation/native';
 
 const Profile = () => {
   // const profileInfo = useSelector(state => state.user.userData);
@@ -20,8 +22,11 @@ const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userType, setUserType] = useState(5);
   const [uid, setUID] = useState('');
-  const [profileImage, setProfileImage] = useState('');
+  const [profileImage, setProfileImage] = useState();
   const [userInfo, setUserInfo] = useState({});
+
+  const navigation = useNavigation();
+
   useEffect(() => {
     const getUserInfo = async () => {
       const user = await currentUser();
@@ -62,13 +67,28 @@ const Profile = () => {
     }
   };
 
+  const handleSubmit = () => {
+    updateFirebaseProfile({
+      displayName: displayName,
+      email: email,
+      phoneNumber: phoneNumber,
+      userType: userType,
+      uid: uid,
+      profileImage: profileImage,
+    });
+    navigation.goBack();
+  };
+
   return (
     <View>
       <View style={styles.container}>
         <Button onPress={uploadProfileImage}>
-          {profileImage && (
-            <Avatar.Image size={150} source={{uri: profileImage}} />
-          )}
+          {/* {profileImage && ( */}
+          <Avatar.Image
+            size={150}
+            source={profileImage ? {uri: profileImage} : defaultIMG}
+          />
+          {/* )} */}
           {/* <Avatar.Image size={150} source={{uri: profileImage || null}} /> */}
         </Button>
         <TextInput
@@ -119,16 +139,7 @@ const Profile = () => {
         mode={'contained'}
         textColor={'white'}
         style={styles.button}
-        onPress={() => {
-          updateFirebaseProfile({
-            displayName: displayName,
-            email: email,
-            phoneNumber: phoneNumber,
-            userType: userType,
-            uid: uid,
-            profileImage: profileImage,
-          });
-        }}>
+        onPress={handleSubmit}>
         <Text>Submit</Text>
       </Button>
     </View>

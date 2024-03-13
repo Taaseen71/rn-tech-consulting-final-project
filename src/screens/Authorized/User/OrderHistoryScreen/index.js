@@ -13,33 +13,33 @@ const OrderHistoryScreen = memo(() => {
     <ScrollView>
       <List.Section title="Orders">
         {userOrders?.orders?.reverse().map((order, id) => (
-          <List.Accordion
-            key={id}
-            title={`Order# ${userOrders.orders.length - id}`}
-            description={`Order Status: ${order.orderStatus}. \t\t Total: $${
-              order.order.total
-            }\n Placed on ${formatTimestamp(order.timestamp)}.`}>
-            {order?.order?.items?.map((item, id) => (
-              <View key={id}>
+          <View key={id}>
+            <List.Accordion
+              key={id}
+              title={`Order# ${userOrders.orders.length - id}`}
+              description={`Order Status: ${order.orderStatus}. \t\t Total: $${
+                order.order.total
+              }\n Placed on ${formatTimestamp(order.timestamp)}.`}>
+              {order?.order?.items?.map((item, id) => (
                 <List.Item
                   key={id}
                   title={`${item.title}`}
                   description={`Quantity: ${item?.quantity}`}
                 />
-                {order.orderStatus === 'Delivered' && (
-                  <Button
-                    onPress={() => {
-                      navigation.navigate('Rate Driver', {
-                        item: item,
-                        otherParam: 'anything you want here',
-                      });
-                    }}>
-                    Rate Driver
-                  </Button>
-                )}
-              </View>
-            ))}
-          </List.Accordion>
+              ))}
+              {order.orderStatus === 'Delivered' && (
+                <Button
+                  onPress={() => {
+                    navigation.navigate('Rate Driver', {
+                      item: item,
+                      otherParam: 'anything you want here',
+                    });
+                  }}>
+                  Rate Driver
+                </Button>
+              )}
+            </List.Accordion>
+          </View>
         ))}
       </List.Section>
     </ScrollView>

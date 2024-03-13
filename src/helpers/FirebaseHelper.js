@@ -219,21 +219,21 @@ export const getOrders = async (uid, dispatch) => {
 
 export const placeOrderToServer = async data => {
   try {
-    // const orders = await getOrders(data.userData.uid);
-    // const existingOrders = orders ? orders.orders : [];
-    // const updatedOrders = [
-    //   ...existingOrders,
-    //   {
-    //     order: data.cartData,
-    //     timestamp: new Date().toISOString(),
-    //     orderStatus: 'Ordered',
-    //   },
-    // ];
+    const orders = await getOrders(data.userData.uid);
+    const existingOrders = orders ? orders.orders : [];
+    const updatedOrders = [
+      ...existingOrders,
+      {
+        order: data.cartData,
+        timestamp: new Date().toISOString(),
+        orderStatus: 'Ordered',
+      },
+    ];
 
-    // await firestore().collection('orders').doc(data.userData.uid).set({
-    //   user: data.userData.uid,
-    //   orders: updatedOrders,
-    // });
+    await firestore().collection('orders').doc(data.userData.uid).set({
+      user: data.userData.uid,
+      orders: updatedOrders,
+    });
 
     Alert.alert('Placed Order');
     NotificationHelper.sendNotification(data.userData.uid, {
@@ -260,14 +260,16 @@ export const updateOrderStatus = async data => {
     if (orderID === -1) {
       console.error('order not found');
     }
-
-    orders[orderID].orderStatus = data.status;
-    orders[orderID].employee = data.employee;
+    orders[orderID] = {
+      ...orders[orderID],
+      orderStatus: data?.status,
+      employee: data?.employee,
+    };
     NotificationHelper.sendNotification(uid, {
       uid: uid,
       text: `${data.employee?.displayName} has changed Order Status`,
     });
-    console.log('ORDER ID ====>', orderID);
+    // console.log('ORDER ID ====>', orderID);
     await orderRef.update({
       orders: orders,
     });
