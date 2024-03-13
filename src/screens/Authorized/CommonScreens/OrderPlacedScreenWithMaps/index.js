@@ -17,12 +17,15 @@ const OrderPlacedWithMaps = () => {
     });
     const unsubscribe = LocationHelper.watchUserLocation(position => {
       setCurrentLocation(position);
+      console.log('Update', position);
     });
 
     return () => {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>

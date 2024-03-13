@@ -143,7 +143,9 @@ const UserScreen = ({Stack, naviButton, CartButton}) => (
     <Stack.Screen name="ChatApp" options={blackBackButton}>
       {() => <ChatApp />}
     </Stack.Screen>
-    <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
+    <Stack.Screen name="Profile" options={blackBackButton}>
+      {() => <Profile />}
+    </Stack.Screen>
     <Stack.Screen name="Cart Screen" options={blackBackButton}>
       {() => <CartScreen />}
     </Stack.Screen>
@@ -178,8 +180,12 @@ const EmployeeScreen = ({Stack, naviButton}) => (
     <Stack.Screen name="Order Details" options={blackBackButton}>
       {() => <OrderDetailsScreen />}
     </Stack.Screen>
-    <Stack.Screen name="ChatApp">{() => <ChatApp />}</Stack.Screen>
-    <Stack.Screen name="Profile">{() => <Profile />}</Stack.Screen>
+    <Stack.Screen name="ChatApp" options={blackBackButton}>
+      {() => <ChatApp />}
+    </Stack.Screen>
+    <Stack.Screen name="Profile" options={blackBackButton}>
+      {() => <Profile />}
+    </Stack.Screen>
     <Stack.Screen name="Order Placed" options={blackBackButton}>
       {() => <OrderPlacedScreenWithMaps />}
     </Stack.Screen>

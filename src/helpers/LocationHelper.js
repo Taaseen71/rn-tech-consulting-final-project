@@ -35,19 +35,19 @@ class LocationHelper {
           'Speed:',
           position.coords.speed,
         );
-        // console.log('Location Updating, OrderPlacedScreen, Line 88');
         callback(position.coords);
       },
       error => console.log(error.code, error.message),
       {
         enableHighAccuracy: true,
-        distanceFilter: 300, // Minimum distance (in meters) for an update event.
-        interval: 3000, // Milliseconds between each update
-        fastestInterval: 2000, // Fastest update interval
-        forceRequestLocation: true, // Whether to trigger a location request even if a location is already available
-        showLocationDialog: true, // Whether to show a location dialog when location permissions are not granted
+        distanceFilter: 500, //* Minimum distance
+        interval: 10000, //* Milliseconds update
+        fastestInterval: 2000, //* Fastest update interval
+        forceRequestLocation: true,
+        showLocationDialog: true,
       },
     );
+
     const cleanup = () => {
       Geolocation.clearWatch(geoLocationGetter);
       console.log('Unsubscribed Location Getter');
