@@ -298,7 +298,7 @@ export const rateDriver = async (order, orders, rating, orderNumber) => {
       employee: {...allOrders[orderNumber].employee, employeeRating: rating},
     };
     NotificationHelper.sendNotification(uid, {
-      text: `${allOrders[orderNumber].order.userName} has Given a Rating`,
+      text: `${allOrders[orderNumber].order.userName} has Given a Rating of ${rating} stars`,
     });
     // console.log('ORDER ID ====>', orderID);
     await orderRef.update({
