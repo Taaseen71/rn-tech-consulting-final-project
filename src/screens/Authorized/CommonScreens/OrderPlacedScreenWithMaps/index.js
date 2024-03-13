@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import carIcon from 'src/assets/car-icon.png';
 import LocationHelper from 'src/helpers/LocationHelper';
+import {pushLocationToFirebase} from 'src/helpers/FirebaseHelper';
 
 const OrderPlacedWithMaps = () => {
   const [currentLocation, setCurrentLocation] = useState();
@@ -17,15 +18,13 @@ const OrderPlacedWithMaps = () => {
     });
     const unsubscribe = LocationHelper.watchUserLocation(position => {
       setCurrentLocation(position);
-      console.log('Update', position);
+      pushLocationToFirebase(position);
     });
 
     return () => {
       unsubscribe();
     };
   }, []);
-
-  useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>
@@ -73,8 +72,6 @@ export default OrderPlacedWithMaps;
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    // height: 400,
-    // width: 400,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -82,47 +79,3 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
-
-// const requestLocationPermission = async () => {
-//   if (Platform.OS === 'ios') {
-//     const authorizationStatus = await Geolocation.requestAuthorization(
-//       'always',
-//     );
-//     if (authorizationStatus === 'denied') {
-//       console.log('denied', error);
-//     }
-//   }
-//   //  else {
-//   //   const granted = await Geolocation.requestPermissions();
-//   //   if (!granted) {
-//   //     console.log('Not Granted', error);
-//   //   }
-//   // }
-// };
-
-// const getGeoLocation = setCurrentLocation => {
-//   const getLocation = () => {
-//     Geolocation.getCurrentPosition(
-//       position => {
-//         // console.log(position);
-//         console.log('Location Updating, OrderPlacedScreen, Line 88');
-//         return setCurrentLocation(position.coords);
-//       },
-//       error => console.log(error.code, error.message),
-//       {
-//         enableHighAccuracy: true,
-//         distanceFilter: 50, // Minimum distance (in meters) for an update event.
-//         interval: 5000, // Milliseconds between each update
-//         fastestInterval: 2000, // Fastest update interval
-//         forceRequestLocation: true, // Whether to trigger a location request even if a location is already available
-//         showLocationDialog: true, // Whether to show a location dialog when location permissions are not granted
-//       },
-//     );
-//   };
-//   // GET One first
-//   getLocation();
-//   // GET one every set seconds
-//   // setInterval(() => {
-//   //   getLocation();
-//   // }, 30000);
-// };

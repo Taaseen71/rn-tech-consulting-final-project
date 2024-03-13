@@ -41,7 +41,7 @@ class LocationHelper {
       {
         enableHighAccuracy: true,
         distanceFilter: 500, //* Minimum distance
-        interval: 10000, //* Milliseconds update
+        interval: 20000, //* Milliseconds update
         fastestInterval: 2000, //* Fastest update interval
         forceRequestLocation: true,
         showLocationDialog: true,

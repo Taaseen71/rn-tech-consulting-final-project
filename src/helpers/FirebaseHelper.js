@@ -342,10 +342,31 @@ export const updateFirebaseProfile = async ({
       email: email,
       uid: uid,
     });
+};
 
-  // await auth().currentUser.updateProfile({
-  //   displayName: displayName || null,
-  //   phoneNumber: phoneNumber || null,
-  //   profileImage: profileImage || null,
-  // });
+export const pushLocationToFirebase = async coords => {
+  try {
+    await firestore().collection('driverLocation').doc('userID').set({
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      timestamp: firestore.FieldValue.serverTimestamp(),
+    });
+    console.log('Location pushed to Firebase');
+  } catch (error) {
+    console.error('Error pushing location to Firebase:', error);
+  }
+};
+
+export const listenForLocationUpdates = () => {
+  return firestore()
+    .collection('driverLocation')
+    .onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        if (change.type === 'added' || change.type === 'modified') {
+          const locationData = change.doc.data();
+          // Update user's location on another device
+          console.log('Location updated:', locationData);
+        }
+      });
+    });
 };
