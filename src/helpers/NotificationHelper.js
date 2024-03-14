@@ -61,16 +61,19 @@ class NotificationHelper {
   //   };
 
   sendNotification = async (user, data) => {
+    const deviceToken =
+      'caBgoZ9CRAaC_-b4XZtCri:APA91bEd7A7JrCxGulq59dh6OQSO2t0We_j3A7QvYJlS4yoKxsw9pJC4VkbZC7QMxaFPSkUplXtJOmRU-u4zBFWA3nunW0WNKZ8hfCq1rU8gp3UQSmRwhkMvNwhcqpVrk419KDVOU4R_';
+    const authKey =
+      'AAAAMe1tHqQ:APA91bG-ZCq-BkVSTjlZmHQVzS_Wz6Ih5-3OVBiLgupDPn5Ygt83kTQAgke9b_3T-KFVhkZqn6HLgB5S61IcShmP6wVto285hut2vEe8jxQaJqWNiWqNjHt_MP2tcy1_9-Qz7lSHi9YD';
     const url = 'https://fcm.googleapis.com/fcm/send';
     const headers = {
       'Content-Type': 'application/json',
-      Authorization:
-        'key=AAAAMe1tHqQ:APA91bG-ZCq-BkVSTjlZmHQVzS_Wz6Ih5-3OVBiLgupDPn5Ygt83kTQAgke9b_3T-KFVhkZqn6HLgB5S61IcShmP6wVto285hut2vEe8jxQaJqWNiWqNjHt_MP2tcy1_9-Qz7lSHi9YD',
+      Authorization: `key=${authKey}`,
     };
     const body = JSON.stringify({
       priority: 'HIGH',
       data: data,
-      to: 'fzJyQqlLRoeTuz2Y5IHVal:APA91bEW6AcshDi6GLGlfV-ySSa-gRTGUcEU6_KNBOsXyJAPF1Ne4lelS0d0JWsjFu29c_zmlUR1IRXRpcEF9fzX8jLlVgmeJobWrgBni_qmb_DH84-uNvUHxTdsCUlLEWWJgQJClQU9',
+      to: deviceToken,
     });
     try {
       const response = await fetch(url, {

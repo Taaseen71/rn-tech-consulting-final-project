@@ -7,6 +7,7 @@ import {getOrders, getProducts} from './FirebaseHelper';
 import {setOrders} from 'src/features/orders/orderSlice';
 import {setProducts} from 'src/features/item/itemSlice';
 import {addToCart} from 'src/features/cart/cartSlice';
+import NotificationHelper from './NotificationHelper';
 
 export const getDispatchedOrders = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export const getDispatchedOrders = () => {
     const fetchOrdersToDispatch = async () => {
       try {
         const fetchOrders = await getOrders();
-        console.log('FetchOrders, Dispatch => ', fetchOrders);
+        // console.log('FetchOrders, Dispatch => ', fetchOrders);
         // setUserOrders(fetchOrders.reverse());
         dispatch(setOrders(fetchOrders));
       } catch (error) {
@@ -29,9 +30,14 @@ export const getDispatchedOrders = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('REDUX ORDERS', reduxOrders);
+    // console.log('REDUX ORDERS', reduxOrders);
     setUserOrders(reduxOrders);
   }, [dispatch, reduxOrders]);
+
+  useEffect(() => {
+    NotificationHelper.getDeviceToken();
+    NotificationHelper.requestNotificationPermissionForAndroid();
+  }, []);
 
   return {userOrders: userOrders, setUserOrders: setUserOrders, user: user};
 };
@@ -49,6 +55,10 @@ export const fetchProducts = () => {
     };
     fetchProducts();
   }, [dispatch]);
+
+  useEffect(() => {
+    NotificationHelper.requestNotificationPermissionForAndroid();
+  }, []);
 
   return {items: items, setItems: setItems, user: user};
 };
