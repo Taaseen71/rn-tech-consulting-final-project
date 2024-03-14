@@ -1,14 +1,21 @@
 import {StyleSheet, Text, View, Button, Platform} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import carIcon from 'src/assets/car-icon.png';
 import LocationHelper from 'src/helpers/LocationHelper';
-import {pushLocationToFirebase} from 'src/helpers/FirebaseHelper';
+import {
+  listenForLocationUpdates,
+  pushLocationToFirebase,
+} from 'src/helpers/FirebaseHelper';
+import {useSelector} from 'react-redux';
 
 const OrderPlacedWithMaps = () => {
-  const [currentLocation, setCurrentLocation] = useState();
-  const navigation = useNavigation();
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const route = useRoute();
+  const user = useSelector(state => state.user.userData);
+
+  const {orders, orderNumber, order} = route.params;
 
   useEffect(() => {
     LocationHelper.requestLocationPermissionForiOS();
@@ -16,20 +23,43 @@ const OrderPlacedWithMaps = () => {
     LocationHelper.getCurrentLocation(position => {
       setCurrentLocation(position);
     });
-    const unsubscribe = LocationHelper.watchUserLocation(position => {
-      setCurrentLocation(position);
-      pushLocationToFirebase(position);
-    });
-
-    return () => {
-      unsubscribe();
-    };
   }, []);
+
+  useEffect(() => {
+    if (user.userType === 1) {
+      //if deliveryboy, update current location
+      const unsubscribeWatchUserLocation = LocationHelper.watchUserLocation(
+        position => {
+          setCurrentLocation(position);
+          // pushLocationToFirebase(position, orders, orderNumber);
+          pushLocationToFirebase(position, order);
+        },
+      );
+      return () => {
+        unsubscribeWatchUserLocation();
+      };
+    }
+  }, [orders, orderNumber, user.userType]);
+
+  useEffect(() => {
+    // console.log('userType', user.userType);
+    if (user.userType === 2) {
+      // if user, get deliveryboy location
+      const unsubscribeCurrentDeliveryBoyLocation = listenForLocationUpdates(
+        orders,
+        orderNumber,
+        setCurrentLocation,
+      );
+      return () => {
+        unsubscribeCurrentDeliveryBoyLocation();
+      };
+    }
+  }, [orders, orderNumber]);
 
   return (
     <View style={styles.container}>
       <MapView
-        showsUserLocation={true}
+        showsUserLocation={user.userType > 1 ? false : true}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={{

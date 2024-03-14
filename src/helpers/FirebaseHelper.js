@@ -196,10 +196,12 @@ export const getOrders = async (uid, dispatch) => {
   try {
     let col = firestore().collection('orders');
     if (uid) {
+      console.log('returning singleUser');
       //? if Userfield supplied, return just user orders
       let orders = await col.doc(uid).get();
       return orders.data();
     } else {
+      console.log('returning All Users');
       //? else return all users
       let orders = await col.get();
       return orders?.docs.flatMap(doc => {
@@ -278,7 +280,7 @@ export const updateOrderStatus = async data => {
   }
 };
 
-export const rateDriver = async (order, orders, rating, orderNumber) => {
+export const rateDriver = async (orders, rating, orderNumber) => {
   try {
     const uid = orders.user;
     const orderRef = firestore().collection('orders').doc(uid);
@@ -344,29 +346,88 @@ export const updateFirebaseProfile = async ({
     });
 };
 
-export const pushLocationToFirebase = async coords => {
+export const pushLocationToFirebase = async (coords, order) => {
   try {
-    await firestore().collection('driverLocation').doc('userID').set({
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      timestamp: firestore.FieldValue.serverTimestamp(),
+    const uid = order.uid;
+
+    const orderRef = firestore().collection('orders').doc(uid);
+    const orderDoc = await orderRef.get();
+    if (!orderDoc.exists) {
+      console.error('Doc Not Found');
+      return;
+    }
+    const allOrders = orderDoc.data().orders;
+
+    const orderID = allOrders.findIndex(
+      findorder => findorder.timestamp === order.timestamp,
+    );
+    if (orderID === -1) {
+      console.error('order not found');
+    }
+    console.log(order);
+    if (!allOrders || !allOrders[orderID]) {
+      console.error('Order not found at index:', orderID);
+      return;
+    }
+
+    allOrders[orderID] = {
+      ...allOrders[orderID],
+      employee: {
+        ...allOrders[orderID].employee,
+        coords: {latitude: coords.latitude, longitude: coords.longitude},
+        timestamp: new Date().toISOString(),
+      },
+    };
+
+    await orderRef.update({
+      orders: allOrders,
     });
+
     console.log('Location pushed to Firebase');
   } catch (error) {
     console.error('Error pushing location to Firebase:', error);
   }
 };
 
-export const listenForLocationUpdates = () => {
-  return firestore()
-    .collection('driverLocation')
-    .onSnapshot(snapshot => {
-      snapshot.docChanges().forEach(change => {
-        if (change.type === 'added' || change.type === 'modified') {
-          const locationData = change.doc.data();
-          // Update user's location on another device
-          console.log('Location updated:', locationData);
-        }
+export const listenForLocationUpdates = (
+  orders,
+  orderNumber,
+  setCurrentLocation,
+) => {
+  try {
+    const uid = orders.user;
+    return firestore()
+      .collection('orders')
+      .doc(uid)
+      .onSnapshot(snapshot => {
+        console.log(
+          'OH SNAP==>',
+          snapshot.data().orders[orderNumber]?.employee?.coords,
+        );
+        setCurrentLocation(
+          snapshot.data().orders[orderNumber]?.employee?.coords,
+        );
       });
-    });
+  } catch (error) {
+    console.error(
+      '(FirebaseHelper) Error Listening for Updates. FirebaseHelper ===>',
+      error,
+    );
+  }
+};
+
+const findAllOrders = async uid => {
+  try {
+    const orderRef = firestore().collection('orders').doc(uid);
+    const orderDoc = await orderRef.get();
+    if (!orderDoc.exists) {
+      console.error('Doc Not Found');
+    }
+    return orderDoc.data().orders;
+  } catch (error) {
+    console.error(
+      '(FirebaseHelper) Error Fetching All Orders. FirebaseHelper ===> ',
+      error,
+    );
+  }
 };

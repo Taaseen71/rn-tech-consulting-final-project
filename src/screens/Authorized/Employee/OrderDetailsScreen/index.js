@@ -1,7 +1,15 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Text, Card, Divider, List, Menu, IconButton} from 'react-native-paper';
+import {
+  Text,
+  Card,
+  Divider,
+  List,
+  Menu,
+  IconButton,
+  Button,
+} from 'react-native-paper';
 import globalStyle from 'src/styles/GlobalStyles';
 import {formatTimestamp} from 'src/helpers/functionHelpers';
 import {useDispatch, useSelector} from 'react-redux';
@@ -20,8 +28,8 @@ const OrderDetailsScreen = () => {
 
   const closeMenu = () => setVisible(false);
 
-  const {order, otherParam} = route.params;
-  console.log('ROUTE ==>', route.params);
+  const {order, orders, orderNumber} = route.params;
+  console.log('ROUTE ==>', route.params.orderNumber);
   return (
     <ScrollView>
       <Card style={globalStyle(5, 5).marginsAndPadding}>
@@ -64,6 +72,18 @@ const OrderDetailsScreen = () => {
                 {item?.title}
               </Text>
             ))}
+            {order.orderStatus !== 'Delivered' && (
+              <Button
+                onPress={() => {
+                  navigation.navigate('Order Placed', {
+                    order: order,
+                    // orders: orders,
+                    orderNumber: orderNumber,
+                  });
+                }}>
+                Track Driver
+              </Button>
+            )}
           </View>
           <Divider style={globalStyle(15, 0).marginsAndPadding} />
           <View style={globalStyle().centerView}>

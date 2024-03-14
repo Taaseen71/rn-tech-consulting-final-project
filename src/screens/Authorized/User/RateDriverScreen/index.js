@@ -6,13 +6,13 @@ import {rateDriver} from 'src/helpers/FirebaseHelper';
 
 const RateDriverScreen = () => {
   const route = useRoute();
-  const {order, orders, orderNumber} = route.params;
+  const {orders, orderNumber} = route.params;
   const [rating, setRating] = React.useState(0);
   const navigation = useNavigation();
 
   const handleSubmit = () => {
     console.log('ORDER', rating, orderNumber, orders);
-    rateDriver(order, orders, rating, orderNumber);
+    rateDriver(orders, rating, orderNumber);
     navigation.goBack();
   };
 

@@ -12,7 +12,7 @@ const OrderHistoryScreen = memo(() => {
   return (
     <ScrollView>
       <List.Section title="Orders">
-        {userOrders?.orders?.reverse().map((order, id) => (
+        {userOrders?.orders?.map((order, id) => (
           <View key={id}>
             <List.Accordion
               key={id}
@@ -21,11 +21,24 @@ const OrderHistoryScreen = memo(() => {
                 order.order.total
               }\n Placed on ${formatTimestamp(order.timestamp)}.`}>
               {order?.order?.items?.map((item, idx) => (
-                <List.Item
-                  key={idx}
-                  title={`${item.title}`}
-                  description={`Quantity: ${item?.quantity}`}
-                />
+                <View key={idx}>
+                  <List.Item
+                    // key={idx}
+                    title={`${item.title}`}
+                    description={`Quantity: ${item?.quantity}`}
+                  />
+                  {order.orderStatus !== 'Delivered' && (
+                    <Button
+                      onPress={() => {
+                        navigation.navigate('Order Placed', {
+                          orders: userOrders,
+                          orderNumber: id,
+                        });
+                      }}>
+                      Track Driver
+                    </Button>
+                  )}
+                </View>
               ))}
               {order.orderStatus === 'Delivered' && (
                 <Button

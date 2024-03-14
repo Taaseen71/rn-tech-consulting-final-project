@@ -13,7 +13,7 @@ const EmployeeHomeScreen = memo(() => {
   const navigation = useNavigation();
 
   //?  CustomHooks
-  const {userOrders, setUserOrders, user} = getDispatchedOrders();
+  const {userOrders, setUserOrders} = getDispatchedOrders();
   useForegroundNotifications();
 
   return (
@@ -27,10 +27,12 @@ const EmployeeHomeScreen = memo(() => {
             <View style={globalStyle('space-between', 0.1).inline}>
               <List.Item title={`Status: ${order.orderStatus}`} />
               <Button
+                key={id}
                 onPress={() => {
                   navigation.navigate('Order Details', {
                     order: order,
                     orders: userOrders,
+                    orderNumber: id,
                   });
                 }}
                 icon={'arrow-bottom-right-bold-box'}>
