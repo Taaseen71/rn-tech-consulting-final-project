@@ -27,19 +27,19 @@ const OrderHistoryScreen = memo(() => {
                     title={`${item.title}`}
                     description={`Quantity: ${item?.quantity}`}
                   />
-                  {order.orderStatus !== 'Delivered' && (
-                    <Button
-                      onPress={() => {
-                        navigation.navigate('Order Placed', {
-                          orders: userOrders,
-                          orderNumber: id,
-                        });
-                      }}>
-                      Track Driver
-                    </Button>
-                  )}
                 </View>
               ))}
+              {order.orderStatus !== 'Delivered' && (
+                <Button
+                  onPress={() => {
+                    navigation.navigate('Order Placed', {
+                      orders: userOrders,
+                      orderNumber: id,
+                    });
+                  }}>
+                  Track Driver
+                </Button>
+              )}
               {order.orderStatus === 'Delivered' && (
                 <Button
                   key={id}
