@@ -18,7 +18,6 @@ const UserHomeScreen = memo(() => {
   const navigation = useNavigation();
 
   const {items, setItems, user} = fetchProducts();
-  useForegroundNotifications(user.uid);
 
   const renderItem = ({item}) => {
     return (

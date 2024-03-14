@@ -14,7 +14,6 @@ const EmployeeHomeScreen = memo(() => {
 
   //?  CustomHooks
   const {userOrders, setUserOrders} = getDispatchedOrders();
-  useForegroundNotifications();
 
   return (
     <ScrollView>
